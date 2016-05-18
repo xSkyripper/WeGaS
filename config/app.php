@@ -148,6 +148,15 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+
+        /*
+         * My Defined Service Providers...
+         */
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Yajra\Oci8\Oci8ServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+
+
         /*
          * Application Service Providers...
          */
@@ -170,6 +179,12 @@ return [
     */
 
     'aliases' => [
+
+        /*
+         * My Defined Class Aliases
+         */
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
 
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
