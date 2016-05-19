@@ -66,6 +66,8 @@
                     <li><a href="{{ url('/help') }}">Help</a></li>
                     <li><a href="{{ url('/help') }}">About</a></li>
                 @else
+
+                    <li><a target="_blank" href="http://127.0.0.1:2000/{{Auth::user()->username}}">Game</a></li>
                     <li><a href="{{ url('/shop') }}">Shop</a></li>
                     <li><a href="{{ url('/skills') }}">Skills Tree</a></li>
                     <li><a href="{{ url('/help') }}">Help</a></li>
