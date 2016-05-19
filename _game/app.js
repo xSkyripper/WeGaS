@@ -121,12 +121,12 @@ Player = function(type,id,x,y,width,height,img,hp) {
 			if (self.flag == 0) {
 				self.flag++;
 			}
-			self.directionMod = self.getDirection();
+
 
 		}
 
 
-
+		self.directionMod = self.getDirection();
 		self.OF = Math.sqrt((self.mouseX - self.x) * (self.mouseX - self.x) + (self.mouseY - self.y) * (self.mouseY - self.y));
 		self.OA = Math.abs(self.mouseX - self.x);
 		self.OB = Math.abs(self.mouseY - self.y);
@@ -280,6 +280,6 @@ io.sockets.on(	'connection', function(socket) {
 			var socket = SOCKET_LIST[i];
 			socket.emit('newPositions', pack);
 		}
-	}, 40);
+	}, 80);
 }
 );

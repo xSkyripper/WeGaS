@@ -1,4 +1,4 @@
-<canvas id="ctx" width="1200" height="600" style="border:1px solid #000000;"></canvas>
+<canvas id="ctx" width="1300" height="600" style="border:1px solid #000000;"></canvas>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script src="/client/js/maps.js"> </script>
 <script src="/client/js/player.js"> </script>
@@ -75,7 +75,7 @@
                  }
                 else
                 {
-                    ctx.drawImage(Img.player,0,(1*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
+                    ctx.drawImage(Img.player,0,(0*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
                 }
 
                 if(flip===false) {
@@ -101,6 +101,8 @@
                     ctx.strokeRect(x-50,y,100,10);
                     data[i].flip=false;
                 }
+
+                ctx.drawButton
             }
             ctx.restore();
         });

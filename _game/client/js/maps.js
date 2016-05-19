@@ -13,7 +13,7 @@ Maps = function(id,imgSrc,width,height){
     self.y=0;
     self.draw = function(){
         //console.log("");
-        ctx.drawImage(self.image,0,0,2400,1600,0,0,2400,1600);
+        ctx.drawImage(self.image,0,0,2400,1400,0,0,2400,1400);
         
     }
 
