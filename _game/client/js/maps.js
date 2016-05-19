@@ -1,6 +1,7 @@
 /**
  * Created by dan.cehan on 5/16/2016.
  */
+"iuma"
 Maps = function(id,imgSrc,width,height){
     var self = {
         id:id,
