@@ -10,6 +10,9 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">WeGaS - Welcome</div>
 
+                    <a target="_blank" href="http://localhost:2000/1/alexander">alexander - camera 1</a>
+                    <a target="_blank" href="http://localhost:2000/2/gabriel">gabriel - camera 2</a>
+
                     <div class="panel-body">
                         Welcome to WeGaS !
                     </div>
