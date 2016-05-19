@@ -42,7 +42,8 @@ Player = function(type,id,x,y,width,height,img,hp) {
 	self.pressingQ= false;
 	self.flag=6;
 	self.isSelected=false;
-
+	self.mouseX;
+	self.mouseY;
 	self.v1 = 0;
 	self.v2 = 0;
 	self.OA = 0;
@@ -67,7 +68,7 @@ Player = function(type,id,x,y,width,height,img,hp) {
 	}
 
 	self.getDirection = function () {
-		self.aimAngle= Math.atan2((mouseY-self.y),(mouseX-self.x)) / Math.PI * 180;
+		self.aimAngle= Math.atan2((self.mouseY-self.y),(self.mouseX-self.x)) / Math.PI * 180;
 		if(self.aimAngle<0)
 			self.aimAngle+=360;
 		if( self.aimAngle >= 355 &&  self.aimAngle <=360 ||  self.aimAngle >= 0 &&  self.aimAngle <= 15)
@@ -126,19 +127,19 @@ Player = function(type,id,x,y,width,height,img,hp) {
 
 
 
-		self.OF = Math.sqrt((mouseX - self.x) * (mouseX - self.x) + (mouseY - self.y) * (mouseY - self.y));
-		self.OA = Math.abs(mouseX - self.x);
-		self.OB = Math.abs(mouseY - self.y);
+		self.OF = Math.sqrt((self.mouseX - self.x) * (self.mouseX - self.x) + (self.mouseY - self.y) * (self.mouseY - self.y));
+		self.OA = Math.abs(self.mouseX - self.x);
+		self.OB = Math.abs(self.mouseY - self.y);
 		self.v2 = self.OA / self.OF * 6;//OA
 		self.v1 = self.OB / self.OF * 6;
 		self.x1 = self.x;
-		if (self.x < mouseX)
+		if (self.x < self.mouseX)
 				self.x += self.v2;
-		if (self.y < mouseY)
+		if (self.y < self.mouseY)
 				self.y += self.v1;
-		if (self.x > mouseX)
+		if (self.x > self.mouseX)
 				self.x -= self.v2;
-		if (self.y > mouseY)
+		if (self.y > self.mouseY)
 				self.y -= self.v1;
 
 
@@ -249,9 +250,10 @@ io.sockets.on(	'connection', function(socket) {
 
 	socket.on('mousePress', function (data) {
 		if (data.input === 'click1') {
-			mouseX = data.coordX;
-			mouseY = data.coordY;
-			console.log(mouseX+" "+mouseY);
+
+			PLAYER_LIST[socket.id].mouseX=data.coordX;
+			PLAYER_LIST[socket.id].mouseY = data.coordY;
+			//console.log(mouseX+" "+mouseY);
 		}
 		else if (data.input === 'click2') {
 
@@ -268,6 +270,9 @@ io.sockets.on(	'connection', function(socket) {
 				y: player.y,
 				directionMod : player.directionMod,
 				flag: player.flag,
+				flip: player.flip,
+				hp:player.hp,
+				hpMax:player.hpMax,
 				number: player.number
 			});
 		}
@@ -275,6 +280,6 @@ io.sockets.on(	'connection', function(socket) {
 			var socket = SOCKET_LIST[i];
 			socket.emit('newPositions', pack);
 		}
-	}, 100);
+	}, 40);
 }
 );

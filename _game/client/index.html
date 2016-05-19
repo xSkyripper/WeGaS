@@ -39,11 +39,12 @@
     var main= function() {
         socket.on('newPositions', function (data) {
             ctx.fillRect(0,0,1200,600);
+            ctx.save();
             Maps.current.draw();
+            var flip=false;
             for (var i = 0; i < data.length; i++)
             {
                 console.log(data[i].directionMod);
-
                 if(data[i].directionMod == 0) // UP
                  ctx.drawImage(Img.player,0,(data[i].flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
                 else if(data[i].directionMod == 4) //DOWN
@@ -54,7 +55,7 @@
                  {
                  ctx.scale(-1,1);
                  ctx.drawImage(Img.player,(2*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,85,85);
-                     data[i].flip=true;
+                     flip=true;
                  }
                 else if(data[i].directionMod == 5){ // DOWN RIGHT
                  ctx.drawImage(Img.player,(3*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,85,85);
@@ -62,20 +63,46 @@
                 else if(data[i].directionMod == 6){ //DOWN LEFT
                  ctx.scale(-1,1);
                  ctx.drawImage(Img.player,(3*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,85,85);
-                     data[i].flip=true;
+                     flip=true;
                  }
                else  if(data[i].directionMod == 7){ // UP LEFT
                  ctx.scale(-1,1);
                  ctx.drawImage(Img.player,(Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,85,85);
-                     data[i].flip=true;
+                     flip=true;
                  }
                  else if(data[i].directionMod == 8){ //UP RIGHT
-                 ctx.drawImage(Img.player,(Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,85,85);
+                     ctx.drawImage(Img.player,(Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,85,85);
                  }
                 else
+                {
                     ctx.drawImage(Img.player,0,(1*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
-            }
+                }
 
+                if(flip===false) {
+                    var x = data[i].x;
+                    var y = data[i].y - 40;
+                    ctx.fillStyle = 'red';
+                    var width = 100 * data[i].hp / data[i].hpMax;
+                    if (width < 0)
+                        width = 0;
+                    ctx.fillRect(x - 10, y, width, 10);
+                    ctx.strokeStyle = 'black';
+                    ctx.strokeRect(x - 10, y, 100, 10);
+                }
+                else {
+                    var x = -data[i].x;
+                    var y = data[i].y - 40 ;
+                    ctx.fillStyle = 'red';
+                    var width = 100*data[i].hp/data[i].hpMax;
+                    if(width < 0)
+                        width = 0;
+                    ctx.fillRect(x-50,y,width,10);
+                    ctx.strokeStyle = 'black';
+                    ctx.strokeRect(x-50,y,100,10);
+                    data[i].flip=false;
+                }
+            }
+            ctx.restore();
         });
 
     }
