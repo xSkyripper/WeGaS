@@ -7,5 +7,5 @@
 
 Route::auth();
 
-Route::get('/','HomeController@welcome');
+Route::get('/', 'HomeController@welcome');
 Route::get('/home', 'HomeController@index');
