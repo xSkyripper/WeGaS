@@ -59,6 +59,10 @@
                         <li><a href="{{ url('/help') }}">Help</a></li>
                         <li><a href="{{ url('/help') }}">About</a></li>
                     @else
+                        <li><a href="{{ url('/shop') }}">Shop</a></li>
+                        <li><a href="{{ url('/skills') }}">Skills Tree</a></li>
+                        <li><a href="{{ url('/help') }}">Help</a></li>
+                        <li><a href="{{ url('/help') }}">About</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>

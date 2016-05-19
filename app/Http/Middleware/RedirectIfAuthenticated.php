@@ -21,6 +21,7 @@ class RedirectIfAuthenticated
 
             return redirect('/');
         }
+        
         \Session::flash('status','Welcome, ');
         return $next($request);
     }
