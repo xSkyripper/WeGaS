@@ -8,7 +8,7 @@ var serv = require('http').Server(app);
 // });
 
 var usernames = [];
-var k = -1;
+var k = 0;
 // localhost:2000/prostiiprostii
 
 app.get('/:user', function (req, res) {
@@ -183,10 +183,12 @@ Player = function(type,id,x,y,width,height,img,hp) {
 
 var startPlayerX=100;
 var startPlayerY=100;
+var t=0;
 var io = require('socket.io')(serv,{});
 io.sockets.on(	'connection', function(socket) {
-	socket.id = Math.random();
+	socket.id = t;
 	SOCKET_LIST[socket.id] = socket;
+	t+=1;
 	var player = Player("player",socket.id,startPlayerX,startPlayerY,32,32,20,5);
 	startPlayerX+=50;
 	startPlayerY+=50;
@@ -200,7 +202,6 @@ io.sockets.on(	'connection', function(socket) {
 
 	socket.on('mousePress', function (data) {
 		if (data.input === 'click1') {
-
 			PLAYER_LIST[socket.id].mouseX=data.coordX;
 			PLAYER_LIST[socket.id].mouseY = data.coordY;
 
@@ -209,6 +210,13 @@ io.sockets.on(	'connection', function(socket) {
 
 		}
 	});
+
+	socket.on('sendMsgToServer',function(data){
+			var playerName = usernames[socket.id];
+			for(var i in SOCKET_LIST){
+				SOCKET_LIST[i].emit('addToChat',playerName + ': ' + data);
+			}
+		});
 
 	setInterval(function () {
 		var pack = [];

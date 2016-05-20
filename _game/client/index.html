@@ -1,11 +1,25 @@
+
+
 <canvas id="ctx" width="1200" height="900" style="border:1px solid #000000;"></canvas>
+
+<div id="chat-text" style="width:1200px;height:800px;overflow-y:scroll;" >
+    <div>Hello!</div>
+</div>
+
+<form id="chat-form">
+    <input id="chat-input" type="text" style="width:500px" position="absolute"   margin-right="1300px" > </input>
+</form>
+<link rel="icon" href="/client/img/tornado.png">
+
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script src="/client/js/maps.js"> </script>
 <script src="/client/js/player.js"> </script>
 <script src="/client/js/bar.js"> </script>
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <script>
     var ctx = document.getElementById("ctx").getContext("2d");
+    var chatText = document.getElementById('chat-text');
+    var chatInput = document.getElementById('chat-input');
+    var chatForm = document.getElementById('chat-form');
     ctx.font = '30px Arial';
     ctx.lineWidth = 5;
     var frameCount = 0;
@@ -120,6 +134,16 @@
             ctx.restore();
         });
 
+        socket.on('addToChat',function(data){
+            chatText.innerHTML += '<div>' + data + '</div>';
+        });
+
+        chatForm.onsubmit = function(e) {
+            e.preventDefault();
+            socket.emit('sendMsgToServer', chatInput.value);
+            chatInput.value = '';
+        }
+
     }
 
     main();
@@ -129,7 +153,9 @@
     document.onmousedown = function(mouse){
         if(mouse.which === 1)
         {
-            socket.emit('mousePress',{input:'click1',coordX:mouse.clientX,coordY:mouse.clientY});
+            if(mouse.clientX>=0 && mouse.clientX<=1200 && mouse.clientY>=0 && mouse.clientY<=800)
+                 socket.emit('mousePress',{input:'click1',coordX:mouse.clientX,coordY:mouse.clientY});
+
         }
         else
         {
