@@ -111,19 +111,19 @@ Player = function(type,id,x,y,width,height,img,hp) {
 			self.x = self.width / 2;
 		}
 
-		if (self.x > (1200 - self.width / 2)) {
-			self.x = 1200 - self.width / 2 ;
+		if (self.x > (1200 - self.width / 2)-50) {
+			self.x = 1200 - (self.width / 2) -50 ;
 		}
 
 		if (self.y < self.height / 2) {
 			self.y = self.height / 2;
 		}
-		if(self.y > (800 - self.height/2))
+		if(self.y > (800 - self.height/2)-65)
 		{
-			self.y = 800- self.height/2-50;
+			self.y = 800- self.height/2-65;
 		}
 
-		//console.log(direction);
+
 
 		return direction;
 	}
@@ -161,65 +161,6 @@ Player = function(type,id,x,y,width,height,img,hp) {
 
 
 
-		//console.log(self.directionMod);
-		/*if(self.directionMod == 0) // UP
-			ctx.drawImage(Img.player,0,(self.flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,self.x,self.y,75,75);
-		if(self.directionMod == 4) //DOWN
-			ctx.drawImage(Img.player,(4*Img.player.width)/5,(self.flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,self.x,self.y,85,85);
-		if(self.directionMod == 2) //RIGHT
-			ctx.drawImage(Img.player,(2*Img.player.width)/5,(self.flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,self.x,self.y,85,85);
-		if(self.directionMod == 3) //LEFT
-		{
-			ctx.scale(-1,1);
-			ctx.drawImage(Img.player,(2*Img.player.width)/5,(self.flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-self.x-60,self.y,85,85);
-			self.flip=true;
-		}
-		if(self.directionMod == 5){ // DOWN RIGHT
-			ctx.drawImage(Img.player,(3*Img.player.width)/5,(self.flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,self.x,self.y,85,85);
-		}
-		if(self.directionMod == 6){ //DOWN LEFT
-			ctx.scale(-1,1);
-			ctx.drawImage(Img.player,(3*Img.player.width)/5,(self.flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-self.x-60,self.y,85,85);
-			self.flip=true;
-		}
-		if(self.directionMod == 7){ // UP LEFT
-			ctx.scale(-1,1);
-			ctx.drawImage(Img.player,(Img.player.width)/5,(self.flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-self.x-60,self.y,85,85);
-			self.flip=true;
-		}
-		if(self.directionMod == 8){ //UP RIGHT
-			ctx.drawImage(Img.player,(Img.player.width)/5,(self.flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,self.x,self.y,85,85);
-		}
-
-		if(self.flip===false) {
-			var x = self.x;
-			var y = self.y - self.height / 2;
-			ctx.fillStyle = 'red';
-			var width = 100 * self.hp / self.hpMax;
-			if (width < 0)
-				width = 0;
-			ctx.fillRect(x - 10, y, width, 10);
-			ctx.strokeStyle = 'black';
-			ctx.strokeRect(x - 10, y, 100, 10);
-		}
-		else {
-			var x = -self.x;
-			var y = self.y - self.height/2 ;
-			ctx.fillStyle = 'red';
-			var width = 100*self.hp/self.hpMax;
-			if(width < 0)
-				width = 0;
-			ctx.fillRect(x-50,y,width,10);
-			ctx.strokeStyle = 'black';
-			ctx.strokeRect(x-50,y,100,10);
-			self.flip=false;
-		}
-
-		if(self.x1 == self.x && gameStart)
-		{
-			self.isSelected=false;
-
-		}*/
 
 
 
@@ -246,8 +187,7 @@ var io = require('socket.io')(serv,{});
 io.sockets.on(	'connection', function(socket) {
 	socket.id = Math.random();
 	SOCKET_LIST[socket.id] = socket;
-
-	var player = Player("player",socket.id,startPlayerX,startPlayerY,64,64,20,5);
+	var player = Player("player",socket.id,startPlayerX,startPlayerY,32,32,20,5);
 	startPlayerX+=50;
 	startPlayerY+=50;
 	PLAYER_LIST[socket.id] = player;
@@ -256,23 +196,14 @@ io.sockets.on(	'connection', function(socket) {
 		delete PLAYER_LIST[socket.id];
 	});
 
-	/*socket.on('keyPress',function(data){
-	 if(data.inputId === 'left')
-	 player.pressingLeft = data.state;
-	 else if(data.inputId === 'right')
-	 player.pressingRight = data.state;
-	 else if(data.inputId === 'up')
-	 player.pressingUp = data.state;
-	 else if(data.inputId === 'down')
-	 player.pressingDown = data.state;
-	 });*/
+
 
 	socket.on('mousePress', function (data) {
 		if (data.input === 'click1') {
 
 			PLAYER_LIST[socket.id].mouseX=data.coordX;
 			PLAYER_LIST[socket.id].mouseY = data.coordY;
-			//console.log(mouseX+" "+mouseY);
+
 		}
 		else if (data.input === 'click2') {
 
