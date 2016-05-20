@@ -1,12 +1,13 @@
-<canvas id="ctx" width="1300" height="600" style="border:1px solid #000000;"></canvas>
+<canvas id="ctx" width="1200" height="900" style="border:1px solid #000000;"></canvas>
 <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
 <script src="/client/js/maps.js"> </script>
 <script src="/client/js/player.js"> </script>
+<script src="/client/js/bar.js"> </script>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <script>
     var ctx = document.getElementById("ctx").getContext("2d");
     ctx.font = '30px Arial';
-
+    ctx.lineWidth = 5;
     var frameCount = 0;
 
     var score = 0;
@@ -41,7 +42,7 @@
             ctx.fillRect(0,0,1200,600);
             ctx.save();
             Maps.current.draw();
-
+            Bar.current.draw();
             for (var i = 0; i < data.length; i++)
             {
                 var flip=false;
@@ -49,36 +50,36 @@
 
                 ctx.save();
                 if(data[i].directionMod == 0) // UP
-                 ctx.drawImage(Img.player,0,(data[i].flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
+                    ctx.drawImage(Img.player,0,(data[i].flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,64,64);
                 else if(data[i].directionMod == 4) //DOWN
-                 ctx.drawImage(Img.player,(4*Img.player.width)/5,(data[i].flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,85,85);
+                    ctx.drawImage(Img.player,(4*Img.player.width)/5,(data[i].flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,64,64);
                 else if(data[i].directionMod == 2) //RIGHT
-                 ctx.drawImage(Img.player,(2*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,85,85);
+                    ctx.drawImage(Img.player,(2*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,64,64);
                 else if(data[i].directionMod == 3) //LEFT
-                 {
-                 ctx.scale(-1,1);
-                 ctx.drawImage(Img.player,(2*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,85,85);
-                     flip=true;
-                 }
+                {
+                    ctx.scale(-1,1);
+                    ctx.drawImage(Img.player,(2*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,64,64);
+                    flip=true;
+                }
                 else if(data[i].directionMod == 5){ // DOWN RIGHT
-                 ctx.drawImage(Img.player,(3*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,85,85);
-                 }
+                    ctx.drawImage(Img.player,(3*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,64,64);
+                }
                 else if(data[i].directionMod == 6){ //DOWN LEFT
-                 ctx.scale(-1,1);
-                 ctx.drawImage(Img.player,(3*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,85,85);
-                     flip=true;
-                 }
-               else  if(data[i].directionMod == 7){ // UP LEFT
-                 ctx.scale(-1,1);
-                 ctx.drawImage(Img.player,(Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,85,85);
-                     flip=true;
-                 }
-                 else if(data[i].directionMod == 8){ //UP RIGHT
-                     ctx.drawImage(Img.player,(Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,85,85);
-                 }
+                    ctx.scale(-1,1);
+                    ctx.drawImage(Img.player,(3*Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,64,64);
+                    flip=true;
+                }
+                else  if(data[i].directionMod == 7){ // UP LEFT
+                    ctx.scale(-1,1);
+                    ctx.drawImage(Img.player,(Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,-data[i].x-60,data[i].y,64,64);
+                    flip=true;
+                }
+                else if(data[i].directionMod == 8){ //UP RIGHT
+                    ctx.drawImage(Img.player,(Img.player.width)/5,(data[i].flag*Img.player.height)/11.6,Img.player.width/5,Img.player.height/11,data[i].x,data[i].y,64,64);
+                }
                 else
                 {
-                    ctx.drawImage(Img.player,0,(0*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
+                    ctx.drawImage(Img.player,0,(0*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,64,64);
                 }
 
 
@@ -103,7 +104,7 @@
                         ctx.fillStyle = 'red';
                     else
                         ctx.fillStyle = 'blue';
-                    
+
                     var width = 100*data[i].hp/data[i].hpMax;
                     if(width < 0)
                         width = 0;
@@ -123,27 +124,7 @@
 
     main();
 
-   /* document.onkeydown = function(event){
-        if(event.keyCode === 68)    //d
-            socket.emit('keyPress',{inputId:'right',state:true});
-        else if(event.keyCode === 83)   //s
-            socket.emit('keyPress',{inputId:'down',state:true});
-        else if(event.keyCode === 65) //a
-            socket.emit('keyPress',{inputId:'left',state:true});
-        else if(event.keyCode === 87) // w
-            socket.emit('keyPress',{inputId:'up',state:true});
 
-    }
-    document.onkeyup = function(event){
-        if(event.keyCode === 68)    //d
-            socket.emit('keyPress',{inputId:'right',state:false});
-        else if(event.keyCode === 83)   //s
-            socket.emit('keyPress',{inputId:'down',state:false});
-        else if(event.keyCode === 65) //a
-            socket.emit('keyPress',{inputId:'left',state:false});
-        else if(event.keyCode === 87) // w
-            socket.emit('keyPress',{inputId:'up',state:false});
-    }*/
 
     document.onmousedown = function(mouse){
         if(mouse.which === 1)
