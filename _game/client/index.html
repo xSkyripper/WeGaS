@@ -41,10 +41,13 @@
             ctx.fillRect(0,0,1200,600);
             ctx.save();
             Maps.current.draw();
-            var flip=false;
+
             for (var i = 0; i < data.length; i++)
             {
-                console.log(data[i].directionMod);
+                var flip=false;
+
+
+                ctx.save();
                 if(data[i].directionMod == 0) // UP
                  ctx.drawImage(Img.player,0,(data[i].flag*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
                 else if(data[i].directionMod == 4) //DOWN
@@ -78,10 +81,14 @@
                     ctx.drawImage(Img.player,0,(0*Img.player.height)/11.5,Img.player.width/5,Img.player.height/13,data[i].x,data[i].y,75,75);
                 }
 
+
                 if(flip===false) {
                     var x = data[i].x;
                     var y = data[i].y - 40;
-                    ctx.fillStyle = 'red';
+                    if(i==0)
+                        ctx.fillStyle = 'red';
+                    else
+                        ctx.fillStyle = 'blue';
                     var width = 100 * data[i].hp / data[i].hpMax;
                     if (width < 0)
                         width = 0;
@@ -92,7 +99,11 @@
                 else {
                     var x = -data[i].x;
                     var y = data[i].y - 40 ;
-                    ctx.fillStyle = 'red';
+                    if(i==0)
+                        ctx.fillStyle = 'red';
+                    else
+                        ctx.fillStyle = 'blue';
+                    
                     var width = 100*data[i].hp/data[i].hpMax;
                     if(width < 0)
                         width = 0;
@@ -101,8 +112,9 @@
                     ctx.strokeRect(x-50,y,100,10);
                     data[i].flip=false;
                 }
+                ctx.restore();
 
-                ctx.drawButton
+
             }
             ctx.restore();
         });
