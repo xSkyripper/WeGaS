@@ -12,14 +12,14 @@ var k = 0;
 // localhost:2000/prostiiprostii
 
 app.get('/:user', function (req, res) {
-	usernames[k++] = req.params.user;
+    usernames[k++] = req.params.user;
 
-	// if(exista user in baza de date && user este logat)
-	// 	res.sendFile(__dirname + '/client/index.html');
-	// else
-	// 	res.sendFile(__dirname +'/client/eroare.html');
+    // if(exista user in baza de date && user este logat)
+    // 	res.sendFile(__dirname + '/client/index.html');
+    // else
+    // 	res.sendFile(__dirname +'/client/eroare.html');
 
-	res.sendFile(__dirname + '/client/index.html');
+    res.sendFile(__dirname + '/client/index.html');
 });
 
 app.use('/client', express.static(__dirname + '/client'));
@@ -151,13 +151,13 @@ Player = function(type,id,x,y,width,height,img,hp) {
 		self.v1 = self.OB / self.OF * 6;
 		self.x1 = self.x;
 		if (self.x < self.mouseX)
-			self.x += self.v2;
+				self.x += self.v2;
 		if (self.y < self.mouseY)
-			self.y += self.v1;
+				self.y += self.v1;
 		if (self.x > self.mouseX)
-			self.x -= self.v2;
+				self.x -= self.v2;
 		if (self.y > self.mouseY)
-			self.y -= self.v1;
+				self.y -= self.v1;
 
 
 
@@ -186,59 +186,59 @@ var startPlayerY=100;
 var t=0;
 var io = require('socket.io')(serv,{});
 io.sockets.on(	'connection', function(socket) {
-		socket.id = t;
-		SOCKET_LIST[socket.id] = socket;
-		t+=1;
-		var player = Player("player",socket.id,startPlayerX,startPlayerY,32,32,20,5);
-		startPlayerX+=50;
-		startPlayerY+=50;
-		PLAYER_LIST[socket.id] = player;
-		socket.on('disconnect', function () {
-			delete SOCKET_LIST[socket.id];
-			delete PLAYER_LIST[socket.id];
-		});
+	socket.id = t;
+	SOCKET_LIST[socket.id] = socket;
+	t+=1;
+	var player = Player("player",socket.id,startPlayerX,startPlayerY,32,32,20,5);
+	startPlayerX+=50;
+	startPlayerY+=50;
+	PLAYER_LIST[socket.id] = player;
+	socket.on('disconnect', function () {
+		delete SOCKET_LIST[socket.id];
+		delete PLAYER_LIST[socket.id];
+	});
 
 
 
-		socket.on('mousePress', function (data) {
-			if (data.input === 'click1') {
-				PLAYER_LIST[socket.id].mouseX=data.coordX;
-				PLAYER_LIST[socket.id].mouseY = data.coordY;
+	socket.on('mousePress', function (data) {
+		if (data.input === 'click1') {
+			PLAYER_LIST[socket.id].mouseX=data.coordX;
+			PLAYER_LIST[socket.id].mouseY = data.coordY;
 
-			}
-			else if (data.input === 'click2') {
+		}
+		else if (data.input === 'click2') {
 
-			}
-		});
+		}
+	});
 
-		socket.on('sendMsgToServer',function(data){
+	socket.on('sendMsgToServer',function(data){
 			var playerName = usernames[socket.id];
 			for(var i in SOCKET_LIST){
 				SOCKET_LIST[i].emit('addToChat',playerName + ': ' + data);
 			}
 		});
 
-		setInterval(function () {
-			var pack = [];
-			for (var i in PLAYER_LIST) {
-				var player = PLAYER_LIST[i];
-				player.updatePosition();
-				pack.push({
-					x: player.x,
-					y: player.y,
-					directionMod : player.directionMod,
-					flag: player.flag,
-					flip: player.flip,
-					hp:player.hp,
-					hpMax:player.hpMax,
-					number: player.number
-				});
-			}
-			for (var i in SOCKET_LIST) {
-				var socket = SOCKET_LIST[i];
-				socket.emit('newPositions', pack);
-			}
-		}, 160);
-	}
+	setInterval(function () {
+		var pack = [];
+		for (var i in PLAYER_LIST) {
+			var player = PLAYER_LIST[i];
+			player.updatePosition();
+			pack.push({
+				x: player.x,
+				y: player.y,
+				directionMod : player.directionMod,
+				flag: player.flag,
+				flip: player.flip,
+				hp:player.hp,
+				hpMax:player.hpMax,
+				number: player.number
+			});
+		}
+		for (var i in SOCKET_LIST) {
+			var socket = SOCKET_LIST[i];
+			socket.emit('newPositions', pack);
+		}
+	}, 160);
+}
 
 );
