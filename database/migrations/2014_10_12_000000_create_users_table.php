@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('email')->unique();
             $table->string('name');
+            
             $table->integer('lvl')->default(1);
             $table->integer('gold')->default(100);
             $table->integer('xp')->default(0);
@@ -25,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->integer('victories')->default(0);
             $table->integer('defeats')->default(0);
             $table->integer('killed')->default(0);
+            $table->enum('status',['online','offline','ingame'])->default('offline');
 
             $table->foreign('lvl')->references('lvl')->on('levels');
 

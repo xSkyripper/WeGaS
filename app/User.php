@@ -28,4 +28,12 @@ class User extends Authenticatable
     {
         return 'username';
     }
+
+    public function units(){
+        
+    }
+
+    public function skills(){
+
+    }
 }
