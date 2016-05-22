@@ -21,15 +21,18 @@ class UsersController extends Controller
         return view('users.profile', compact('user'));
     }
 
-    public function skills(User $user)
-    {
-        return UserSkill::all();
-        return 'Skills of' . $user->name;
-    }
-
     public function units(User $user)
     {
-        return UserUnit::all();
-        return 'Units of' . $user->name;
+        $units =  $user->units;
+
+        return view('users.units',compact('units'));
     }
+
+    public function skills(User $user)
+    {
+        $skills =  $user->skills;
+        return view('users.skills',compact('skills'));
+    }
+
+
 }

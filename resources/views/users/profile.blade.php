@@ -13,8 +13,8 @@
                         <p>Defeats: {{$user->defeats}} </p>
                         <p>Killed: {{$user->killed}}</p>
 
-                        <a class="btn btn-default" href="/users/{{$user->username}}/skills">Skills of   {{$user->name}}</a>
-                        <a class="btn btn-default" href="/users/{{$user->username}}/units">Units of     {{$user->name}}</a>
+                        <a class="btn btn-default" href="/users/{{$user->username}}/skills">{{$user->name}}'s skills</a>
+                        <a class="btn btn-default" href="/users/{{$user->username}}/units">{{$user->name}}'s units</a>
                     </div>
                 </div>
             </div>

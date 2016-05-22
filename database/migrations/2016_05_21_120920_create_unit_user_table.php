@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserSkillsTable extends Migration
+class CreateUnitUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,17 +12,16 @@ class CreateUserSkillsTable extends Migration
      */
     public function up()
     {
-        Schema::create('User_Skills', function (Blueprint $table) {
+        Schema::create('unit_user', function (Blueprint $table) {
             $table->increments('id');
-
             $table->integer('user_id')->unsigned()->index();
-            $table->integer('skill_id')->unsigned()->index();
-
+            $table->integer('unit_id')->unsigned();
+            
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade');
-            $table->foreign('skill_id')->references('id')->on('skills')
+            $table->foreign('unit_id')->references('id')->on('units')
                 ->onDelete('cascade');
-
+            
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ class CreateUserSkillsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('User_Skills');
+        Schema::drop('unit_user');
     }
 }

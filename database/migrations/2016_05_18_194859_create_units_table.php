@@ -22,6 +22,7 @@ class CreateUnitsTable extends Migration
             $table->integer('ms');
             $table->integer('lvl');
             $table->integer('gold');
+            $table->integer('coins');
             
             $table->timestamps();
         });

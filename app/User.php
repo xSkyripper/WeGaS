@@ -24,16 +24,23 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * Overrides the finding RouteKey to 'username'
+     *
+     * @return string
+     */
     public function getRouteKeyName()
     {
         return 'username';
     }
 
-    public function units(){
-        
+    public function units()
+    {
+        return $this->belongsToMany('App\Unit');
     }
 
-    public function skills(){
-
+    public function skills()
+    {
+        return $this->belongsToMany('App\Skill');
     }
 }
