@@ -1,8 +1,17 @@
 $(document).ready(function () {
-    $(document).on('click','.delete-skill',function () {
+    $(document).on('click', '.delete-skill', function () {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+
+
+        $.ajaxPrefilter(function (options, originalOptions, xhr) { // this will run before each request
+            var token = $('meta[name="_token"]').attr('content'); // or _token, whichever you are using
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token); // adds directly to the XmlHttpRequest Object
             }
         });
 
@@ -29,10 +38,18 @@ $(document).ready(function () {
 
     });
 
-    $(document).on('click','.add-skill',function (e) {
+    $(document).on('click', '.add-skill', function (e) {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            }
+        });
+
+        $.ajaxPrefilter(function (options, originalOptions, xhr) { // this will run before each request
+            var token = $('meta[name="_token"]').attr('content'); // or _token, whichever you are using
+
+            if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token); // adds directly to the XmlHttpRequest Object
             }
         });
 

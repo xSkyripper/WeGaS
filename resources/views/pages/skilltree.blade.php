@@ -1,6 +1,8 @@
 @extends('layouts/app')
 
-<meta name="_token" content="{!! csrf_token() !!}"/>
+@section('head')
+    <meta name="_token" content="{{ csrf_token() }}">
+@stop
 
 @section('content')
     <div class="container">
@@ -49,6 +51,6 @@
 @stop
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="{{asset('js/skills-ajax-crud.js')}}"></script>
+@section('scripts')
+    <script src="{{asset('js/skills-ajax-crud.js')}}"></script>
+@stop

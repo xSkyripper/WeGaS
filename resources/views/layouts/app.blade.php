@@ -30,6 +30,9 @@
             margin-right: 6px;
         }
     </style>
+
+    @yield('head')
+
 </head>
 <body id="app-layout">
 <nav class="navbar navbar-default navbar-static-top">
@@ -89,7 +92,12 @@
     </div>
 </nav>
 
+@yield('header')
+
 @yield('content')
+
+@yield('footer')
+
 
 <!-- JavaScripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"
@@ -99,5 +107,6 @@
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
 {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+@yield('scripts')
 </body>
 </html>
