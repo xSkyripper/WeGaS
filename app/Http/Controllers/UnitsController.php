@@ -16,6 +16,6 @@ class UnitsController extends Controller
             ->sortBy('gold')
             ->values();
 
-        return $units;
+        return view('pages.shop',compact('units'));
     }
 }

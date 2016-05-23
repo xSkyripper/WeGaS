@@ -14,6 +14,6 @@ class SkillsController extends Controller
             ->sortBy('cost')
             ->values();
 
-        return $skills;
+        return view('pages.skilltree',compact('skills'));
     }
 }
