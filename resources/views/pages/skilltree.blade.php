@@ -10,16 +10,20 @@
             <div class="col-md-10 col-md-offset-1">
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">Skills</div>
+                    <div class="panel-heading">
+                        Skills (Skill points: <span id="skillNo">{{Auth::user()->sp}}</span>)
+                    </div>
+
                     <div class="panel-body">
                         @if($skills->diff(Auth::user()->skills)->isEmpty())
-                            <div class="alert alert-info"></div>
+                            <div class="alert alert-info">No new skills !</div>
                         @endif
 
                         <ul class="list-group skill-list">
                             @foreach($skills->diff(Auth::user()->skills) as $missingSkill)
                                 <li id="skill{{$missingSkill->id}}" class="list-group-item list-group-item-success">
-                                    <div class="container-fluid">{{$missingSkill->name}}
+                                    <div class="container-fluid">
+                                        {{$missingSkill->name}}
                                         <button class="btn btn-success btn-sm pull-right add-skill"
                                                 value="{{$missingSkill}}">
                                             Add Skill

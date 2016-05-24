@@ -22,7 +22,7 @@ $(document).ready(function () {
             url: '/skills/' + skill.id,
             success: function (data) {
                 console.log('Success: ' + data);
-
+                $("#skillNo").load("/skills #skillNo");
 
                 var skill_ua = '<li id="skill' + skill.id + '" class="list-group-item list-group-item-success">';
                 skill_ua += '<div class="container-fluid">' + skill.name;
@@ -63,7 +63,7 @@ $(document).ready(function () {
             data: skill,
             success: function (data) {
                 console.log('Success:', data);
-
+                $("#skillNo").load("/skills #skillNo");
 
                 var skill_av = '<li id="skill' + skill.id + '" class="list-group-item">';
                 skill_av += '<div class="container-fluid">' + skill.name;
@@ -73,7 +73,14 @@ $(document).ready(function () {
                 $('.skill-list').append(skill_av);
             },
             error: function (data) {
-                console.log('Error:', data);
+                var error = JSON.parse(data.responseText);
+
+                alert(error.msg);
+
+                if (data.status == 413)
+                    location.reload();
+
+                console.log('Error:' + data.status + "   " + data.responseText);
             }
         });
     });
