@@ -24,9 +24,14 @@ $(document).ready(function () {
                 console.log('Success: ' + data);
                 $("#skillNo").load("/skills #skillNo");
 
-                var skill_ua = '<li id="skill' + skill.id + '" class="list-group-item list-group-item-success">';
-                skill_ua += '<div class="container-fluid">' + skill.name;
-                skill_ua += '<button class="btn btn-success btn-sm pull-right add-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Add Skill</button></div></li>';
+                // var skill_ua = '<li id="skill' + skill.id + '" class="list-group-item list-group-item-success">';
+                // skill_ua += '<div class="container-fluid">' + skill.name;
+                // skill_ua += '<button class="btn btn-success btn-sm pull-right add-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Add Skill</button></div></li>';
+
+                var skill_ua = '<tr id="skill' + skill.id + '" class="missing-skill">';
+                skill_ua += '<td>' + skill.name + '</td>';
+                skill_ua += '<td>' + skill.description + '</td>';
+                skill_ua += '<td>' + '<button class="btn btn-success btn-sm pull-right add-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Add Skill</button></td></tr>';
 
                 $('#skill' + skill.id).remove();
                 $('.skill-list').append(skill_ua);
@@ -65,9 +70,15 @@ $(document).ready(function () {
                 console.log('Success:', data);
                 $("#skillNo").load("/skills #skillNo");
 
-                var skill_av = '<li id="skill' + skill.id + '" class="list-group-item">';
-                skill_av += '<div class="container-fluid">' + skill.name;
-                skill_av += '<button class="btn btn-danger btn-sm pull-right delete-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Delete Skill</button></div></li>';
+                // var skill_av = '<li id="skill' + skill.id + '" class="list-group-item">';
+                // skill_av += '<div class="container-fluid">' + skill.name;
+                // skill_av += '<button class="btn btn-danger btn-sm pull-right delete-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Delete Skill</button></div></li>';
+
+
+                var skill_av = '<tr id="skill' + skill.id + '">';
+                skill_av += '<td>' + skill.name + '</td>';
+                skill_av += '<td>' + skill.description + '</td>';
+                skill_av += '<td><button class="btn btn-danger btn-sm pull-right delete-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Delete Skill</button></td></tr>';
 
                 $('#skill' + skill.id).remove();
                 $('.skill-list').append(skill_av);
@@ -77,7 +88,7 @@ $(document).ready(function () {
 
                 alert(error.msg);
 
-                if (data.status == 413)
+                if (error.error == "skillInexistent")
                     location.reload();
 
                 console.log('Error:' + data.status + "   " + data.responseText);

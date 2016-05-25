@@ -31,11 +31,11 @@ class SkillsController extends Controller
         $user = \Auth::user();
 
         if ($skill == null) {
-            return Response::json(['msg' => 'Skill no longer exists !'], 413);
+            return Response::json(['error' => 'skillInexistent', 'msg' => 'Skill no longer exists !'], 413);
         }
 
         if ($user->sp <= 0) {
-            return Response::json(['msg' => 'Not enough skill points.'], 412);
+            return Response::json(['error' => 'noSp', 'msg' => 'Not enough skill points.'], 412);
         }
 
         $skill = $user->skills()->sync([$skill_id], false);

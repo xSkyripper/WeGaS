@@ -9,6 +9,11 @@ use App\Unit;
 
 class UnitsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $units = Unit::all()
@@ -16,6 +21,6 @@ class UnitsController extends Controller
             ->sortBy('gold')
             ->values();
 
-        return view('pages.shop',compact('units'));
+        return view('pages.shop', compact('units'));
     }
 }
