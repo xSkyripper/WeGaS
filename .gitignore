@@ -1,4 +1,5 @@
 /node_modules
+MultiPlayerWeGas/node_modules
 /vendor
 /public/storage
 Homestead.yaml
