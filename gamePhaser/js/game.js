@@ -5,9 +5,9 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: p
 
 function preload() {
 
-    game.load.tilemap('map', 'assets/mapWegas.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('map', 'assets/mapWegasJSON.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/img/summer.png');
-    game.load.spritesheet('player', 'assets/img/Footman.png', 74, 57);
+    game.load.spritesheet('player', 'assets/img/Footman.png', 70, 70);
 }
 
 var map;
@@ -22,8 +22,10 @@ function create() {
 
     //  Now add in the tileset
     map.addTilesetImage('summer','tiles');
+    map.setCollisionBetween(334,355);
+
     //  Create our layer
-    layer = map.createLayer('World1');
+    layer = map.createLayer('Layer1');
     //  Resize the world
     layer.resizeWorld();
     //  Allow cursors to scroll around the map
@@ -33,26 +35,30 @@ function create() {
         down: game.input.keyboard.addKey(Phaser.Keyboard.S),
         left: game.input.keyboard.addKey(Phaser.Keyboard.A),
         right: game.input.keyboard.addKey(Phaser.Keyboard.D),
+        attack: game.input.keyboard.addKey(Phaser.Keyboard.K)
     };
 
-    player = game.add.sprite(330, 240, 'player', 4);
-    player.animations.add('left', [8,9], 10, true);
-    player.animations.add('right', [1,2], 10, true);
-    player.animations.add('up', [5,10,15,20,10], 10, true);
-    player.animations.add('down', [4,5,6], 10, true);
+    player = game.add.sprite(330, 440, 'player', 4);
+    player.animations.add('left', [5,11,17,23], 5, true);
+    player.animations.add('right', [2,8,14,20], 5, true);
+    player.animations.add('up', [6,12,18,24], 5, true);
+    player.animations.add('down', [10,16,22,28], 5, true);
+    player.animations.add('attack', [30,36,42,48], 5, true);
+
 
     game.physics.enable(player, Phaser.Physics.ARCADE);
+    player.body.setSize(32, 32);
 
 
-    player.body.setSize(10, 14, 2, 1);
-    player.arcade.gravity = 0;
+
 
 }
 
 function update() {
+    game.physics.arcade.collide(player, layer);
 
     updateCamera();
-    updatePlayer();
+    updatePlayer(80);
 
 }
 
@@ -82,29 +88,40 @@ function updateCamera()
     }
 }
 
-function updatePlayer()
+function updatePlayer(speed)
 {
     //game.physics.arcade.collide(player, layer);
     player.body.velocity.set(0);
-    if(keys.up.isDown)
+    var stopAct;
+
+    if(keys.attack.isDown)
     {
-        player.body.velocity.y = -50;
+        player.play('attack');
+    } else if(keys.up.isDown)
+    {
+        player.body.velocity.y = -speed;
         player.play('up');
+        stopAct = 0;
     }
     else if (keys.down.isDown) {
-        player.body.velocity.x = 50;
+        player.body.velocity.y = speed;
         player.play('down');
+        stopAct = 4;
     }
     else if (keys.left.isDown) {
-        player.body.velocity.x = 50;
-        player.play('down');
+        player.body.velocity.x = - speed;
+        player.play('left');
+        stopAct = 5;
     }
     else if (keys.right.isDown) {
-        player.body.velocity.x = 50;
-        player.play('down');
+        player.body.velocity.x = speed;
+        player.play('right');
+        stopAct = 2;
     }
     else
     {
+        player.frame = stopAct;
         player.animations.stop();
     }
+
 }
