@@ -1,7 +1,7 @@
 /**
  * Created by dan.cehan on 5/25/2016.
  */
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
 
@@ -32,9 +32,10 @@ function create() {
     map.setCollisionBetween(200,221);
     map.setCollisionBetween(209,230);
     map.setCollisionBetween(233,235);
+    //map.setCollision(334);
 
     //  Create our layer
-    layer = map.createLayer('Layer1');
+    layer = map.createLayer('Tile Layer 2');
     //  Resize the world
     layer.resizeWorld();
     //  Allow cursors to scroll around the map
@@ -56,8 +57,7 @@ function create() {
 
 
     game.physics.enable(player, Phaser.Physics.ARCADE);
-    player.body.setSize(32, 32);
-
+    player.body.setSize(27,27,25,25);
 
 
 
@@ -72,7 +72,8 @@ function update() {
 }
 
 function render() {
-
+    //game.debug.body(player);
+   // game.debug.bodyInfo(player,32,32);
 }
 
 function updateCamera()
