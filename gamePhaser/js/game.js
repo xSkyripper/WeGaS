@@ -22,7 +22,16 @@ function create() {
 
     //  Now add in the tileset
     map.addTilesetImage('summer','tiles');
-    map.setCollisionBetween(334,355);
+    map.setCollisionBetween(301,332);
+    map.setCollisionBetween(17,86);
+    map.setCollisionBetween(103,124);
+    map.setCollisionBetween(128,140);
+    map.setCollisionBetween(143,165);
+    map.setCollisionBetween(168,178);
+    map.setCollisionBetween(211,212);
+    map.setCollisionBetween(200,221);
+    map.setCollisionBetween(209,230);
+    map.setCollisionBetween(233,235);
 
     //  Create our layer
     layer = map.createLayer('Layer1');
@@ -38,7 +47,7 @@ function create() {
         attack: game.input.keyboard.addKey(Phaser.Keyboard.K)
     };
 
-    player = game.add.sprite(330, 440, 'player', 4);
+    player = game.add.sprite(330, 420, 'player', 4);
     player.animations.add('left', [5,11,17,23], 5, true);
     player.animations.add('right', [2,8,14,20], 5, true);
     player.animations.add('up', [6,12,18,24], 5, true);
@@ -90,7 +99,7 @@ function updateCamera()
 
 function updatePlayer(speed)
 {
-    //game.physics.arcade.collide(player, layer);
+    game.physics.arcade.collide(player, layer);
     player.body.velocity.set(0);
     var stopAct;
 
@@ -121,7 +130,7 @@ function updatePlayer(speed)
     else
     {
         player.frame = stopAct;
-        player.animations.stop();
+        player.animations.stop(0, true);
     }
 
 }
