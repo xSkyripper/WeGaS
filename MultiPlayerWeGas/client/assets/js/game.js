@@ -55,6 +55,10 @@ function create() {
         right: game.input.keyboard.addKey(Phaser.Keyboard.D),
         attack: game.input.keyboard.addKey(Phaser.Keyboard.K)
     };
+    mouse = {
+        mousex: game.input.mousePointer.x,
+        mousey: game.input.mousePointer.y
+    }
 
     enemies = [];
 
@@ -77,6 +81,14 @@ socket.emit('create_unit', {x: '330', y: '420'});
 function update() {
     game.physics.arcade.collide(player, layer);
 
+    // start mouse coordinates
+    if (game.input.activePointer.isDown)
+    {
+        console.log("X="+game.input.mousePointer.x);
+        console.log("Y="+game.input.mousePointer.y);
+    }
+    // finish mouse coordinates
+    
     updateCamera();
     updatePlayer(80);
     for (var i = 0; i < enemies.length; i++) {
