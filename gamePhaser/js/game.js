@@ -72,8 +72,8 @@ function update() {
 }
 
 function render() {
-    //game.debug.body(player);
-   // game.debug.bodyInfo(player,32,32);
+    game.debug.body(player);
+    game.debug.bodyInfo(player,32,32);
 }
 
 function updateCamera()
