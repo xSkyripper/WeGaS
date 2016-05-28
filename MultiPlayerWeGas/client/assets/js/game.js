@@ -1,6 +1,10 @@
 /**
  * Created by dan.cehan on 5/25/2016.
  */
+
+
+
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
     preload: preload,
     create: create,
@@ -61,6 +65,8 @@ function create() {
     player.animations.add('down', [10, 16, 22, 28], 5, true);
     player.animations.add('attack', [30, 36, 42, 48], 5, true);
     game.physics.enable(player, Phaser.Physics.ARCADE);
+
+
     player.body.setSize(32, 27, 25, 25);
 
     setEventHandlers();
@@ -73,7 +79,10 @@ function update() {
 
     updateCamera();
     updatePlayer(80);
-
+    for (var i = 0; i < enemies.length; i++) {
+        enemies[i].update();
+        game.physics.arcade.collide(player, enemies[i].player)
+    }
 }
 
 function render() {
@@ -134,6 +143,7 @@ function updatePlayer(speed) {
         player.animations.stop(0, true);
     }
 
+
 }
 
 var setEventHandlers = function () {
@@ -142,9 +152,10 @@ var setEventHandlers = function () {
 };
 
 function createUnit(data) {
-    console.log('createUnit ' + data.x + " " + data.y);
-}
+    //console.log('createUnit ' + data.x + " " + data.y);
+    enemies.push(new ControlAnotherPlayer("test", game, player, data.x, data.y))
+   }
 
 function moveUnit(data) {
-    console.log('moveUnit : ' + data.id + " " + data.x + " " + data.y);
+    //console.log('moveUnit : ' + data.id + " " + data.x + " " + data.y);
 }
