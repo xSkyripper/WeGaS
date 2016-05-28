@@ -92586,7 +92586,6 @@ Phaser.Tilemap.prototype = {
         if (collides === undefined) { collides = true; }
         if (layer === undefined) { layer = this.currentLayer; }
         if (recalculate === undefined) { recalculate = true; }
-
         if (collides)
         {
             this.collideIndexes.push(index);
@@ -92606,7 +92605,6 @@ Phaser.Tilemap.prototype = {
             for (var x = 0; x < this.layers[layer].width; x++)
             {
                 var tile = this.layers[layer].data[y][x];
-
                 if (tile && tile.index === index)
                 {
                     if (collides)

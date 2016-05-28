@@ -25,27 +25,31 @@ var player;
 var keys;
 var socket = io.connect();
 var enemies;
+
+var marker; // cursor rectangle and position
+var markerPlayer; // player tile position
+var currentTile;
+var rawGrid = []; // collision matrix
+
 function create() {
     //  Because we're loading CSV map data we have to specify the tile size here or we can't render it
     map = game.add.tilemap('map');
 
     //  Now add in the tileset
     map.addTilesetImage('summer', 'tiles');
-    map.setCollisionBetween(301, 332);
-    map.setCollisionBetween(17, 86);
-    map.setCollisionBetween(103, 124);
-    map.setCollisionBetween(128, 140);
-    map.setCollisionBetween(143, 165);
-    map.setCollisionBetween(168, 178);
-    map.setCollisionBetween(211, 212);
-    map.setCollisionBetween(200, 221);
-    map.setCollisionBetween(209, 230);
-    map.setCollisionBetween(233, 235);
+    addCollisionMap();
+    collisionMatrix2();
+
 
     //  Create our layer
     layer = map.createLayer('Layer1');
     //  Resize the world
     layer.resizeWorld();
+    marker = game.add.graphics();
+    markerPlayer = game.add.graphics();
+    marker.lineStyle(2, 0x000000, 1);
+    marker.drawRect(0, 0, 32, 32);
+
     //  Allow cursors to scroll around the map
     cursors = game.input.keyboard.createCursorKeys();
     keys = {
@@ -55,10 +59,6 @@ function create() {
         right: game.input.keyboard.addKey(Phaser.Keyboard.D),
         attack: game.input.keyboard.addKey(Phaser.Keyboard.K)
     };
-    mouse = {
-        mousex: game.input.mousePointer.x,
-        mousey: game.input.mousePointer.y
-    }
 
     enemies = [];
 
@@ -80,15 +80,12 @@ socket.emit('create_unit', {x: '330', y: '420'});
 
 function update() {
     game.physics.arcade.collide(player, layer);
+    marker.x = layer.getTileX(game.input.activePointer.worldX) * 32; // Mouse x coordinate
+    marker.y = layer.getTileY(game.input.activePointer.worldY) * 32; // Mouse y coordinate
+    markerPlayer.x = layer.getTileX(player.x) * 32; // Player x coordinate
+    markerPlayer.y = layer.getTileY(player.y) * 32; // Player y coordinate
 
-    // start mouse coordinates
-    if (game.input.activePointer.isDown)
-    {
-        console.log("X="+game.input.mousePointer.x);
-        console.log("Y="+game.input.mousePointer.y);
-    }
-    // finish mouse coordinates
-    
+    mouseAndPlayerPosition();
     updateCamera();
     updatePlayer(80);
     for (var i = 0; i < enemies.length; i++) {
@@ -96,6 +93,7 @@ function update() {
         game.physics.arcade.collide(player, enemies[i].player)
     }
 }
+
 
 function render() {
 
@@ -121,7 +119,6 @@ function updateCamera() {
 function updatePlayer(speed) {
     game.physics.arcade.collide(player, layer);
     player.body.velocity.set(0);
-
     var stopAct;
 
     if (keys.attack.isDown) {
@@ -170,4 +167,73 @@ function createUnit(data) {
 
 function moveUnit(data) {
     //console.log('moveUnit : ' + data.id + " " + data.x + " " + data.y);
+}
+
+
+function addCollisionMap() {
+    map.setCollisionBetween(301, 332);
+    map.setCollisionBetween(17, 86);
+    map.setCollisionBetween(103, 124);
+    map.setCollisionBetween(128, 140);
+    map.setCollisionBetween(143, 165);
+    map.setCollisionBetween(168, 178);
+    map.setCollisionBetween(211, 212);
+    map.setCollisionBetween(200, 221);
+    map.setCollisionBetween(209, 230);
+    map.setCollisionBetween(233, 235);
+}
+
+function collisionMatrix(){ // version 1
+    var data = map.layer.data;
+    console.log( (data[14][13].collideUp == false));
+    for (var i = 0; i < data.length; i++) {
+        rawGrid[i] = [];
+        for (var j = 0; j < data[i].length; j++) {
+            // console.log(data[i][j].index);
+            if (data[i][j].index >= 301 && data[i][j].index <= 332) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 17 && data[i][j].index <= 86) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 103 && data[i][j].index <= 124) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 128 && data[i][j].index <= 140) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 143 && data[i][j].index <= 165) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 168 && data[i][j].index <= 178) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 211 && data[i][j].index <= 212) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 200 && data[i][j].index <= 221) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 209 && data[i][j].index <= 230) rawGrid[i][j] = 0;
+            else if (data[i][j].index >= 233 && data[i][j].index <= 235) rawGrid[i][j] = 0;
+            else rawGrid[i][j] = 1;
+        }
+    }
+    for (var j = 0; j < rawGrid.length; j++)
+        console.log(rawGrid[j]);
+}
+
+function collisionMatrix2(){ // version 2 (in use)
+    var data = map.layer.data;
+    console.log("in collisionMatrix2 function");
+    for (var i = 0; i < data.length; i++) {
+        rawGrid[i] = [];
+        for (var j = 0; j < data[i].length; j++) {
+            // console.log(data[i][j].index);
+            if (data[i][j].collideUp == false &&  data[i][j].collideDown == false &&
+                data[i][j].collideRight == false && data[i][j].collideLeft == false){
+                rawGrid[i][j] = 0;   // colision
+            }else{
+                rawGrid[i][j] = 1;   // free
+            }
+        }
+    }
+    for (var j = 0; j < rawGrid.length; j++)
+        console.log(rawGrid[j]);
+}
+
+function mouseAndPlayerPosition(){ //on press SHIFT + click
+    if (game.input.mousePointer.isDown)
+    {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SHIFT))
+        {
+            currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
+            console.log("Click tile:"+ (layer.getTileX(marker.x)) + ", "+(layer.getTileX(marker.y)) );
+            console.log("Player tile:"+ layer.getTileX(markerPlayer.x+32) + ", "+layer.getTileX(markerPlayer.y+32) );
+        }
+    }
 }
