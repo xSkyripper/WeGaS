@@ -40,6 +40,8 @@ var mauseX=0;
 var mauseY=0;
 var playerX=0;
 var playerY=0;
+
+
 function create() {
     //  Because we're loading CSV map data we have to specify the tile size here or we can't render it
     map = game.add.tilemap('map');
@@ -87,7 +89,7 @@ function create() {
 
 
     player.body.setSize(32, 27, 25, 25);
-
+    player.traseu = [];
     setEventHandlers();
 }
 
@@ -102,12 +104,9 @@ function update() {
 
     mouseAndPlayerPosition();
     updateCamera();
-    //updatePlayer(80);
-    for (var i = 0; i < enemies.length; i++) {
-        enemies[i].update();
-        game.physics.arcade.collide(player, enemies[i].player)
-    }
+    updatePlayerAuto(80);
 }
+
 
 
 function render() {
@@ -131,84 +130,69 @@ function updateCamera() {
     }
 }
 
-function updatePlayer(speed) {
+
+
+var k=0;
+function updatePlayerAuto(speed) {
     game.physics.arcade.collide(player, layer);
     player.body.velocity.set(0);
     var stopAct;
 
-    if (keys.attack.isDown) {
-        player.play('attack');
-    } else if (keys.up.isDown) {
-        player.body.velocity.y = -speed;
-        player.play('up');
-        socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
-        stopAct = 0;
-    }
-    else if (keys.down.isDown) {
-        player.body.velocity.y = speed;
-        player.play('down');
-        socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
-        stopAct = 4;
-    }
-    else if (keys.left.isDown) {
-        player.body.velocity.x = -speed;
-        player.play('left');
-        socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
-        stopAct = 5;
-    }
-    else if (keys.right.isDown) {
-        player.body.velocity.x = speed;
-        player.play('right');
-        socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
-        stopAct = 2;
-    }
-    else {
-        player.frame = stopAct;
-        player.animations.stop(0, true);
-    }
-}
-
-function updatePlayerAuto(traseu,speed) {
-    game.physics.arcade.collide(player, layer);
-    player.body.velocity.set(0);
-    var stopAct;
-    for(var i = 0 ; i < traseu.length; i++) {
-        if (keys.attack.isDown) {
+       /* if (keys.attack.isDown) {
             player.play('attack');
-        } else if (traseu[i] == 1) {
+        } else */
+
+    console.log("update TRASEU: ");
+    console.log(player.traseu);
+    if (player.traseu[0] == 1 && k!==4) {
             player.body.velocity.y = -speed;
             player.play('up');
             socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
             stopAct = 0;
-            traseu[i] = 0;
+           // traseu[0] = 0;
+        k+=1;
         }
-        else if (traseu[i] == 2) {
+        else if (player.traseu[0] == 2 && k!==4) {
             player.body.velocity.y = speed;
             player.play('down');
             socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
             stopAct = 4;
-            traseu[i] = 0;
+            //traseu[0] = 0;
+        k+=1;
+
         }
-        else if (traseu[i] == 3) {
+        else if (player.traseu[0] == 3 && k!==4) {
             player.body.velocity.x = -speed;
             player.play('left');
             socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
             stopAct = 5;
-            traseu[i] = 0;
+           // traseu[0] = 0;
+        k+=1;
+
         }
-        else if (traseu[i] == 4) {
+        else if (player.traseu[0] == 4 && k!==4) {
             player.body.velocity.x = speed;
             player.play('right');
             socket.emit('move_unit', {id: 1, x: player.x, y: player.y});
             stopAct = 2;
-            traseu[i] = 0;
-        }
-        else {
+            k+=1;
+    }
+    else {
             player.frame = stopAct;
             player.animations.stop(0, true);
-        }
+            player.traseu=[];
+      }
+
+
+    if(k==4)
+    {
+        player.traseu.shift();
+        k=0;
     }
+
+
 }
+
 
 var setEventHandlers = function () {
     socket.on('create_unit', createUnit);
@@ -238,29 +222,7 @@ function addCollisionMap() {
     map.setCollisionBetween(233, 235);
 }
 
-function collisionMatrix(){ // version 1
-    var data = map.layer.data;
-    console.log( (data[14][13].collideUp == false));
-    for (var i = 0; i < data.length; i++) {
-        rawGrid[i] = [];
-        for (var j = 0; j < data[i].length; j++) {
-            // console.log(data[i][j].index);
-            if (data[i][j].index >= 301 && data[i][j].index <= 332) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 17 && data[i][j].index <= 86) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 103 && data[i][j].index <= 124) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 128 && data[i][j].index <= 140) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 143 && data[i][j].index <= 165) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 168 && data[i][j].index <= 178) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 211 && data[i][j].index <= 212) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 200 && data[i][j].index <= 221) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 209 && data[i][j].index <= 230) rawGrid[i][j] = 0;
-            else if (data[i][j].index >= 233 && data[i][j].index <= 235) rawGrid[i][j] = 0;
-            else rawGrid[i][j] = 1;
-        }
-    }
-    for (var j = 0; j < rawGrid.length; j++)
-        console.log(rawGrid[j]);
-}
+
 
 function collisionMatrix2(){ // version 2 (in use)
     var data = map.layer.data;
@@ -306,31 +268,31 @@ function getPath(mouseX, mouseY, playerX, playerY) {
     console.log("F:"+end );
     var result = astar.search(graph, start, end);
     var aux = start;
-    var traseu = [];
-    updatePlayerAuto(80,0);
+
+    //updatePlayerAuto(80,0);
     for(var i = 0 ; i < result.length; i++){
         if(aux.x > result[i].x ){
             console.log("sus");
-            traseu.push(1);
+            player.traseu.push(1);
         }
         if(aux.x < result[i].x){
             console.log("jos");
-            traseu.push(2);
+            player.traseu.push(2);
         }
 
         if(aux.y > result[i].y){
             console.log("stanga");
-            traseu.push(3);
+            player.traseu.push(3);
         }
         if(aux.y < result[i].y){
             console.log("dreapta");
-            traseu.push(4);
+            player.traseu.push(4);
         }
         aux = result[i];
     }
     //updatePlayerAuto(traseu,80);
     console.log("Drum depistat:"+ result);
-    console.log("Result:"+ traseu);
+    console.log("Result:"+ player.traseu);
 }
 
 
