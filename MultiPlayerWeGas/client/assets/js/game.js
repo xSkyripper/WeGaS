@@ -1,21 +1,36 @@
 /**
  * Created by dan.cehan on 5/25/2016.
  */
-var imported = document.createElement('astar.js');
 
 
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-example', {
     preload: preload,
     create: create,
     update: update,
     render: render
 });
 
+var pos = {
+    start: null,
+    current: null,
+    rect: {
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0,
+    }
+};
+
 function preload() {
     game.load.tilemap('map', './client/assets/mapWegasJSON.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', './client/assets/img/summer.png');
     game.load.spritesheet('player', './client/assets/img/Footman.png', 70, 70);
+    game.load.image('arcas', './client/assets/img/Arcas.png');
+    game.load.image('soldat', './client/assets/img/Soldat.png');
+    game.load.image('calaret', './client/assets/img/Calaret.png');
+    game.load.image('mapWegas', './client/assets/img/mapWegas.png');
+    game.load.image('back', './client/assets/img/back1.png');
 }
 
 var map;
@@ -40,8 +55,28 @@ var mauseX=0;
 var mauseY=0;
 var playerX=0;
 var playerY=0;
+var box;
+var canvas;
+CustomText = function (game, x, y, text) {
+
+    Phaser.Text.call(this, game, x, y, text, { font: "32px Arial", fill: "#ff0044", align: "center" });
+
+    this.anchor.set(0.5);
 
 
+
+};
+
+CustomText.prototype = Object.create(Phaser.Text.prototype);
+CustomText.prototype.constructor = CustomText;
+
+CustomText.prototype.update = function() {
+
+    this.angle += this.rotateSpeed;
+
+};
+
+var text1;
 function create() {
     //  Because we're loading CSV map data we have to specify the tile size here or we can't render it
     map = game.add.tilemap('map');
@@ -91,8 +126,47 @@ function create() {
     player.body.setSize(32, 27, 25, 25);
     player.traseu = [];
     setEventHandlers();
+
+    game.camera.width=700;
+
+
+
+
+    var button,button1,button2;
+    var back = game.add.image(700,0,'back');
+    var miniMap = game.add.image(750,75,'mapWegas');
+
+
+    text1= game.add.text(775,350,"Gold");
+
+
+    button = game.add.button(715, 500, 'soldat', actionOnClick, this);
+    button1 = game.add.button(815, 500, 'arcas', actionOnClick1, this);
+    button2 = game.add.button(915, 500, 'calaret', actionOnClick2, this);
+
+
+
+
+    back.fixedToCamera=true;
+    miniMap.fixedToCamera=true;
+    button.fixedToCamera=true;
+    button1.fixedToCamera=true;
+    button2.fixedToCamera=true;
+    text1.fixedToCamera=true;
 }
 
+function actionOnClick () {
+    console.log("Am apasat soldat");
+}
+function actionOnClick1 () {
+    console.log("Am apasat arcas");
+
+
+}
+function actionOnClick2 () {
+    console.log("Am apasat cavaler");
+
+}
 socket.emit('create_unit', {x: '330', y: '420'});
 
 function update() {
@@ -105,6 +179,7 @@ function update() {
     mouseAndPlayerPosition();
     updateCamera();
     updatePlayerAuto(80);
+    text1.setText("Gold \n"+Math.round(Math.random()*100));
 }
 
 
@@ -142,8 +217,7 @@ function updatePlayerAuto(speed) {
             player.play('attack');
         } else */
 
-    console.log("update TRASEU: ");
-    console.log(player.traseu);
+
     if (player.traseu[0] == 1 && k!==4) {
             player.body.velocity.y = -speed;
             player.play('up');
@@ -226,7 +300,7 @@ function addCollisionMap() {
 
 function collisionMatrix2(){ // version 2 (in use)
     var data = map.layer.data;
-    console.log("in collisionMatrix2 function");
+
     for (var i = 0; i < data.length; i++) {
         rawGrid[i] = [];
         for (var j = 0; j < data[i].length; j++) {
@@ -255,8 +329,8 @@ function mouseAndPlayerPosition(){ //on press SHIFT + click
             playerY = layer.getTileX(markerPlayer.y+32);
             getPath(mauseX,mauseY,playerX,playerY);
             currentTile = map.getTile(layer.getTileX(marker.x), layer.getTileY(marker.y));
-            console.log("Click tile:"+ (layer.getTileX(marker.x)) + ", "+(layer.getTileX(marker.y)) );
-            console.log("Player tile:"+ layer.getTileX(markerPlayer.x+32) + ", "+layer.getTileX(markerPlayer.y+32) );
+           // console.log("Click tile:"+ (layer.getTileX(marker.x)) + ", "+(layer.getTileX(marker.y)) );
+           // console.log("Player tile:"+ layer.getTileX(markerPlayer.x+32) + ", "+layer.getTileX(markerPlayer.y+32) );
         }
     }
 }
@@ -264,35 +338,35 @@ function mouseAndPlayerPosition(){ //on press SHIFT + click
 function getPath(mouseX, mouseY, playerX, playerY) {
     var start = graph.grid[playerY][playerX];
     var end = graph.grid[mouseY][mouseX];
-    console.log("S:"+start.x );
-    console.log("F:"+end );
+    //console.log("S:"+start.x );
+    //console.log("F:"+end );
     var result = astar.search(graph, start, end);
     var aux = start;
 
     //updatePlayerAuto(80,0);
     for(var i = 0 ; i < result.length; i++){
         if(aux.x > result[i].x ){
-            console.log("sus");
+           // console.log("sus");
             player.traseu.push(1);
         }
         if(aux.x < result[i].x){
-            console.log("jos");
+            //console.log("jos");
             player.traseu.push(2);
         }
 
         if(aux.y > result[i].y){
-            console.log("stanga");
+           // console.log("stanga");
             player.traseu.push(3);
         }
         if(aux.y < result[i].y){
-            console.log("dreapta");
+           // console.log("dreapta");
             player.traseu.push(4);
         }
         aux = result[i];
     }
     //updatePlayerAuto(traseu,80);
-    console.log("Drum depistat:"+ result);
-    console.log("Result:"+ player.traseu);
+    //console.log("Drum depistat:"+ result);
+    //console.log("Result:"+ player.traseu);
 }
 
 
@@ -708,3 +782,4 @@ function getPath(mouseX, mouseY, playerX, playerY) {
     };
 
 });
+
