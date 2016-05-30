@@ -1,7 +1,7 @@
 ///////////////////////////Global////////////////////////////////
 
 var me, enemy, map, selection, socket, gui;
-var units;
+
 ////////////////////////EventHandlers/////////////////////////////
 
 var setEventHandlers = function () {
@@ -88,9 +88,7 @@ function preload() {
 
 
 function create() {
-    units = game.add.group();
-    units.enableBody = true;
-    
+
     map = new Map();
     selection = new Selection(game);
     socket = io.connect();
@@ -108,7 +106,6 @@ function update() {
 
 
     if (me != null) {
-        game.arcade.collide(units, units);
         gui.update();
     }
 
@@ -119,6 +116,10 @@ function update() {
         for (var i = 0; i < me.createdUnits.length; i++) {
             me.createdUnits[i].update(); //TODO: fix la ultima miscare per unitate ce se pierde
             gui.updateGuiOverlap(me.createdUnits[i].unit);
+            for (var j = 0; j < me.createdUnits.length; j++) {
+                game.physics.arcade.collide(me.createdUnits[i].unit, me.createdUnits[j].unit);
+                //console.log('Se ating 2 !');
+            }
         }
         if (game.physics.arcade.overlap(me.createdUnits[0].unit, me.createdUnits[1].unit)) {
             console.log('Se ating !');

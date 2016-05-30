@@ -26,7 +26,7 @@ var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
 //     this.markerUnit = this.game.add.graphics();
 // };
 
-Unit.prototype.create = function (units,x, y) {
+Unit.prototype.create = function (x, y) {
 
     var toCreate = new Unit(this.game, this.sprite, this.id, this.owner, this.team, this.hp, this.atk, this.ms, this.coins);
     toCreate.x = x;
@@ -39,7 +39,6 @@ Unit.prototype.create = function (units,x, y) {
     toCreate.game.physics.enable(toCreate.unit, Phaser.Physics.ARCADE);
     toCreate.unit.body.setSize(32, 27, 25, 25);
 
-    units.add(toCreate.unit);
     return toCreate;
 };
 
