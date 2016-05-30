@@ -1,5 +1,6 @@
 /node_modules
-MultiPlayerWeGas/node_modules
+_testing/*/node_modules
+wegasGame/node_modules
 /vendor
 /public/storage
 Homestead.yaml
