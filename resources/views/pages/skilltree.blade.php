@@ -1,13 +1,14 @@
 @extends('layouts/app')
 
-<style>
-    .missing-skill {
-        background-color: #e1f7d3;
-    }
-</style>
+
 
 @section('head')
     <meta name="_token" content="{{ csrf_token() }}">
+    <style>
+        .missing-skill {
+            background-color: #e1f7d3;
+        }
+    </style>
 @stop
 
 @section('content')
