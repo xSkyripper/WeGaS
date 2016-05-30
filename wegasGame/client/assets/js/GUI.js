@@ -6,9 +6,9 @@ var GUI = function () {
     this.backgroundBar = game.add.image(700, 0, 'back');
     this.miniMap = game.add.image(750, 20, 'mapWegas');
     this.textCoins = game.add.text(750, 230, "Coins: ");
-    this.buttonSoldat = game.add.button(715, 500, 'soldat', this.actionOnClickSoldat, this);
-    this.buttonArcas = game.add.button(815, 500, 'arcas', this.actionOnClickArcas, this);
-    this.buttonCalaret = game.add.button(915, 500, 'calaret', this.actionOnClickCalaret, this);
+    this.buttonSoldat = game.add.button(715, 500, 'unit1_i', this.actionOnClickSoldat, this);
+    this.buttonArcas = game.add.button(815, 500, 'unit2_i', this.actionOnClickArcas, this);
+    this.buttonCalaret = game.add.button(915, 500, 'unit3_i', this.actionOnClickCalaret, this);
 
     this.backgroundBar.fixedToCamera = true;
     this.miniMap.fixedToCamera = true;
