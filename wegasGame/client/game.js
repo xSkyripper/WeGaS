@@ -6,36 +6,46 @@ var me, enemy, map, selection, socket;
 
 var setEventHandlers = function () {
     //TODO:Restul handler-elor si interactiunilor dintre playeri
-
-    //client-related
-    {
+    
+    {//client-related
         game.canvas.oncontextmenu = function (e) {
             e.preventDefault();// disable right click
         };
         game.input.onDown.add(moveUnits, this);
-    }
-    //end_client-related
+    }//end_client-related
 
-    //server-related
-    {
+    {//server-related
         socket.on('identify', onIdentify);
         socket.on('other_users', onOtherUsers);
         socket.on('new_player', onNewPlayer);
         socket.on('rem_player', onRemPlayer);
-    }
-    //end_server-related
+    }//end_server-related
+
 };
 
 function onIdentify(data) {
     console.log('My name is ' + data.name);
     me = new Player(0, data.name, 1000, []);
-    me.createdUnits.push(new Unit(game, 'unit1_1', 1, me.name, 1, 329, 384, 10, 10, 10, 10));
+
+    me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 10, 100));
+
+    var unitToCreate = me.units[0];
+
+    console.log('unitToCreate: ' + unitToCreate);
+
+    unitToCreate.create(329, 384);
+
+    me.createdUnits.push(unitToCreate);
+
+    console.log('createdUnit: ' + unitToCreate);
+
+    //me.createdUnits.push(new Unit(game, 'unit1_1', 1, me.name, 1, 329, 384, 10, 10, 10, 10));
 }
 
 function onOtherUsers(data) {
     console.log('Other user online: ' + data.name);
     enemy = new Player(1, data.name, 1000, []);
-    enemy.createdUnits.push(new Unit(game, 'unit1_2', 1, enemy.name, 1, 320, 384, 10, 10, 10, 10))
+    //enemy.createdUnits.push(new Unit(game, 'unit1_2', 1, enemy.name, 1, 320, 384, 10, 10, 10, 10))
 }
 
 function onNewPlayer(data) {

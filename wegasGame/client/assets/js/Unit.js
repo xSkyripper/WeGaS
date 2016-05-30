@@ -1,40 +1,43 @@
-var Unit = function (game, sprite, id, owner, team, x, y, hp, atk, ms, coins) {
+var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
     this.id = id;
     this.owner = owner;
     this.team = team;
     this.game = game;
 
-    this.x = x;
-    this.y = y;
+    this.x = 0;
+    this.y = 0;
     this.markerUnit = this.game.add.graphics();
     this.targetTileX = 0;
     this.targetTileY = 0;
+    this.lastDir = 0;
+    this.sprite = sprite;
 
     this.hp = hp;
     this.atk = atk;
     this.ms = ms;
     this.coins = coins;
 
-    this.lastDir = 0;
     this.isAlive = true;
     this.isMoving = false;
     this.isAttacking = false;
     this.isSelected = false;
     this.path = [];
+};
 
-    this.unit = this.game.add.sprite(x, y, sprite, 4);
+// Unit.prototype.createMarker = function () {
+//     this.markerUnit = this.game.add.graphics();
+// };
+
+Unit.prototype.create = function (x, y) {
+    this.x = x;
+    this.y = y;
+    this.unit = this.game.add.sprite(this.x, this.y, this.sprite, 4);
     this.unit.animations.add('left', [5, 11, 17, 23], 5, true);
     this.unit.animations.add('right', [2, 8, 14, 20], 5, true);
     this.unit.animations.add('up', [6, 12, 18, 24], 5, true);
     this.unit.animations.add('down', [10, 16, 22, 28], 5, true);
-
     this.game.physics.enable(this.unit, Phaser.Physics.ARCADE);
     this.unit.body.setSize(32, 27, 25, 25);
-
-};
-
-Unit.prototype.createMarker = function () {
-    this.markerUnit = this.game.add.graphics();
 };
 
 Unit.prototype.update = function () {
