@@ -29,6 +29,8 @@ function onIdentify(data) {
 
     me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 10, 100));
 
+    me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 10, 100));
+
 
     var unitCreated = me.units[0].create(329, 384);
 
@@ -80,6 +82,8 @@ function preload() {
     //TODO: Incarcare din baza de date, trimitere la player doar ce are nevoie
     game.load.spritesheet('unit1_1', '/client/assets/img/footman1.png', 70, 70);
     game.load.spritesheet('unit1_2', '/client/assets/img/footman2.png', 70, 70);
+    game.load.spritesheet('unit3_1', '/client/assets/img/unit3_1.png', 70, 70);
+    game.load.spritesheet('unit3_2', '/client/assets/img/unit3_2.png', 70, 70);
 }
 
 
