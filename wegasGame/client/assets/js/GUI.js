@@ -29,6 +29,8 @@ var GUI = function () {
 GUI.prototype.actionOnClickSoldat = function () {
     console.log("Am apasat soldat");
     me.coins = 1300;
+    var unitCreated2 = me.units[0].create(393, 384);
+    me.createdUnits.push(unitCreated2);
 };
 
 GUI.prototype.actionOnClickArcas = function () {
@@ -39,6 +41,8 @@ GUI.prototype.actionOnClickArcas = function () {
 GUI.prototype.actionOnClickCalaret = function () {
     console.log("Am apasat calaret");
     me.coins = 1100;
+    var unitCreated2 = me.units[1].create(393, 384);
+    me.createdUnits.push(unitCreated2);
 };
 
 GUI.prototype.update = function () {
