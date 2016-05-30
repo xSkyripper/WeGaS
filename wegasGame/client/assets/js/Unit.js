@@ -7,8 +7,6 @@ var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
     this.x = 0;
     this.y = 0;
     this.markerUnit = this.game.add.graphics();
-    this.targetTileX = 0;
-    this.targetTileY = 0;
     this.lastDir = 0;
     this.sprite = sprite;
 
@@ -28,17 +26,20 @@ var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
 //     this.markerUnit = this.game.add.graphics();
 // };
 
-Unit.prototype.create = function (group, x, y) {
-    this.x = x;
-    this.y = y;
-    this.unit = this.game.add.sprite(this.x, this.y, this.sprite, 4);
-    this.unit.animations.add('left', [5, 11, 17, 23], 5, true);
-    this.unit.animations.add('right', [2, 8, 14, 20], 5, true);
-    this.unit.animations.add('up', [6, 12, 18, 24], 5, true);
-    this.unit.animations.add('down', [10, 16, 22, 28], 5, true);
-    this.game.physics.enable(this.unit, Phaser.Physics.ARCADE);
-    this.unit.body.setSize(32, 27, 25, 25);
-    group.create(this.unit);
+Unit.prototype.create = function (x, y) {
+    
+    var toCreate = new Unit(this.game, this.sprite, this.id, this.owner, this.team, this.hp, this.atk, this.ms, this.coins);
+    toCreate.x = x;
+    toCreate.y = y;
+    toCreate.unit = this.game.add.sprite(x, y, toCreate.sprite, 4);
+    toCreate.unit.animations.add('left', [5, 11, 17, 23], 5, true);
+    toCreate.unit.animations.add('right', [2, 8, 14, 20], 5, true);
+    toCreate.unit.animations.add('up', [6, 12, 18, 24], 5, true);
+    toCreate.unit.animations.add('down', [10, 16, 22, 28], 5, true);
+    toCreate.game.physics.enable(toCreate.unit, Phaser.Physics.ARCADE);
+    toCreate.unit.body.setSize(32, 27, 25, 25);
+
+    return toCreate;
 };
 
 Unit.prototype.update = function () {
@@ -133,8 +134,6 @@ function moveUnits() {
                 X = map.layer.getTileX(me.createdUnits[i].markerUnit.x + 32);
                 Y = map.layer.getTileX(me.createdUnits[i].markerUnit.y + 32);
 
-                me.targetTileX = X;
-                me.targetTileY = Y;
                 me.createdUnits[i].path = map.getPath(tileMouseX, tileMouseY, X, Y);
             }
         }

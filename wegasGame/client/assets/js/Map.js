@@ -98,4 +98,8 @@ Map.prototype.getPath = function (tileMouseX, tileMouseY, tileX, tileY) {
     return path;
 };
 
+Map.prototype.getAvailableTile = function (tileX, tileY) {
+    
+};
+
 window.Map = Map;

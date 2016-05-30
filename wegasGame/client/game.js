@@ -1,7 +1,6 @@
 ///////////////////////////Global////////////////////////////////
 
 var me, enemy, map, selection, socket, gui;
-var units;
 
 ////////////////////////EventHandlers/////////////////////////////
 
@@ -30,17 +29,16 @@ function onIdentify(data) {
 
     me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 10, 100));
 
-    var unitToCreate = me.units[0];
 
-    //console.log('unitToCreate: ' + unitToCreate);
+    var unitCreated = me.units[0].create(329, 384);
 
-    unitToCreate.create(units, 329, 384);
+    me.createdUnits.push(unitCreated);
 
-    me.createdUnits.push(unitToCreate);
 
-    //console.log('createdUnit: ' + unitToCreate);
+    var unitCreated2 = me.units[0].create(393, 384);
 
-    //me.createdUnits.push(new Unit(game, 'unit1_1', 1, me.name, 1, 329, 384, 10, 10, 10, 10));
+    me.createdUnits.push(unitCreated2);
+
 }
 
 function onOtherUsers(data) {
@@ -86,8 +84,6 @@ function preload() {
 
 
 function create() {
-    units = game.add.group();
-
     map = new Map();
     selection = new Selection(game);
     socket = io.connect();
