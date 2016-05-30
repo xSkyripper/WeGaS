@@ -1,6 +1,6 @@
 ///////////////////////////Global////////////////////////////////
 
-var me, enemy, map, selection, socket;
+var me, enemy, map, selection, socket,bar;
 
 ////////////////////////EventHandlers/////////////////////////////
 
@@ -59,7 +59,7 @@ function onRemPlayer(data) {
 
 /////////////////////////End_EventHandlers/////////////////////////////
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-wegas', {
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-wegas', {
     preload: preload,
     create: create,
     update: update,
@@ -70,6 +70,11 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-wegas', {
 function preload() {
     game.load.tilemap('map', '/client/assets/mapWegasJSON.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', '/client/assets/img/summer.png');
+    game.load.image('arcas', '/client/assets/img/Arcas.png');
+    game.load.image('soldat', '/client/assets/img/Soldat.png');
+    game.load.image('calaret', '/client/assets/img/Calaret.png');
+    game.load.image('mapWegas', '/client/assets/img/mapWegas.png');
+    game.load.image('back', '/client/assets/img/back1.png');
 
     //TODO: Schimba baza de date (units,rooms)
     //TODO: Incarcare din baza de date, trimitere la player doar ce are nevoie
@@ -84,7 +89,10 @@ function create() {
     socket = io.connect();
 
     //TODO:Interfata GUI
+    bar = new menuBar();
+    //incerc colide cu bara..
 
+  
     setEventHandlers();
 }
 

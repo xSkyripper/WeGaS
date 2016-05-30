@@ -4,6 +4,8 @@ var Player = function (id, name, coins, units) {
     this.coins = coins;
     this.units = units;
     this.createdUnits = [];
+
+    
 };
 
 window.Player = Player;
