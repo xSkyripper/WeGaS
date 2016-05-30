@@ -117,7 +117,7 @@ Unit.prototype.update = function () {
 };
 
 function moveUnits() {
-    if (game.input.activePointer.button == 2) {
+    if (game.input.activePointer.button == 2 && map.marker.x) {
         tileMouseX = map.layer.getTileX(map.marker.x);
         tileMouseY = map.layer.getTileX(map.marker.y);
 
