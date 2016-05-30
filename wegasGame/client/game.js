@@ -1,6 +1,6 @@
 ///////////////////////////Global////////////////////////////////
 
-var me, enemy, map, selection, socket, bar;
+var me, enemy, map, selection, socket, gui;
 var units;
 
 ////////////////////////EventHandlers/////////////////////////////
@@ -76,7 +76,7 @@ function preload() {
     game.load.image('soldat', '/client/assets/img/Soldat.png');
     game.load.image('calaret', '/client/assets/img/Calaret.png');
     game.load.image('mapWegas', '/client/assets/img/mapWegas.png');
-    game.load.image('back', '/client/assets/img/back1.png');
+    game.load.image('back', '/client/assets/img/guiBack.png');
 
     //TODO: Schimba baza de date (units,rooms)
     //TODO: Incarcare din baza de date, trimitere la player doar ce are nevoie
@@ -92,9 +92,7 @@ function create() {
     selection = new Selection(game);
     socket = io.connect();
 
-    //TODO:Interfata GUI
-    bar = new menuBar();
-    //incerc colide cu bara..
+    gui = new GUI();
 
 
     setEventHandlers();
@@ -106,14 +104,14 @@ function update() {
     selection.update();
 
     if (me != null)
-        bar.update();
+        gui.update();
 
     //TODO:Conditii de victorie
 
     if (me != null)
         for (var i = 0; i < me.createdUnits.length; i++) {
             me.createdUnits[i].update(); //TODO: fix la ultima miscare per unitate ce se pierde
-            bar.updateGuiOverlap(me.createdUnits[i].unit);
+            gui.updateGuiOverlap(me.createdUnits[i].unit);
         }
 }
 

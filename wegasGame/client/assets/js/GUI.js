@@ -1,4 +1,4 @@
-var menuBar = function () {
+var GUI = function () {
     game.camera.width = 700;
     this.gui = game.add.group();
 
@@ -26,26 +26,26 @@ var menuBar = function () {
     
 };
 
-menuBar.prototype.actionOnClickSoldat = function () {
+GUI.prototype.actionOnClickSoldat = function () {
     console.log("Am apasat soldat");
     me.coins = 1300;
 };
 
-menuBar.prototype.actionOnClickArcas = function () {
+GUI.prototype.actionOnClickArcas = function () {
     console.log("Am apasat arcas");
     me.coins = 1200;
 };
 
-menuBar.prototype.actionOnClickCalaret = function () {
+GUI.prototype.actionOnClickCalaret = function () {
     console.log("Am apasat calaret");
     me.coins = 1100;
 };
 
-menuBar.prototype.update = function () {
+GUI.prototype.update = function () {
     this.textCoins.setText('Coins: ' + me.coins);
 };
 
-menuBar.prototype.updateGuiOverlap = function (anotherSprite) {
+GUI.prototype.updateGuiOverlap = function (anotherSprite) {
     anotherSprite.renderable = !checkOverlap(this.gui, anotherSprite);
 };
 
@@ -55,4 +55,4 @@ function checkOverlap(spriteA, spriteB) {
     return Phaser.Rectangle.intersects(boundsA, boundsB);
 }
 
-window.menuBar = menuBar;
+window.GUI = GUI;
