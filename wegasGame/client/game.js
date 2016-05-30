@@ -1,12 +1,13 @@
 ///////////////////////////Global////////////////////////////////
 
-var me, enemy, map, selection, socket,bar;
+var me, enemy, map, selection, socket, bar;
+var units;
 
 ////////////////////////EventHandlers/////////////////////////////
 
 var setEventHandlers = function () {
     //TODO:Restul handler-elor si interactiunilor dintre playeri
-    
+
     {//client-related
         game.canvas.oncontextmenu = function (e) {
             e.preventDefault();// disable right click
@@ -25,19 +26,19 @@ var setEventHandlers = function () {
 
 function onIdentify(data) {
     console.log('My name is ' + data.name);
-    me = new Player(0, data.name, 1000, []);
+    me = new Player(0, 1, 1, data.name, 1000, []);
 
     me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 10, 100));
 
     var unitToCreate = me.units[0];
 
-    console.log('unitToCreate: ' + unitToCreate);
+    //console.log('unitToCreate: ' + unitToCreate);
 
-    unitToCreate.create(329, 384);
+    unitToCreate.create(units, 329, 384);
 
     me.createdUnits.push(unitToCreate);
 
-    console.log('createdUnit: ' + unitToCreate);
+    //console.log('createdUnit: ' + unitToCreate);
 
     //me.createdUnits.push(new Unit(game, 'unit1_1', 1, me.name, 1, 329, 384, 10, 10, 10, 10));
 }
@@ -70,6 +71,7 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-wegas', {
 function preload() {
     game.load.tilemap('map', '/client/assets/mapWegasJSON.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', '/client/assets/img/summer.png');
+
     game.load.image('arcas', '/client/assets/img/Arcas.png');
     game.load.image('soldat', '/client/assets/img/Soldat.png');
     game.load.image('calaret', '/client/assets/img/Calaret.png');
@@ -84,6 +86,8 @@ function preload() {
 
 
 function create() {
+    units = game.add.group();
+
     map = new Map();
     selection = new Selection(game);
     socket = io.connect();
@@ -92,7 +96,7 @@ function create() {
     bar = new menuBar();
     //incerc colide cu bara..
 
-  
+
     setEventHandlers();
 }
 
@@ -101,11 +105,15 @@ function update() {
     map.updateMarkers();
     selection.update();
 
+    if (me != null)
+        bar.update();
+
     //TODO:Conditii de victorie
 
     if (me != null)
         for (var i = 0; i < me.createdUnits.length; i++) {
             me.createdUnits[i].update(); //TODO: fix la ultima miscare per unitate ce se pierde
+            bar.updateGuiOverlap(me.createdUnits[i].unit);
         }
 }
 

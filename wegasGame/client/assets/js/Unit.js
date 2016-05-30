@@ -28,7 +28,7 @@ var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
 //     this.markerUnit = this.game.add.graphics();
 // };
 
-Unit.prototype.create = function (x, y) {
+Unit.prototype.create = function (group, x, y) {
     this.x = x;
     this.y = y;
     this.unit = this.game.add.sprite(this.x, this.y, this.sprite, 4);
@@ -38,6 +38,7 @@ Unit.prototype.create = function (x, y) {
     this.unit.animations.add('down', [10, 16, 22, 28], 5, true);
     this.game.physics.enable(this.unit, Phaser.Physics.ARCADE);
     this.unit.body.setSize(32, 27, 25, 25);
+    group.create(this.unit);
 };
 
 Unit.prototype.update = function () {
@@ -120,7 +121,10 @@ Unit.prototype.update = function () {
 };
 
 function moveUnits() {
-    if (game.input.activePointer.button == 2 && map.marker.x) {
+    if (game.input.activePointer.button == 2) {
+        if (game.input.activePointer.x >= 700) { //daca pointerul este in GUI, nu-l lasa sa dea move-uri
+            return;
+        }
         tileMouseX = map.layer.getTileX(map.marker.x);
         tileMouseY = map.layer.getTileX(map.marker.y);
 

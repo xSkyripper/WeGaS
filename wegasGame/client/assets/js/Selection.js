@@ -15,6 +15,10 @@ var Selection = function (game) {
 };
 
 Selection.prototype.update = function () {
+    if (game.input.activePointer.x >= 700) { //daca sunt in GUI
+        this.box.clear();
+        return;
+    }
     if (game.input.activePointer.isDown && game.input.activePointer.button == 0) {
         if (this.selectionStarted == false) {
             this.selectionStarted = true;
