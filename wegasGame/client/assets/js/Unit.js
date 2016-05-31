@@ -15,11 +15,11 @@ var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
     this.ms = ms;
     this.coins = coins;
 
-    this.isAlive = true;
-    this.isMoving = false;
-    this.moveComplete = true;
-    this.isAttacking = false;
     this.isSelected = false;
+    this.isMoving = false;
+    this.isAlive = true;
+    this.isAttacking = false;
+
     this.path = [];
 };
 
@@ -52,7 +52,9 @@ Unit.prototype.create = function (x, y) {
     toCreate.targetTile = {
         x: X,
         y: Y
-    }; //pozitia unde trebuie sa ajung
+    };
+
+    toCreate.initialTargetTile = toCreate.targetTile;//pozitia unde trebuie sa ajung
 
 
     /*
@@ -216,7 +218,7 @@ Unit.prototype.update2 = function () {
             //recalculez un path de la tile-ul curent si pun ca "ma misc"
 
             //this.moveComplete = false;
-            this.targetTile = map.getAvailableTile(this.targetTile);
+            this.targetTile = map.getAvailableTile(this.initialTargetTile);
 
             this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
 
@@ -231,9 +233,10 @@ Unit.prototype.update2 = function () {
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
                     if (map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.targetTile);
+                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
 
                         this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        this.unit.animations.stop(true, this);
                         // this.isMoving = false;
                         break;
                     }
@@ -249,17 +252,18 @@ Unit.prototype.update2 = function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
                         this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.isMoving = false;
-                        this.moveComplete = true;
+
                     }, this);
                     break;
 
                 case 2:
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
-                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y+64)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.targetTile);
+                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
+                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
 
                         this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        this.unit.animations.stop(true, this);
                         // this.isMoving = false;
                         break;
                     }
@@ -275,17 +279,18 @@ Unit.prototype.update2 = function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
                         this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.isMoving = false;
-                        this.moveComplete = true;
+
                     }, this);
                     break;
 
                 case 3:
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
-                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y+32)][map.layer.getTileX(this.markerUnit.x)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.targetTile);
+                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] == 0) {
+                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
 
                         this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        this.unit.animations.stop(true, this);
                         // this.isMoving = false;
                         break;
                     }
@@ -301,17 +306,18 @@ Unit.prototype.update2 = function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
                         this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.isMoving = false;
-                        this.moveComplete = true;
+
                     }, this);
                     break;
 
                 case 4:
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
-                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y+32)][map.layer.getTileX(this.markerUnit.x + 64)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.targetTile);
+                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] == 0) {
+                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
 
                         this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        this.unit.animations.stop(true, this);
                         // this.isMoving = false;
                         break;
                     }
@@ -327,7 +333,7 @@ Unit.prototype.update2 = function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
                         this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.isMoving = false;
-                        this.moveComplete = true;
+
                     }, this);
                     break;
 
@@ -388,14 +394,16 @@ function moveUnits2() {
         if (game.input.activePointer.x >= 700) { //daca pointerul este in GUI, nu-l lasa sa dea move-uri
             return;
         }
-        tileMouseX = map.layer.getTileX(map.marker.x);
-        tileMouseY = map.layer.getTileX(map.marker.y);
+        var tileMouseX = map.layer.getTileX(map.marker.x);
+        var tileMouseY = map.layer.getTileX(map.marker.y);
 
         for (var i = 0; i < me.createdUnits.length; i++) {
             if (me.createdUnits[i].isSelected == true) {
-                console.log("moveUnits2: trimit la " + tileMouseX + " " + tileMouseY)
+                //console.log("moveUnits2: trimit la " + tileMouseX + " " + tileMouseY)
                 me.createdUnits[i].targetTile.x = tileMouseX;
                 me.createdUnits[i].targetTile.y = tileMouseY;
+                me.createdUnits[i].initialTargetTile.x = tileMouseX;
+                me.createdUnits[i].initialTargetTile.y = tileMouseY;
             }
         }
     }
