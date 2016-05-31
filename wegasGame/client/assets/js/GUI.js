@@ -2,49 +2,43 @@ var GUI = function () {
     game.camera.width = 700;
     this.gui = game.add.group();
 
-
     this.backgroundBar = game.add.image(700, 0, 'back');
     this.miniMap = game.add.image(750, 20, 'mapWegas');
     this.textCoins = game.add.text(750, 230, "Coins: ");
-    this.buttonSoldat = game.add.button(715, 500, 'unit1_i', this.actionOnClickSoldat, this);
-    this.buttonArcas = game.add.button(815, 500, 'unit2_i', this.actionOnClickArcas, this);
-    this.buttonCalaret = game.add.button(915, 500, 'unit3_i', this.actionOnClickCalaret, this);
-
     this.backgroundBar.fixedToCamera = true;
     this.miniMap.fixedToCamera = true;
-    this.buttonSoldat.fixedToCamera = true;
-    this.buttonArcas.fixedToCamera = true;
-    this.buttonCalaret.fixedToCamera = true;
     this.textCoins.fixedToCamera = true;
-
     this.gui.add(this.backgroundBar);
-    this.gui.add(this.buttonSoldat);
-    this.gui.add(this.buttonCalaret);
-    this.gui.add(this.buttonArcas);
     this.gui.add(this.miniMap);
     this.gui.add(this.textCoins);
-    
+
+    this.buttonUnit1 = game.add.button(715, 500, 'unit1_i', this.actionOnClickUnit1, this);
+    this.buttonUnit2 = game.add.button(815, 500, 'unit2_i', this.actionOnClickUnit2, this);
+    this.buttonUnit3 = game.add.button(915, 500, 'unit3_i', this.actionOnClickUnit3, this);
+    this.buttonUnit1.fixedToCamera = true;
+    this.buttonUnit2.fixedToCamera = true;
+    this.buttonUnit3.fixedToCamera = true;
+    this.gui.add(this.buttonUnit1);
+    this.gui.add(this.buttonUnit2);
+    this.gui.add(this.buttonUnit3);
 };
 
-GUI.prototype.actionOnClickSoldat = function () {
-    console.log("Am apasat soldat");
-    me.coins = 1300;
-    var unitCreated2 = me.units[0].create(327, 391);
-    me.createdUnits.push(unitCreated2);
+GUI.prototype.actionOnClickUnit1 = function () {
+    console.log(me.name + ": Created a unit1 (footman)");
+    var avTile = map.getAvailableTile(me.startTile);
+    me.createdUnits.push(me.units[0].create(avTile.x * 32 - 24, avTile.y * 32 - 24));
 };
 
-GUI.prototype.actionOnClickArcas = function () {
-    console.log("Am apasat arcas");
-    var unitCreated2 = me.units[1].create(327, 391);
-    me.createdUnits.push(unitCreated2);
-    me.coins = 1200;
+GUI.prototype.actionOnClickUnit2 = function () {
+    console.log(me.name + ": Created a unit2 (archer)");
+    var avTile = map.getAvailableTile(me.startTile);
+    me.createdUnits.push(me.units[1].create(avTile.x * 32 - 24, avTile.y * 32 - 24));
 };
 
-GUI.prototype.actionOnClickCalaret = function () {
-    console.log("Am apasat calaret");
-    me.coins = 1100;
-    var unitCreated2 = me.units[2].create(327, 391);
-    me.createdUnits.push(unitCreated2);
+GUI.prototype.actionOnClickUnit3 = function () {
+    console.log(me.name + ": Created a unit3 (knight)");
+    var avTile = map.getAvailableTile(me.startTile);
+    me.createdUnits.push(me.units[2].create(avTile.x * 32 - 24, avTile.y * 32 - 24));
 };
 
 GUI.prototype.update = function () {

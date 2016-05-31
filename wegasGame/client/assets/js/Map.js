@@ -98,19 +98,16 @@ Map.prototype.getPath = function (tileMouseX, tileMouseY, tileX, tileY) {
     return path;
 };
 
-Map.prototype.getAvailableTile = function (tile)
-{
+Map.prototype.getAvailableTile = function (tile) {
     var tileY = tile.y;
     var tileX = tile.x;
-    console.log("Map:::Am primit "+tile.x+" " +tile.y);
+    console.log("Map:::Am primit " + tile.x + " " + tile.y);
 
-    if (this.rawGrid[tileY][tileX] == 1)
-    {
-          console.log("intra");
-          return tile; // daca nu exista coliziune pe pozitia curenta
+    if (this.rawGrid[tileY][tileX] == 1) {
+        console.log("intra");
+        return tile; // daca nu exista coliziune pe pozitia curenta
     }
-    else
-    {
+    else {
         var l = 2;
 
         var tileYcurrent = tileY - 1;
@@ -144,7 +141,7 @@ Map.prototype.getAvailableTile = function (tile)
                 if (this.rawGrid[j][tileXcurrent + l] = 1) {
                     var resultTile = {x: 0, y: 0};
                     resultTile.y = j;
-                    resultTile.x = tileXcurrent_L;
+                    resultTile.x = tileXcurrent + l;
                     return resultTile;
                 }
 
