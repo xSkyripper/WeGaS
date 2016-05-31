@@ -98,8 +98,63 @@ Map.prototype.getPath = function (tileMouseX, tileMouseY, tileX, tileY) {
     return path;
 };
 
-Map.prototype.getAvailableTile = function (tile) {
+Map.prototype.getAvailableTile = function (tile)
+{
+    var tileY = tile.y;
+    var tileX = tile.x;
+    console.log("Map:::Am primit "+tile.x+" " +tile.y);
 
+    if (this.rawGrid[tileY][tileX] == 1)
+    {
+          console.log("intra");
+          return tile; // daca nu exista coliziune pe pozitia curenta
+    }
+    else
+    {
+        var l = 2;
+
+        var tileYcurrent = tileY - 1;
+        var tileXcurrent = tileX - 1;
+
+        while (1) {
+            for (var i = tileYcurrent; i <= tileYcurrent + l; i++) {
+                if (this.rawGrid[i][tileXcurrent] == 1) {
+                    var resultTile = {x: 0, y: 0};
+                    resultTile.y = i;
+                    resultTile.x = tileXcurrent;
+                    return resultTile;
+                }
+
+                if (this.rawGrid[i][tileXcurrent + l] == 1) {
+                    var resultTile = {x: 0, y: 0};
+                    resultTile.y = i;
+                    resultTile.x = tileXcurrent + l;
+                    return resultTile;
+                }
+            }
+
+            for (var j = tileXcurrent; j <= tileXcurrent + l; j++) {
+                if (this.rawGrid[j][tileXcurrent] = 1) {
+                    var resultTile = {x: 0, y: 0};
+                    resultTile.y = j
+                    resultTile.x = tileXcurrent;
+                    return resultTile;
+                }
+
+                if (this.rawGrid[j][tileXcurrent + l] = 1) {
+                    var resultTile = {x: 0, y: 0};
+                    resultTile.y = j;
+                    resultTile.x = tileXcurrent_L;
+                    return resultTile;
+                }
+
+            }
+
+            l = l + 2;
+        }
+
+
+    }//sf else -> caut in jurul pozitiei "tile" curente
 };
 
 window.Map = Map;

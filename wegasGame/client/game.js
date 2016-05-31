@@ -25,22 +25,63 @@ var setEventHandlers = function () {
 
 function onIdentify(data) {
     console.log('My name is ' + data.name);
-    me = new Player(0, 1, 1, data.name, 1000, []);
+    me = new Player(0, 327, 391, data.name, 1000, []);
 
     me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 10, 100));
 
     me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 10, 100));
 
 
-    var unitCreated = me.units[0].create(327, 391);
+    var startTileMe = {
+        x: map.layer.getTileX(me.startX+32),
+        y: map.layer.getTileY(me.startY+32)
+    };
+//teste
+    console.log("Veche libera"+map.rawGrid[startTileMe.x][startTileMe.y]+"X:="+startTileMe.x+"Y:="+startTileMe.y);
+
+    var availableTile = map.getAvailableTile(startTileMe);
+
+    var unitCreated = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
 
     me.createdUnits.push(unitCreated);
 
+    availableTile = map.getAvailableTile(startTileMe);
 
-    //var unitCreated2 = me.units[0].create(391, 391);
+    var unitCreated2 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
 
-   // me.createdUnits.push(unitCreated2);
+    me.createdUnits.push(unitCreated2);
 
+    availableTile = map.getAvailableTile(startTileMe);
+
+    var unitCreated3 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+
+    me.createdUnits.push(unitCreated3);
+
+    availableTile = map.getAvailableTile(startTileMe);
+
+    var unitCreated4 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+
+    me.createdUnits.push(unitCreated4);
+
+    availableTile = map.getAvailableTile(startTileMe);
+
+    var unitCreated5 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+
+    me.createdUnits.push(unitCreated5);
+
+    availableTile = map.getAvailableTile(startTileMe);
+
+    var unitCreated6 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+
+    me.createdUnits.push(unitCreated6);
+
+    availableTile = map.getAvailableTile(startTileMe);
+
+    var unitCreated7 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+
+    me.createdUnits.push(unitCreated7);
+//sf teste
+    
 }
 
 function onOtherUsers(data) {
