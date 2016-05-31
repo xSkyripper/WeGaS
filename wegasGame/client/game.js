@@ -11,7 +11,7 @@ var setEventHandlers = function () {
         game.canvas.oncontextmenu = function (e) {
             e.preventDefault();// disable right click
         };
-        game.input.onDown.add(moveUnits, this);
+        game.input.onDown.add(moveUnits2, this);
     }//end_client-related
 
     {//server-related
@@ -138,7 +138,7 @@ function preload() {
 
 
 function create() {
-    game.stage.disableVisibilityChange = true;
+    //game.stage.disableVisibilityChange = true;
     map = new Map();
     selection = new Selection(game);
     socket = io.connect();
@@ -163,7 +163,7 @@ function update() {
 
     if (me != null) {
         for (var i = 0; i < me.createdUnits.length; i++) {
-            me.createdUnits[i].update(); //TODO: fix la ultima miscare per unitate ce se pierde
+            me.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
             gui.updateGuiOverlap(me.createdUnits[i].unit);
         }
         // if (game.physics.arcade.overlap(me.createdUnits[0].unit, me.createdUnits[1].unit)) {
