@@ -27,11 +27,11 @@ function onIdentify(data) {
     console.log('My name is ' + data.name);
     me = new Player(0, 1, 1, data.name, 1000, []);
 
-    me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 10, 100));
+    me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 100, 100));
 
-    me.units.push(new Unit(game, 'unit2_1', 'unit2', me.name, 1, 100, 10, 10, 100));
+    me.units.push(new Unit(game, 'unit2_1', 'unit2', me.name, 1, 100, 10, 150, 100));
 
-    me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 10, 100));
+    me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 200, 100));
 
 
     var unitCreated = me.units[0].create(327, 391);
