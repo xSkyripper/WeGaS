@@ -98,13 +98,15 @@ Map.prototype.getPath = function (tileMouseX, tileMouseY, tileX, tileY) {
     return path;
 };
 
-Map.prototype.getAvailableTile = function (tile) {
+
+Map.prototype.getAvailableTile = function (tile)
+{
     var tileY = tile.y;
     var tileX = tile.x;
-    console.log("Map:::Am primit " + tile.x + " " + tile.y);
 
-    if (this.rawGrid[tileY][tileX] == 1) {
-        console.log("intra");
+
+    if (this.rawGrid[tileY][tileX] == 1)
+    {
         return tile; // daca nu exista coliziune pe pozitia curenta
     }
     else {
@@ -114,11 +116,13 @@ Map.prototype.getAvailableTile = function (tile) {
         var tileXcurrent = tileX - 1;
 
         while (1) {
-            for (var i = tileYcurrent; i <= tileYcurrent + l; i++) {
+            for (var i = tileYcurrent; i <= tileYcurrent + l; i++)
+            {
                 if (this.rawGrid[i][tileXcurrent] == 1) {
                     var resultTile = {x: 0, y: 0};
                     resultTile.y = i;
                     resultTile.x = tileXcurrent;
+                    //console.log("Am pus  "+i+" "+tileXcurrent);
                     return resultTile;
                 }
 
@@ -126,30 +130,36 @@ Map.prototype.getAvailableTile = function (tile) {
                     var resultTile = {x: 0, y: 0};
                     resultTile.y = i;
                     resultTile.x = tileXcurrent + l;
+                    //console.log("Am pus  "+i+" "+tileXcurrent+"opus");
                     return resultTile;
                 }
             }
 
-            for (var j = tileXcurrent; j <= tileXcurrent + l; j++) {
-                if (this.rawGrid[j][tileXcurrent] = 1) {
+            for (var j = tileXcurrent; j <= tileXcurrent + l; j++)
+            {
+                if (this.rawGrid[tileYcurrent][j] == 1)
+                {
                     var resultTile = {x: 0, y: 0};
-                    resultTile.y = j
-                    resultTile.x = tileXcurrent;
+                    resultTile.y = tileYcurrent;
+                    resultTile.x = j;
+                    //console.log("Am pus  "+j+" "+tileYcurrent);
                     return resultTile;
                 }
 
-                if (this.rawGrid[j][tileXcurrent + l] = 1) {
+                if (this.rawGrid[tileYcurrent+l][j] == 1) {
                     var resultTile = {x: 0, y: 0};
-                    resultTile.y = j;
-                    resultTile.x = tileXcurrent + l;
+                    resultTile.y = tileYcurrent + l;
+                    resultTile.x = j;
+                    //console.log("Am pus  "+j+" "+tileYcurrent+"opus");
                     return resultTile;
                 }
 
             }
 
             l = l + 2;
+            tileYcurrent = tileYcurrent - 1; //se cauta din stanga sus
+            tileXcurrent = tileXcurrent - 1;
         }
-
 
     }//sf else -> caut in jurul pozitiei "tile" curente
 };
