@@ -16,7 +16,7 @@ var Map = function () {
 
     this.layer = this.map.createLayer('Layer1');
     this.layer.resizeWorld();
-    this.layer.debug = true;
+    //this.layer.debug = true;
     //creare layer
 
     //collisionMatrix
@@ -94,7 +94,7 @@ Map.prototype.getPath = function (tileMouseX, tileMouseY, tileX, tileY) {
         aux = result[i];
     }
 
-    console.log('Path: ' + path);
+    //console.log('Path: ' + path);
     return path;
 };
 

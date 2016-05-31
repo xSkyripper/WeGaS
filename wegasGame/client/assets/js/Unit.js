@@ -204,22 +204,39 @@ Unit.prototype.update2 = function () {
     //console.log(this.id + ": sunt la ->" + X + " " + Y);
     //console.log(this.id + ": merg la ->" + this.targetTile.x + " " + this.targetTile.y);
 
+    // if (!this.isMoving && this.path.length == 0) {
+    //     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
+    //     map.graph = new Graph(map.rawGrid);
+    // }
 
     if (this.targetTile.x != X || this.targetTile.y != Y) { // am primit alt targetTile != markerUnit
 
         if (!this.isMoving) {
             //nu ma misc inca ori am termina o animatie
             //recalculez un path de la tile-ul curent si pun ca "ma misc"
-            this.isMoving = true;
+
             //this.moveComplete = false;
+            this.targetTile = map.getAvailableTile(this.targetTile);
 
             this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
-            console.log("Path: " + this.path);
+
+            if (this.path.length != 0) {
+                this.isMoving = true;
+            }//daca e blocat imprejur cu totul
+
+            //console.log("Path: " + this.path);
         } else {
             switch (this.path[0]) {
                 case 1:
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
+                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
+                        this.targetTile = map.getAvailableTile(this.targetTile);
+
+                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        // this.isMoving = false;
+                        break;
+                    }
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
                     map.graph = new Graph(map.rawGrid);
@@ -239,6 +256,13 @@ Unit.prototype.update2 = function () {
                 case 2:
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
+                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y+64)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
+                        this.targetTile = map.getAvailableTile(this.targetTile);
+
+                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        // this.isMoving = false;
+                        break;
+                    }
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
                     map.graph = new Graph(map.rawGrid);
@@ -258,6 +282,13 @@ Unit.prototype.update2 = function () {
                 case 3:
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
+                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y+32)][map.layer.getTileX(this.markerUnit.x)] == 0) {
+                        this.targetTile = map.getAvailableTile(this.targetTile);
+
+                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        // this.isMoving = false;
+                        break;
+                    }
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] = 0;
                     map.graph = new Graph(map.rawGrid);
@@ -277,6 +308,13 @@ Unit.prototype.update2 = function () {
                 case 4:
                     //plec de la > pun pe 1
                     //ajung la > pun pe 0
+                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y+32)][map.layer.getTileX(this.markerUnit.x + 64)] == 0) {
+                        this.targetTile = map.getAvailableTile(this.targetTile);
+
+                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                        // this.isMoving = false;
+                        break;
+                    }
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] = 0;
                     map.graph = new Graph(map.rawGrid);
