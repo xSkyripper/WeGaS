@@ -32,10 +32,10 @@ Unit.prototype.create = function (x, y) {
     toCreate.x = x;
     toCreate.y = y;
     toCreate.unit = this.game.add.sprite(x, y, toCreate.sprite, 4);
-    toCreate.unit.animations.add('left', [5, 11, 17, 23], 5, true);
-    toCreate.unit.animations.add('right', [2, 8, 14, 20], 5, true);
-    toCreate.unit.animations.add('up', [6, 12, 18, 24], 5, true);
-    toCreate.unit.animations.add('down', [10, 16, 22, 28], 5, true);
+    toCreate.unit.animations.add('left', [5, 11, 17, 23], 5+(this.ms/100), true);
+    toCreate.unit.animations.add('right', [2, 8, 14, 20], 5+(this.ms/100), true);
+    toCreate.unit.animations.add('up', [6, 12, 18, 24], 5+(this.ms/100), true);
+    toCreate.unit.animations.add('down', [10, 16, 22, 28], 5+(this.ms/100), true);
     toCreate.game.physics.enable(toCreate.unit, Phaser.Physics.ARCADE);
     toCreate.unit.body.setSize(32, 32, 25, 25);
     toCreate.markerUnit.x = map.layer.getTileX(toCreate.unit.x) * 32;
@@ -71,7 +71,7 @@ Unit.prototype.update = function () {
 
         if (!this.isMoving) { //daca nu ma misca (nu am terminat tweenul)
 
-            //TODO:verifica daca urmatorul tile este 
+            //TODO:verifica daca urmatorul tile este
 
             this.isMoving = true;
 
@@ -82,7 +82,7 @@ Unit.prototype.update = function () {
                     //ajung la > pun pe 0
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
                     map.graph = new Graph(map.rawGrid);
-                    tweenUp = game.add.tween(this.unit).to({y: this.unit.y - 32}, 500, Phaser.Easing.Linear.None, true);
+                    tweenUp = game.add.tween(this.unit).to({y: this.unit.y - 32}, 500-this.ms, Phaser.Easing.Linear.None, true);
                     this.unit.play('up');
 
                     tweenUp.onComplete.addOnce(function () {
@@ -104,7 +104,7 @@ Unit.prototype.update = function () {
                     //ajung la > pun pe 0
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
                     map.graph = new Graph(map.rawGrid);
-                    tweenDown = game.add.tween(this.unit).to({y: this.unit.y + 32}, 500, Phaser.Easing.Linear.None, true);
+                    tweenDown = game.add.tween(this.unit).to({y: this.unit.y + 32}, 500-this.ms, Phaser.Easing.Linear.None, true);
                     this.unit.play('down');
                     tweenDown.onComplete.addOnce(function () {
 
@@ -125,7 +125,7 @@ Unit.prototype.update = function () {
                     //ajung la > pun pe 0
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] = 0;
                     map.graph = new Graph(map.rawGrid);
-                    tweenLeft = game.add.tween(this.unit).to({x: this.unit.x - 32}, 500, Phaser.Easing.Linear.None, true);
+                    tweenLeft = game.add.tween(this.unit).to({x: this.unit.x - 32}, 500-this.ms, Phaser.Easing.Linear.None, true);
                     this.unit.play('left');
                     tweenLeft.onComplete.addOnce(function () {
 
@@ -146,7 +146,7 @@ Unit.prototype.update = function () {
                     //ajung la > pun pe 0
                     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] = 0;
                     map.graph = new Graph(map.rawGrid);
-                    tweenRight = game.add.tween(this.unit).to({x: this.unit.x + 32}, 500, Phaser.Easing.Linear.None, true);
+                    tweenRight = game.add.tween(this.unit).to({x: this.unit.x + 32}, 500-this.ms, Phaser.Easing.Linear.None, true);
                     this.unit.play('right');
                     tweenRight.onComplete.addOnce(function () {
 

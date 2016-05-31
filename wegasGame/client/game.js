@@ -34,59 +34,59 @@ function onIdentify(data) {
     me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 200, 100));
 
 
-    var startTileMe = {
-        x: map.layer.getTileX(me.startX+32),
-        y: map.layer.getTileY(me.startY+32)
-    };
-//teste
-    console.log("Veche libera"+map.rawGrid[startTileMe.x][startTileMe.y]+"X:="+startTileMe.x+"Y:="+startTileMe.y);
-
-    var availableTile = map.getAvailableTile(startTileMe);
-
-    var unitCreated = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-
-    me.createdUnits.push(unitCreated);
-
-    availableTile = map.getAvailableTile(startTileMe);
-
-    var unitCreated2 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-
-    me.createdUnits.push(unitCreated2);
-
-    availableTile = map.getAvailableTile(startTileMe);
-
-    var unitCreated3 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-
-    me.createdUnits.push(unitCreated3);
-
-    availableTile = map.getAvailableTile(startTileMe);
-
-    var unitCreated4 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-
-    me.createdUnits.push(unitCreated4);
-
-    availableTile = map.getAvailableTile(startTileMe);
-
-    var unitCreated5 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-
-    me.createdUnits.push(unitCreated5);
-
-    availableTile = map.getAvailableTile(startTileMe);
-
-    var unitCreated6 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-
-    me.createdUnits.push(unitCreated6);
-
-    availableTile = map.getAvailableTile(startTileMe);
-
-    var unitCreated7 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-    //
-    // var unitCreated2 = me.units[1].create(391, 391);
-    //
-    // me.createdUnits.push(unitCreated2);
-    //
-
-    me.createdUnits.push(unitCreated7);
+//     var startTileMe = {
+//         x: map.layer.getTileX(me.startX+32),
+//         y: map.layer.getTileY(me.startY+32)
+//     };
+// //teste
+//     console.log("Veche libera"+map.rawGrid[startTileMe.x][startTileMe.y]+"X:="+startTileMe.x+"Y:="+startTileMe.y);
+//
+//     var availableTile = map.getAvailableTile(startTileMe);
+//
+//     var unitCreated = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+//
+//     me.createdUnits.push(unitCreated);
+//
+//     availableTile = map.getAvailableTile(startTileMe);
+//
+//     var unitCreated2 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+//
+//     me.createdUnits.push(unitCreated2);
+//
+//     availableTile = map.getAvailableTile(startTileMe);
+//
+//     var unitCreated3 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+//
+//     me.createdUnits.push(unitCreated3);
+//
+//     availableTile = map.getAvailableTile(startTileMe);
+//
+//     var unitCreated4 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+//
+//     me.createdUnits.push(unitCreated4);
+//
+//     availableTile = map.getAvailableTile(startTileMe);
+//
+//     var unitCreated5 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+//
+//     me.createdUnits.push(unitCreated5);
+//
+//     availableTile = map.getAvailableTile(startTileMe);
+//
+//     var unitCreated6 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+//
+//     me.createdUnits.push(unitCreated6);
+//
+//     availableTile = map.getAvailableTile(startTileMe);
+//
+//     var unitCreated7 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
+//     //
+//     // var unitCreated2 = me.units[1].create(391, 391);
+//     //
+//     // me.createdUnits.push(unitCreated2);
+//     //
+//
+//     me.createdUnits.push(unitCreated7);
 //sf teste
     
 }
