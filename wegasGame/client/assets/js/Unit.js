@@ -37,71 +37,123 @@ Unit.prototype.create = function (x, y) {
     toCreate.unit.animations.add('up', [6, 12, 18, 24], 5, true);
     toCreate.unit.animations.add('down', [10, 16, 22, 28], 5, true);
     toCreate.game.physics.enable(toCreate.unit, Phaser.Physics.ARCADE);
-    toCreate.unit.body.setSize(32, 27, 25, 25);
+    toCreate.unit.body.setSize(32, 32, 25, 25);
+    toCreate.markerUnit.x = map.layer.getTileX(toCreate.unit.x) * 32;
+    toCreate.markerUnit.y = map.layer.getTileY(toCreate.unit.y) * 32;
+
+    var X = map.layer.getTileX(toCreate.markerUnit.x + 32);
+    var Y = map.layer.getTileY(toCreate.markerUnit.y + 32);
+
+    map.rawGrid[Y][X] = 0;
+
+    /*
+     unit ~= markerUnit
+     */
 
     return toCreate;
 };
 
 Unit.prototype.update = function () {
     this.game.physics.arcade.collide(this.unit, map.layer);
-    this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
-    this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
 
-    if (this.path.length != 0) {
+    if (this.path.length != 0) { // vectorul nu e gol
         if (this.path.length == 1) {
-            this.lastDir = this.path[0];
+            this.lastDir = this.path[0]; //ultima pozitie ca sa stiu pe ce frame ma opresc
         }
-        if (!this.isMoving) {
+
+        if (!this.isMoving) { //daca nu ma misca (nu am terminat tweenul)
             this.isMoving = true;
 
             switch (this.path[0]) {
                 case 1:
+                    //plec de la > pun pe 1
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                    //ajung la > pun pe 0
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
+
                     tweenUp = game.add.tween(this.unit).to({y: this.unit.y - 32}, 500, Phaser.Easing.Linear.None, true);
                     this.unit.play('up');
-                    tweenUp.onComplete.addOnce(function () {
-                        this.isMoving = false;
-                        this.path.shift();
-                        // this.x = this.unit.x;
-                        // this.y = this.unit.y;
-                    }, this);
 
+                    tweenUp.onComplete.addOnce(function () {
+
+                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
+                        this.path.shift();
+                        //sa isi updateze pozitia abia dupa ce termina
+
+                        // console.log('M-am dus in 1');
+                        // console.log('Path curent: ' + this.path);
+                        this.isMoving = false;
+                    }, this);
                     break;
 
                 case 2:
+                    //plec de la > pun pe 1
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                    //ajung la > pun pe 0
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
+
                     tweenDown = game.add.tween(this.unit).to({y: this.unit.y + 32}, 500, Phaser.Easing.Linear.None, true);
                     this.unit.play('down');
                     tweenDown.onComplete.addOnce(function () {
-                        this.isMoving = false;
+
+                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.path.shift();
-                        // this.x = this.unit.x;
-                        // this.y = this.unit.y;
+                        //sa isi updateze pozitia abia dupa ce termina
+
+                        // console.log('M-am dus in 2');
+                        // console.log('Path curent: ' + this.path);
+                        this.isMoving = false;
                     }, this);
                     break;
 
                 case 3:
+                    //plec de la > pun pe 1
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                    //ajung la > pun pe 0
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] = 0;
+
                     tweenLeft = game.add.tween(this.unit).to({x: this.unit.x - 32}, 500, Phaser.Easing.Linear.None, true);
                     this.unit.play('left');
                     tweenLeft.onComplete.addOnce(function () {
-                        this.isMoving = false;
+
+                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.path.shift();
-                        // this.x = this.unit.x;
-                        // this.y = this.unit.y;
+                        //sa isi updateze pozitia abia dupa ce termina
+
+                        // console.log('M-am dus in 3');
+                        // console.log('Path curent: ' + this.path);
+                        this.isMoving = false;
                     }, this);
                     break;
 
                 case 4:
+                    //plec de la > pun pe 1
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                    //ajung la > pun pe 0
+                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] = 0;
+
                     tweenRight = game.add.tween(this.unit).to({x: this.unit.x + 32}, 500, Phaser.Easing.Linear.None, true);
                     this.unit.play('right');
                     tweenRight.onComplete.addOnce(function () {
-                        this.isMoving = false;
+
+                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.path.shift();
-                        // this.x = this.unit.x;
-                        // this.y = this.unit.y;
+                        //sa isi updateze pozitia abia dupa ce termina
+
+                        // console.log('M-am dus in 4');
+                        // console.log('Path curent: ' + this.path);
+                        this.isMoving = false;
                     }, this);
                     break;
             }
+        } else { // m-am "oprit" - am terminat tweenul
+
         }
-    } else {
+    } else { // vectorul path e gol
         this.path = [];
         this.unit.animations.stop(true, this);
         switch (this.lastDir) {
@@ -122,6 +174,7 @@ Unit.prototype.update = function () {
 };
 
 function moveUnits() {
+
     if (game.input.activePointer.button == 2) {
         if (game.input.activePointer.x >= 700) { //daca pointerul este in GUI, nu-l lasa sa dea move-uri
             return;
@@ -135,6 +188,12 @@ function moveUnits() {
                 Y = map.layer.getTileX(me.createdUnits[i].markerUnit.y + 32);
 
                 me.createdUnits[i].path = map.getPath(tileMouseX, tileMouseY, X, Y);
+
+                if (me.createdUnits[i].isMoving) {
+                    me.createdUnits[i].path.unshift(0);
+                } // ca sa nu taie aiurea din noul path
+
+
             }
         }
     }

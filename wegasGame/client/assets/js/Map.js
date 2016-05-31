@@ -16,7 +16,7 @@ var Map = function () {
 
     this.layer = this.map.createLayer('Layer1');
     this.layer.resizeWorld();
-    //this.layer.debug = true;
+    this.layer.debug = true;
     //creare layer
 
     //collisionMatrix
@@ -40,7 +40,7 @@ var Map = function () {
     //adaugare control sageti ptr harta
 
     this.marker = game.add.graphics();
-    this.marker.lineStyle(2, 0x000000, 1);
+    this.marker.lineStyle(1, 0xffffff, 1);
     this.marker.drawRect(0, 0, 32, 32);
     //adaugare marker ptr. mouse hover
 
@@ -98,8 +98,8 @@ Map.prototype.getPath = function (tileMouseX, tileMouseY, tileX, tileY) {
     return path;
 };
 
-Map.prototype.getAvailableTile = function (tileX, tileY) {
-    
+Map.prototype.getAvailableTile = function (tile) {
+
 };
 
 window.Map = Map;

@@ -65,8 +65,13 @@ Selection.prototype.update = function () {
                 me.createdUnits[i].isSelected = true;
             }
         }
-        console.log('startSelect.x: ' + this.startPos.x + '  startSelect.y: ' + this.startPos.y);
-        console.log('LastSelect.x: ' + this.lastPos.x + '  LastSelect.y: ' + this.lastPos.y);
+        // console.log('startSelect.x: ' + this.startPos.x + '  startSelect.y: ' + this.startPos.y);
+        // console.log('LastSelect.x: ' + this.lastPos.x + '  LastSelect.y: ' + this.lastPos.y);
+
+        var X = map.layer.getTileX(this.startPos.x);
+        var Y = map.layer.getTileY(this.startPos.y);
+
+        console.log("RawGrid la " + X + " " + Y + " este " + map.rawGrid[Y][X]);
     }
 };
 

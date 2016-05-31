@@ -32,14 +32,14 @@ function onIdentify(data) {
     me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 10, 100));
 
 
-    var unitCreated = me.units[0].create(329, 384);
+    var unitCreated = me.units[0].create(327, 391);
 
     me.createdUnits.push(unitCreated);
 
 
-    var unitCreated2 = me.units[0].create(393, 384);
+    //var unitCreated2 = me.units[0].create(391, 391);
 
-    me.createdUnits.push(unitCreated2);
+   // me.createdUnits.push(unitCreated2);
 
 }
 
@@ -82,6 +82,8 @@ function preload() {
     //TODO: Incarcare din baza de date, trimitere la player doar ce are nevoie
     game.load.spritesheet('unit1_1', '/client/assets/img/unit1_1.png', 70, 70);
     game.load.spritesheet('unit1_2', '/client/assets/img/unit1_2.png', 70, 70);
+    game.load.spritesheet('unit2_1', '/client/assets/img/unit2_1.png', 70, 70);
+    game.load.spritesheet('unit3_2', '/client/assets/img/unit2_2.png', 70, 70);
     game.load.spritesheet('unit3_1', '/client/assets/img/unit3_1.png', 70, 70);
     game.load.spritesheet('unit3_2', '/client/assets/img/unit3_2.png', 70, 70);
 }
@@ -99,16 +101,15 @@ function create() {
     setEventHandlers();
 }
 
+
 function update() {
     map.updateCamera();
     map.updateMarkers();
     selection.update();
 
-
     if (me != null) {
         gui.update();
     }
-
 
     //TODO:Conditii de victorie
 
@@ -116,14 +117,10 @@ function update() {
         for (var i = 0; i < me.createdUnits.length; i++) {
             me.createdUnits[i].update(); //TODO: fix la ultima miscare per unitate ce se pierde
             gui.updateGuiOverlap(me.createdUnits[i].unit);
-            for (var j = 0; j < me.createdUnits.length; j++) {
-                game.physics.arcade.collide(me.createdUnits[i].unit, me.createdUnits[j].unit);
-                //console.log('Se ating 2 !');
-            }
         }
-        if (game.physics.arcade.overlap(me.createdUnits[0].unit, me.createdUnits[1].unit)) {
-            console.log('Se ating !');
-        }
+        // if (game.physics.arcade.overlap(me.createdUnits[0].unit, me.createdUnits[1].unit)) {
+        //     console.log('Se ating !');
+        // }
     }
 
 }
@@ -133,7 +130,7 @@ function render() {
 
     if (me != null) {
         game.debug.body(me.createdUnits[0].unit);
-        game.debug.body(me.createdUnits[1].unit);
+        // game.debug.body(me.createdUnits[1].unit);
         game.debug.bodyInfo(me.createdUnits[0].unit, 16, 24);
         //game.debug.spriteInfo(me.createdUnits[0].unit, 200, 200);
     }
