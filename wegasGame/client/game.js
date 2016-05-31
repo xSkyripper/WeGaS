@@ -29,6 +29,8 @@ function onIdentify(data) {
 
     me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 10, 100));
 
+    me.units.push(new Unit(game, 'unit2_1', 'unit2', me.name, 1, 100, 10, 10, 100));
+
     me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 10, 100));
 
 
@@ -37,9 +39,9 @@ function onIdentify(data) {
     me.createdUnits.push(unitCreated);
 
 
-    //var unitCreated2 = me.units[0].create(391, 391);
+    var unitCreated2 = me.units[1].create(391, 391);
 
-   // me.createdUnits.push(unitCreated2);
+    me.createdUnits.push(unitCreated2);
 
 }
 
@@ -90,7 +92,7 @@ function preload() {
 
 
 function create() {
-
+    game.stage.disableVisibilityChange = true;
     map = new Map();
     selection = new Selection(game);
     socket = io.connect();
@@ -129,9 +131,10 @@ function render() {
     /* Debugging Zone */
 
     if (me != null) {
-        game.debug.body(me.createdUnits[0].unit);
-        // game.debug.body(me.createdUnits[1].unit);
-        game.debug.bodyInfo(me.createdUnits[0].unit, 16, 24);
+        for (var i = 0; i < me.createdUnits.length; i++)
+            game.debug.body(me.createdUnits[i].unit);
+
+        //game.debug.bodyInfo(me.createdUnits[0].unit, 16, 24);
         //game.debug.spriteInfo(me.createdUnits[0].unit, 200, 200);
     }
 }

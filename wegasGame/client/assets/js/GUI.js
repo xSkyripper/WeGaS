@@ -29,19 +29,21 @@ var GUI = function () {
 GUI.prototype.actionOnClickSoldat = function () {
     console.log("Am apasat soldat");
     me.coins = 1300;
-    var unitCreated2 = me.units[0].create(393, 384);
+    var unitCreated2 = me.units[0].create(327, 391);
     me.createdUnits.push(unitCreated2);
 };
 
 GUI.prototype.actionOnClickArcas = function () {
     console.log("Am apasat arcas");
+    var unitCreated2 = me.units[1].create(327, 391);
+    me.createdUnits.push(unitCreated2);
     me.coins = 1200;
 };
 
 GUI.prototype.actionOnClickCalaret = function () {
     console.log("Am apasat calaret");
     me.coins = 1100;
-    var unitCreated2 = me.units[1].create(393, 384);
+    var unitCreated2 = me.units[2].create(327, 391);
     me.createdUnits.push(unitCreated2);
 };
 
