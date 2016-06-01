@@ -67,6 +67,7 @@ function onSocketConnect(client) {
     client.on('disconnect', onSocketDisconnect);
     client.on('create_unit', onCreateUnit);
     client.on('move_unit', onMoveUnit);
+    client.on('move_unit2', onMoveUnit2);
 }
 
 function onSocketDisconnect() {
@@ -81,7 +82,7 @@ function onSocketDisconnect() {
 }
 
 function onCreateUnit(data) {
-    console.log('tre sa transmit ca s-a facut un unit');
+    console.log('tre sa transmit ca s-a facut un unit la ' + data.x + " " + data.y);
     this.broadcast.emit('create_unit', {
         sprite: data.sprite,
         owner: data.owner,
@@ -102,6 +103,15 @@ function onMoveUnit(data) {
         id: data.id,
         targetTileX: data.targetTileX,
         targetTileY: data.targetTileY
+    });
+}
+
+function onMoveUnit2(data) {
+    console.log('tre sa transmit ca se misca o unitate cu un tile');
+
+    this.broadcast.emit('move_unit2', {
+        id: data.id,
+        goTo: data.goTo
     });
 }
 

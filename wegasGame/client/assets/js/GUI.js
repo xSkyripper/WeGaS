@@ -24,10 +24,11 @@ var GUI = function () {
 };
 
 GUI.prototype.actionOnClickUnit1 = function () {
-    console.log(me.name + ": Created a unit1 (footman)");
+
     var avTile = map.getAvailableTile(me.startTile);
-    var newUnit = me.units[0].create(avTile.x * 32 - 24, avTile.y * 32 - 24);
+    var newUnit = me.units[0].create(me.createdUnits.length, avTile.x * 32 - 24, avTile.y * 32 - 24);
     me.createdUnits.push(newUnit);
+    console.log(me.name + ": Created a unit1 (footman) la " + newUnit.x + " " + newUnit.y);
     socket.emit('create_unit', {
         sprite: newUnit.sprite,
         owner: newUnit.owner,

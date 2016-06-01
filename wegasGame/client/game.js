@@ -23,6 +23,7 @@ var setEventHandlers = function () {
 
         socket.on('create_unit', onCreateUnit);
         socket.on('move_unit', onMoveUnit);
+        socket.on('move_unit2', onMoveUnit2);
     }//end_server-related
 
 };
@@ -55,13 +56,13 @@ function onRemPlayer(data) {
 }
 
 function onCreateUnit(data) {
-    console.log('un inamic a facut un unit !!!');
+    console.log('un inamic a facut un unit !!! la ' + data.x + " " + data.y);
 
     var redSprite = data.sprite;
     redSprite[redSprite.length - 1] = '2';
     redSprite[redSprite.length - 2] = '_';
     var toCreate = new Unit(game, redSprite, data.owner, data.hp, data.minAtk, data.maxAtk, data.ms, data.coins);
-    enemy.createdUnits.push(toCreate.create(data.x, data.y));
+    enemy.createdUnits.push(toCreate.create(enemy.createdUnits.length,data.x, data.y));
 }
 
 function onMoveUnit(data) {
@@ -71,6 +72,80 @@ function onMoveUnit(data) {
     enemy.createdUnits[data.id].targetTile.y = data.targetTileY;
     enemy.createdUnits[data.id].initialTargetTile.x = data.targetTileX;
     enemy.createdUnits[data.id].initialTargetTile.y = data.targetTileY;
+}
+
+function onMoveUnit2(data) {
+    game.physics.arcade.collide(enemy.createdUnits[data.id].unit, map.layer);
+
+    enemy.createdUnits[data.id].isMoving = true;
+
+
+    switch (data.goTo) {
+        case 1:
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32)] = 1;
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32)] = 0;
+            map.graph = new Graph(map.rawGrid);
+            var tweenUp = game.add.tween(enemy.createdUnits[data.id].unit).to({y: enemy.createdUnits[data.id].unit.y - 32}, 500 - enemy.createdUnits[data.id].ms, Phaser.Easing.Linear.None, true);
+            enemy.createdUnits[data.id].unit.play('up');
+
+            tweenUp.onComplete.addOnce(function () {
+                enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
+                enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+                enemy.createdUnits[data.id].isMoving = false;
+                enemy.createdUnits[data.id].unit.animations.stop(true, this);
+                enemy.createdUnits[data.id].unit.animations.frame = 0;
+            }, this);
+            break;
+        case 2:
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32)] = 1;
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 64)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32)] = 0;
+            map.graph = new Graph(map.rawGrid);
+            var tweenDown = game.add.tween(enemy.createdUnits[data.id].unit).to({y: enemy.createdUnits[data.id].unit.y + 32}, 500 - enemy.createdUnits[data.id].ms, Phaser.Easing.Linear.None, true);
+            enemy.createdUnits[data.id].unit.play('down');
+
+            tweenDown.onComplete.addOnce(function () {
+                enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
+                enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+                enemy.createdUnits[data.id].isMoving = false;
+                enemy.createdUnits[data.id].unit.animations.stop(true, this);
+                enemy.createdUnits[data.id].unit.animations.frame = 4;
+            }, this);
+            break;
+        case 3:
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32)] = 1;
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x)] = 0;
+            map.graph = new Graph(map.rawGrid);
+            var tweenLeft = game.add.tween(enemy.createdUnits[data.id].unit).to({x: enemy.createdUnits[data.id].unit.x - 32}, 500 - enemy.createdUnits[data.id].ms, Phaser.Easing.Linear.None, true);
+            enemy.createdUnits[data.id].unit.play('left');
+
+            tweenLeft.onComplete.addOnce(function () {
+                enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
+                enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+                enemy.createdUnits[data.id].isMoving = false;
+                enemy.createdUnits[data.id].unit.animations.stop(true, this);
+                enemy.createdUnits[data.id].unit.animations.frame = 5;
+            }, this);
+            break;
+        case 4:
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32)] = 1;
+            map.rawGrid[map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32)][map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 64)] = 0;
+            map.graph = new Graph(map.rawGrid);
+            var tweenRight = game.add.tween(enemy.createdUnits[data.id].unit).to({x: enemy.createdUnits[data.id].unit.x + 32}, 500 - enemy.createdUnits[data.id].ms, Phaser.Easing.Linear.None, true);
+            enemy.createdUnits[data.id].unit.play('right');
+
+            tweenRight.onComplete.addOnce(function () {
+                enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
+                enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+                enemy.createdUnits[data.id].isMoving = false;
+                enemy.createdUnits[data.id].unit.animations.stop(true, this);
+                enemy.createdUnits[data.id].unit.animations.frame = 2;
+            }, this);
+            break;
+        default:
+            break;
+
+    }
+
 }
 
 
@@ -138,7 +213,7 @@ function update() {
 
     if (enemy != null) {
         for (var i = 0; i < enemy.createdUnits.length; i++) {
-            enemy.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
+            //enemy.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
             gui.updateGuiOverlap(enemy.createdUnits[i].unit);
         }
     }

@@ -27,10 +27,10 @@ var Unit = function (game, sprite, owner, hp, minAtk, maxAtk, ms, coins) {
 //     this.markerUnit = this.game.add.graphics();
 // };
 
-Unit.prototype.create = function (/*id,*/x, y) {
+Unit.prototype.create = function (id, x, y) {
 
     var toCreate = new Unit(this.game, this.sprite, /*this.id,*/ this.owner, this.hp, this.minAtk, this.maxAtk, this.ms, this.coins);
-    //toCreate.id = ?
+    toCreate.id = id;
     toCreate.x = x;
     toCreate.y = y;
     toCreate.unit = this.game.add.sprite(x, y, toCreate.sprite, 4);
@@ -199,6 +199,7 @@ Unit.prototype.update = function () {
  generez drum pana la target
  */
 
+//TODO: fix blocaj la mai multe unitati ? 
 Unit.prototype.update2 = function () {
     this.game.physics.arcade.collide(this.unit, map.layer);
     var X = map.layer.getTileX(this.markerUnit.x + 32);
@@ -249,6 +250,12 @@ Unit.prototype.update2 = function () {
                     this.lastDir = this.path[0];
                     this.path = [];
 
+                    //trimite la server fiecare tile - unu cate unu - parcurs
+                    socket.emit('move_unit2', {
+                        id: this.id,
+                        goTo: this.lastDir
+                    });
+
                     tweenUp.onComplete.addOnce(function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
                         this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
@@ -275,6 +282,12 @@ Unit.prototype.update2 = function () {
                     this.unit.play('down');
                     this.lastDir = this.path[0];
                     this.path = [];
+
+                    //trimite la server fiecare tile - unu cate unu - parcurs
+                    socket.emit('move_unit2', {
+                        id: this.id,
+                        goTo: this.lastDir
+                    });
 
                     tweenDown.onComplete.addOnce(function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
@@ -303,6 +316,12 @@ Unit.prototype.update2 = function () {
                     this.lastDir = this.path[0];
                     this.path = [];
 
+                    //trimite la server fiecare tile - unu cate unu - parcurs
+                    socket.emit('move_unit2', {
+                        id: this.id,
+                        goTo: this.lastDir
+                    });
+
                     tweenLeft.onComplete.addOnce(function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
                         this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
@@ -329,6 +348,12 @@ Unit.prototype.update2 = function () {
                     this.unit.play('right');
                     this.lastDir = this.path[0];
                     this.path = [];
+
+                    //trimite la server fiecare tile - unu cate unu - parcurs
+                    socket.emit('move_unit2', {
+                        id: this.id,
+                        goTo: this.lastDir
+                    });
 
                     tweenRight.onComplete.addOnce(function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
@@ -406,11 +431,12 @@ function moveUnits2() {
                 me.createdUnits[i].initialTargetTile.x = tileMouseX;
                 me.createdUnits[i].initialTargetTile.y = tileMouseY;
 
-                socket.emit('move_unit', {
-                    id: i,
-                    targetTileX: tileMouseX,
-                    targetTileY: tileMouseY
-                });
+                //TODO: implementeaza asta cu id-uri unice si pozitii succesive (goTo in loc de X,Y)
+                // socket.emit('move_unit', {
+                //     id: i,
+                //     targetTileX: tileMouseX,
+                //     targetTileY: tileMouseY
+                // });
             }
         }
 
