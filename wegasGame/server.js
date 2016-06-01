@@ -96,7 +96,13 @@ function onCreateUnit(data) {
 }
 
 function onMoveUnit(data) {
+    console.log('tre sa transmit ca se misca o unitate');
 
+    this.broadcast.emit('move_unit', {
+        id: data.id,
+        targetTileX: data.targetTileX,
+        targetTileY: data.targetTileY
+    });
 }
 
 initServer();

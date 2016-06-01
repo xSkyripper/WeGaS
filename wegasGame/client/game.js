@@ -8,6 +8,7 @@ var setEventHandlers = function () {
     //TODO:Restul handler-elor si interactiunilor dintre playeri
 
     {//client-related
+        game.stage.disableVisibilityChange = true;
         game.canvas.oncontextmenu = function (e) {
             e.preventDefault();// disable right click
         };
@@ -64,7 +65,12 @@ function onCreateUnit(data) {
 }
 
 function onMoveUnit(data) {
+    console.log('s-a miscat un unit inamic !!!!');
 
+    enemy.createdUnits[data.id].targetTile.x = data.targetTileX;
+    enemy.createdUnits[data.id].targetTile.y = data.targetTileY;
+    enemy.createdUnits[data.id].initialTargetTile.x = data.targetTileX;
+    enemy.createdUnits[data.id].initialTargetTile.y = data.targetTileY;
 }
 
 
@@ -100,7 +106,7 @@ function preload() {
 
 
 function create() {
-    //game.stage.disableVisibilityChange = true;
+
     map = new Map();
     selection = new Selection(game);
     socket = io.connect();
@@ -129,6 +135,7 @@ function update() {
             gui.updateGuiOverlap(me.createdUnits[i].unit);
         }
     }
+
     if (enemy != null) {
         for (var i = 0; i < enemy.createdUnits.length; i++) {
             enemy.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde

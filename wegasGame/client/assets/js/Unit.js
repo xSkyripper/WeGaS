@@ -29,7 +29,7 @@ var Unit = function (game, sprite, owner, hp, minAtk, maxAtk, ms, coins) {
 
 Unit.prototype.create = function (/*id,*/x, y) {
 
-    var toCreate = new Unit(this.game, this.sprite, /*this.id,*/ this.owner, this.hp, this.minAtk,this.maxAtk, this.ms, this.coins);
+    var toCreate = new Unit(this.game, this.sprite, /*this.id,*/ this.owner, this.hp, this.minAtk, this.maxAtk, this.ms, this.coins);
     //toCreate.id = ?
     toCreate.x = x;
     toCreate.y = y;
@@ -405,8 +405,15 @@ function moveUnits2() {
                 me.createdUnits[i].targetTile.y = tileMouseY;
                 me.createdUnits[i].initialTargetTile.x = tileMouseX;
                 me.createdUnits[i].initialTargetTile.y = tileMouseY;
+
+                socket.emit('move_unit', {
+                    id: i,
+                    targetTileX: tileMouseX,
+                    targetTileY: tileMouseY
+                });
             }
         }
+
     }
 }
 
