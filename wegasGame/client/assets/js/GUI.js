@@ -26,7 +26,19 @@ var GUI = function () {
 GUI.prototype.actionOnClickUnit1 = function () {
     console.log(me.name + ": Created a unit1 (footman)");
     var avTile = map.getAvailableTile(me.startTile);
-    me.createdUnits.push(me.units[0].create(avTile.x * 32 - 24, avTile.y * 32 - 24));
+    var newUnit = me.units[0].create(avTile.x * 32 - 24, avTile.y * 32 - 24);
+    me.createdUnits.push(newUnit);
+    socket.emit('create_unit', {
+        sprite: newUnit.sprite,
+        owner: newUnit.owner,
+        hp: newUnit.hp,
+        minAtk: newUnit.minAtk,
+        maxAtk: newUnit.maxAtk,
+        ms: newUnit.ms,
+        coins: newUnit.coins,
+        x: newUnit.x,
+        y: newUnit.y
+    });
 };
 
 GUI.prototype.actionOnClickUnit2 = function () {

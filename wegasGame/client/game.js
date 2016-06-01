@@ -19,90 +19,52 @@ var setEventHandlers = function () {
         socket.on('other_users', onOtherUsers);
         socket.on('new_player', onNewPlayer);
         socket.on('rem_player', onRemPlayer);
+
+        socket.on('create_unit', onCreateUnit);
+        socket.on('move_unit', onMoveUnit);
     }//end_server-related
 
 };
 
 function onIdentify(data) {
-    console.log('My name is ' + data.name);
-    me = new Player(0, 327, 391, data.name, 1000, []);
 
-    me.units.push(new Unit(game, 'unit1_1', 'unit1', me.name, 1, 100, 10, 100, 100));
+    me = new Player(data.id, data.startX, data.startY, data.name, 1000, []);
+    console.log('I am ' + data.name + " start: " + data.startX + " " + data.startY);
 
-    me.units.push(new Unit(game, 'unit2_1', 'unit2', me.name, 1, 100, 10, 150, 100));
+    me.units.push(new Unit(game, 'unit1_'.concat(data.id), me.name, 100, 5, 10, 100, 100));
 
-    me.units.push(new Unit(game, 'unit3_1', 'unit3', me.name, 1, 100, 10, 200, 100));
+    me.units.push(new Unit(game, 'unit2_'.concat(data.id), me.name, 80, 6, 11, 150, 120));
 
+    me.units.push(new Unit(game, 'unit3_'.concat(data.id), me.name, 150, 5, 15, 200, 200));
 
-//     var startTileMe = {
-//         x: map.layer.getTileX(me.startX+32),
-//         y: map.layer.getTileY(me.startY+32)
-//     };
-// //teste
-//     console.log("Veche libera"+map.rawGrid[startTileMe.x][startTileMe.y]+"X:="+startTileMe.x+"Y:="+startTileMe.y);
-//
-//     var availableTile = map.getAvailableTile(startTileMe);
-//
-//     var unitCreated = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-//
-//     me.createdUnits.push(unitCreated);
-//
-//     availableTile = map.getAvailableTile(startTileMe);
-//
-//     var unitCreated2 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-//
-//     me.createdUnits.push(unitCreated2);
-//
-//     availableTile = map.getAvailableTile(startTileMe);
-//
-//     var unitCreated3 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-//
-//     me.createdUnits.push(unitCreated3);
-//
-//     availableTile = map.getAvailableTile(startTileMe);
-//
-//     var unitCreated4 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-//
-//     me.createdUnits.push(unitCreated4);
-//
-//     availableTile = map.getAvailableTile(startTileMe);
-//
-//     var unitCreated5 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-//
-//     me.createdUnits.push(unitCreated5);
-//
-//     availableTile = map.getAvailableTile(startTileMe);
-//
-//     var unitCreated6 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-//
-//     me.createdUnits.push(unitCreated6);
-//
-//     availableTile = map.getAvailableTile(startTileMe);
-//
-//     var unitCreated7 = me.units[0].create(availableTile.x * 32-32, availableTile.y * 32-32);
-//     //
-//     // var unitCreated2 = me.units[1].create(391, 391);
-//     //
-//     // me.createdUnits.push(unitCreated2);
-//     //
-//
-//     me.createdUnits.push(unitCreated7);
-//sf teste
-    
 }
 
 function onOtherUsers(data) {
-    console.log('Other user online: ' + data.name);
-    enemy = new Player(1, data.name, 1000, []);
-    //enemy.createdUnits.push(new Unit(game, 'unit1_2', 1, enemy.name, 1, 320, 384, 10, 10, 10, 10))
+    enemy = new Player(data.id, data.startX, data.startY, data.name, 1000, []);
+    console.log('My Enemy (other_users): ' + data.name + " start: " + data.startX + " " + data.startY);
 }
 
 function onNewPlayer(data) {
-    console.log('A new player connected: ' + data.name);
+    enemy = new Player(data.id, data.startX, data.startY, data.name, 1000, []);
+    console.log('My Enemy (new_player): ' + data.name + " start: " + data.startX + " " + data.startY);
 }
 
 function onRemPlayer(data) {
-    console.log('A player disconnected: ' + data.name);
+    console.log('Enemy disconnected: ' + data.name);
+}
+
+function onCreateUnit(data) {
+    console.log('un inamic a facut un unit !!!');
+
+    var redSprite = data.sprite;
+    redSprite[redSprite.length - 1] = '2';
+    redSprite[redSprite.length - 2] = '_';
+    var toCreate = new Unit(game, redSprite, data.owner, data.hp, data.minAtk, data.maxAtk, data.ms, data.coins);
+    enemy.createdUnits.push(toCreate.create(data.x, data.y));
+}
+
+function onMoveUnit(data) {
+
 }
 
 
@@ -166,22 +128,32 @@ function update() {
             me.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
             gui.updateGuiOverlap(me.createdUnits[i].unit);
         }
-        // if (game.physics.arcade.overlap(me.createdUnits[0].unit, me.createdUnits[1].unit)) {
-        //     console.log('Se ating !');
-        // }
     }
-
+    if (enemy != null) {
+        for (var i = 0; i < enemy.createdUnits.length; i++) {
+            enemy.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
+            gui.updateGuiOverlap(enemy.createdUnits[i].unit);
+        }
+    }
+    // if (game.physics.arcade.overlap(me.createdUnits[0].unit, me.createdUnits[1].unit)) {
+    //     console.log('Se ating !');
+    // }
 }
+
 
 function render() {
     /* Debugging Zone */
+    //game.debug.bodyInfo(me.createdUnits[0].unit, 16, 24);
+    //game.debug.spriteInfo(me.createdUnits[0].unit, 200, 200);
 
     if (me != null) {
         for (var i = 0; i < me.createdUnits.length; i++)
             game.debug.body(me.createdUnits[i].unit);
+    }
 
-        //game.debug.bodyInfo(me.createdUnits[0].unit, 16, 24);
-        //game.debug.spriteInfo(me.createdUnits[0].unit, 200, 200);
+    if (enemy != null) {
+        for (var i = 0; i < enemy.createdUnits.length; i++)
+            game.debug.body(enemy.createdUnits[i].unit);
     }
 }
 

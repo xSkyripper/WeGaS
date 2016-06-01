@@ -72,6 +72,7 @@ Selection.prototype.update = function () {
         var Y = map.layer.getTileY(this.startPos.y);
 
         console.log("RawGrid la " + X + " " + Y + " este " + map.rawGrid[Y][X]);
+        console.log("Pozitie fixa: " + this.startPos.x + " " + this.startPos.y);
     }
 };
 

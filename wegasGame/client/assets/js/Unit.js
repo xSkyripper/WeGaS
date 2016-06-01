@@ -1,7 +1,6 @@
-var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
-    this.id = id;
+var Unit = function (game, sprite, owner, hp, minAtk, maxAtk, ms, coins) {
+    //this.id = id;
     this.owner = owner;
-    this.team = team;
     this.game = game;
 
     this.x = 0;
@@ -11,7 +10,8 @@ var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
     this.sprite = sprite;
 
     this.hp = hp;
-    this.atk = atk;
+    this.minAtk = minAtk;
+    this.maxAtk = maxAtk;
     this.ms = ms;
     this.coins = coins;
 
@@ -27,9 +27,10 @@ var Unit = function (game, sprite, id, owner, team, hp, atk, ms, coins) {
 //     this.markerUnit = this.game.add.graphics();
 // };
 
-Unit.prototype.create = function (x, y) {
+Unit.prototype.create = function (/*id,*/x, y) {
 
-    var toCreate = new Unit(this.game, this.sprite, this.id, this.owner, this.team, this.hp, this.atk, this.ms, this.coins);
+    var toCreate = new Unit(this.game, this.sprite, /*this.id,*/ this.owner, this.hp, this.minAtk,this.maxAtk, this.ms, this.coins);
+    //toCreate.id = ?
     toCreate.x = x;
     toCreate.y = y;
     toCreate.unit = this.game.add.sprite(x, y, toCreate.sprite, 4);
