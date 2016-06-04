@@ -1,0 +1,137 @@
+<canvas id="ctx" width="1350" height="600" style="border:1px solid #000000;"></canvas>
+ 
+<script>  
+var img = new Image();
+img.src = "bat.png";
+var map =  new Image();
+map.src = "map.png";
+
+var ctx = document.getElementById("ctx").getContext("2d");
+ctx.font = '30px Arial';
+ 
+var x = 500;
+var spdX = 3;
+var y = 225;
+var spdY = 3;
+var mouseX = 500;
+var mouseY = 225;
+var v1 = 0;
+var v2 = 0; 
+var OA = 0;
+var OB = 0;
+var OF = 0;
+var flag = 1;
+var x1 = 0;
+var myAimAngle = 0;
+
+var directionMod
+
+document.onclick = function(mouse){
+	console.log("ai dat click");
+	mouseX = mouse.clientX-30;
+    mouseY = mouse.clientY-30;
+    myAimAngle = Math.atan2((mouseY-y),(mouseX-x)) / Math.PI * 180;
+    console.log("Aim angle:"+myAimAngle);
+   // mouseX = 225;
+    //mouseY = 225;
+    update(mouseX,mouseY);
+}
+setInterval(update,75);
+
+function getDirection(){
+	var aimAngle = myAimAngle;
+    if(aimAngle < 0)
+     	aimAngle = 360 + aimAngle;
+        var direction;
+
+
+        if(aimAngle >= 355 && aimAngle <=360 || aimAngle >= 0 && aimAngle <= 15)
+            direction = 2;	//draw right
+        else if(aimAngle > 15 && aimAngle < 75)
+            direction = 5;	//draw right
+        if(aimAngle >= 75 && aimAngle <= 110)	//down
+            direction = 4;
+        else if(aimAngle > 110 && aimAngle < 160)
+            direction = 6;	//draw right
+        else if(aimAngle >= 160 && aimAngle < 195)	//left
+            direction = 3;
+        else if(aimAngle >= 195 && aimAngle < 247)	//left
+            direction = 7;
+        else if(aimAngle >= 247 && aimAngle < 295)	//left
+            direction = 0;
+        else if(aimAngle >= 295 && aimAngle < 355)	//left
+            direction = 8;
+        console.log("direction = "+ aimAngle);
+   	return direction;
+}
+
+function setSpriteI(flag,directionSprite){
+	ctx.save();
+		if(directionMod == 0)
+       		ctx.drawImage(img,0,(flag*img.height)/11.5,img.width/5,img.height/13,x,y,75,75);
+       	if(directionMod == 4)
+       		ctx.drawImage(img,(4*img.width)/5,(flag*img.height)/11.5,img.width/5,img.height/13,x,y,85,85);
+       	if(directionMod == 2)
+       		ctx.drawImage(img,(2*img.width)/5,(flag*img.height)/11.6,img.width/5,img.height/11,x,y,85,85);
+       	if(directionMod == 3){
+       		ctx.scale(-1,1);
+       		ctx.drawImage(img,(2*img.width)/5,(flag*img.height)/11.6,img.width/5,img.height/11,-x-60,y,85,85);
+       	}
+       	if(directionMod == 5){
+       		ctx.drawImage(img,(3*img.width)/5,(flag*img.height)/11.6,img.width/5,img.height/11,x,y,85,85);
+       	}
+       	if(directionMod == 6){
+       		ctx.scale(-1,1);
+       		ctx.drawImage(img,(3*img.width)/5,(flag*img.height)/11.6,img.width/5,img.height/11,-x-60,y,85,85);
+       	}
+       	if(directionMod == 7){
+       		ctx.scale(-1,1);
+       		ctx.drawImage(img,(img.width)/5,(flag*img.height)/11.6,img.width/5,img.height/11,-x-60,y,85,85);
+       	}
+		if(directionMod == 8){
+       		ctx.drawImage(img,(img.width)/5,(flag*img.height)/11.6,img.width/5,img.height/11,x,y,85,85);
+       	}
+    ctx.restore();
+}
+function update(){
+		ctx.clearRect(0,0,1350,600)
+		ctx.drawImage(map,0,0,2400,1600,0,0,2700,1200);
+	
+		if(x != x1){
+			flag ++;
+			flag =  flag % 5;
+			if(flag == 0){
+				flag++;				
+			}
+		}
+
+		directionMod = getDirection();
+		/*if(x == x1){			// for attack
+			if(flag % 8 == 0)
+				flag = 4;
+			flag ++;
+
+		}*/
+		OF = Math.sqrt((mouseX-x)*(mouseX-x) + (mouseY-y)*(mouseY-y));
+  		OA = Math.abs(mouseX-x);
+		OB = Math.abs(mouseY-y);
+		v2 = OA/OF*6;//OA
+		v1 = OB/OF*6;
+     	 x1 = x;  
+		if(x  < mouseX)
+			x += v2;
+		if(y < mouseY)
+			y += v1;
+		if(x  > mouseX)
+			x -= v2;
+		if(y > mouseY)
+			y -= v1;
+		if(x != x1){
+			setSpriteI(flag,directionMod);
+		}
+		if(x == x1){
+			setSpriteI(0,directionMod);
+		}	
+}
+ 
+</script>
