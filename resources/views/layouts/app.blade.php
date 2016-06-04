@@ -72,12 +72,12 @@
 
                     <li><a target="_blank" href="http://127.0.0.1:2000/{{Auth::user()->username}}">Game</a></li>
                     <li><a href="{{ url('/shop') }}">Shop</a></li>
-                    <li><a href="{{ url('/skills') }}">Skills Tree</a></li>
+                    <li><a href="{{ url('/skills') }}">Skills</a></li>
                     <li><a href="{{ url('/help') }}">Help</a></li>
                     <li><a href="{{ url('/help') }}">About</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->name }} <span class="caret"></span>
+                            {{ Auth::user()->name }} ( Lvl.{{ Auth::user()->lvl }} )<span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">

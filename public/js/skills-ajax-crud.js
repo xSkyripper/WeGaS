@@ -29,8 +29,11 @@ $(document).ready(function () {
                 // skill_ua += '<button class="btn btn-success btn-sm pull-right add-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Add Skill</button></div></li>';
 
                 var skill_ua = '<tr id="skill' + skill.id + '" class="missing-skill">';
+                //<td><img src="{{asset('img/'.$skill->skill_id.'.png')}}" alt=""></td>
+                skill_ua += '<td><img src="/img/' + skill.skill_id + '.png"></td>';
                 skill_ua += '<td>' + skill.name + '</td>';
                 skill_ua += '<td>' + skill.description + '</td>';
+                skill_ua += '<td>Lvl. ' + skill.lvl + '</td>';
                 skill_ua += '<td>' + '<button class="btn btn-success btn-sm pull-right add-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Add Skill</button></td></tr>';
 
                 $('#skill' + skill.id).remove();
@@ -76,8 +79,10 @@ $(document).ready(function () {
 
 
                 var skill_av = '<tr id="skill' + skill.id + '">';
+                skill_av += '<td><img src="/img/' + skill.skill_id + '.png"></td>';
                 skill_av += '<td>' + skill.name + '</td>';
                 skill_av += '<td>' + skill.description + '</td>';
+                skill_av += '<td>Lvl. ' + skill.lvl + '</td>';
                 skill_av += '<td><button class="btn btn-danger btn-sm pull-right delete-skill" value="' + JSON.stringify(skill).replace(/"/g, "&quot;") + '">Delete Skill</button></td></tr>';
 
                 $('#skill' + skill.id).remove();

@@ -14,10 +14,12 @@ class CreateUnitsTable extends Migration
     {
         Schema::create('units', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('unit_id',32);
             $table->string('name', 32);
             $table->string('description', 512);
             $table->integer('type');
-            $table->integer('atk');
+            $table->integer('min_atk');
+            $table->integer('max_atk');
             $table->integer('hp');
             $table->integer('ms');
             $table->integer('lvl');

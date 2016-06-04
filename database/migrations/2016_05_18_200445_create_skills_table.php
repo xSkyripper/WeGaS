@@ -14,12 +14,15 @@ class CreateSkillsTable extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('skill_id',32);
             $table->string('name', 32);
             $table->string('description', 512);
-            $table->integer('type');
-            $table->integer('value');
+            $table->integer('gold');
+            $table->integer('xp');
+            $table->integer('hp');
+            $table->integer('atk');
+            $table->integer('ms');
             $table->integer('lvl');
-            $table->integer('cost');
             
             $table->timestamps();
         });

@@ -34,9 +34,14 @@ class SkillsController extends Controller
             return Response::json(['error' => 'skillInexistent', 'msg' => 'Skill no longer exists !'], 413);
         }
 
-        if ($user->sp <= 0) {
-            return Response::json(['error' => 'noSp', 'msg' => 'Not enough skill points.'], 412);
+        if ($skill->lvl > $user->lvl) {
+            return Response::json(['error' => 'noLvl', 'msg' => 'Your level is too low for this skill !'], 412);
         }
+
+        if ($user->sp <= 0) {
+            return Response::json(['error' => 'noSp', 'msg' => 'Not enough skill points !'], 412);
+        }
+
 
         $skill = $user->skills()->sync([$skill_id], false);
 
@@ -54,6 +59,7 @@ class SkillsController extends Controller
         if ($skill == null) {
             return Response::json(['error' => 'inexistentSkill', 'msg' => 'Skill no longer exists !'], 413);
         }
+
 
         $skill = $user->skills()->detach($skill_id);
         $user->sp++;

@@ -19,3 +19,5 @@ Route::post('/skills/{skill_id?}','SkillsController@store');
 Route::delete('/skills/{skill_id?}','SkillsController@remove');
 
 Route::get('/shop','UnitsController@index');
+Route::post('/shop/{unit}','UnitsController@store');
+Route::delete('/shop/{unit}','UnitsController@remove');
