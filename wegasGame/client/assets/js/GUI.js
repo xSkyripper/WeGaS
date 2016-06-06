@@ -3,13 +3,13 @@ var GUI = function () {
     this.gui = game.add.group();
 
     this.backgroundBar = game.add.image(700, 0, 'back');
-    this.miniMap = game.add.image(750, 20, 'mapWegas');
+    //this.miniMap = game.add.image(750, 20, 'mapWegas');
     this.textCoins = game.add.text(750, 230, "Coins: ");
     this.backgroundBar.fixedToCamera = true;
-    this.miniMap.fixedToCamera = true;
+    //this.miniMap.fixedToCamera = true;
     this.textCoins.fixedToCamera = true;
     this.gui.add(this.backgroundBar);
-    this.gui.add(this.miniMap);
+  // this.gui.add(this.miniMap);
     this.gui.add(this.textCoins);
 
     this.buttonUnit1 = game.add.button(715, 500, 'unit1_i', this.actionOnClickUnit1, this);

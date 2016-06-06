@@ -160,13 +160,13 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-wegas', {
 
 
 function preload() {
-    game.load.tilemap('map', '/client/assets/mapWegasJSON.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('map', '/client/assets/summerWegassWar.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', '/client/assets/img/summer.png');
 
     game.load.image('unit1_i', '/client/assets/img/unit1_i.png');
     game.load.image('unit2_i', '/client/assets/img/unit2_i.png');
     game.load.image('unit3_i', '/client/assets/img/unit3_i.png');
-    game.load.image('mapWegas', '/client/assets/img/mapWegas.png');
+    game.load.image('mapWegas', '/client/assets/img/summerWegassWar.png');
     game.load.image('back', '/client/assets/img/guiBack.png');
 
     //TODO: Schimba baza de date (units,rooms)
