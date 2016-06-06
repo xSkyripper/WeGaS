@@ -477,7 +477,6 @@ Unit.prototype.updateAlive = function()
      if(this.isAlive)
      {
             this.hpBar.width=this.hp/this.maxHp*50;
-            //this.hpBar.drawRect(15, 7, 50, 7);
      }
     else
      {

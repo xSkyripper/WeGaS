@@ -26,6 +26,21 @@ app.get('/:room/:user/', function (req, res) {
 
 });
 
+
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : '',
+    database : 'test'
+});
+
+connection.connect(function(err) {
+    // connected! (unless `err` is set)
+    if (err)
+        throw err;
+     console.log('You are now connected...')
+});
 ////////////////////////////////////////////////////////////
 
 var playerNo = 0;
@@ -51,7 +66,9 @@ var setEventHandlers = function () {
 
 function onSocketConnect(client) {
     if (playerNo == 1) {
+
         player1.id = client.id;
+        //getUserSkill(player1.name);
         console.log('Player 1 connected ! Name = ' + player1.name);
         client.emit('identify', {id: playerNo, name: player1.name, startX: 455, startY: 135});
     }
@@ -115,7 +132,32 @@ function onMoveUnit2(data) {
     });
 }
 
+function getUserUnits(user)
+{
+    connection.query('SELECT * FROM unit_user u  join users us  on u.id = us.user_id  ',function(err,rows)
+    {
+        if(err)
+            throw err;
+        console.log('Data received from Db:\n');
+        console.log(rows);
+    });
+}
+
+function getUserSkill(user)
+{
+    connection.query('SELECT * FROM unit_user where user_id='+user,function(err,rows)
+    {
+        if(err)
+            throw err;
+        console.log('Data received from Db:\n');
+        console.log(rows);
+        //transformare in json
+       // var  json = JSON.stringify(rows);
+    });
+}
+
 initServer();
+
 
 
 
