@@ -4,19 +4,19 @@ var Map = function () {
     //adaugare mapJson & tiles
     this.map.setCollisionBetween(301, 332);
     this.map.setCollisionBetween(17, 86);
-    this.map.setCollisionBetween(103, 124);
-    this.map.setCollisionBetween(128, 140);
-    this.map.setCollisionBetween(143, 165);
+    this.map.setCollisionBetween(103, 126);
+    this.map.setCollisionBetween(128, 142);
+    this.map.setCollisionBetween(143, 166);
     this.map.setCollisionBetween(168, 178);
     this.map.setCollisionBetween(211, 212);
     this.map.setCollisionBetween(200, 221);
-    this.map.setCollisionBetween(209, 230);
-    this.map.setCollisionBetween(233, 235);
+    this.map.setCollisionBetween(209, 232);
+    this.map.setCollisionBetween(233, 236);
     //adaugare coliziuni
 
     this.layer = this.map.createLayer('Layer1');
     this.layer.resizeWorld();
-    //this.layer.debug = true;
+    this.layer.debug = true;
     //creare layer
 
     //collisionMatrix
