@@ -80,13 +80,13 @@ Unit.prototype.create = function (id, x, y) {
         y: Y
     };
 
+    toCreate.targetAttack = {
+        x: 0,
+        y: 0
+    };
+
     toCreate.initialTargetTile = toCreate.targetTile;//pozitia unde trebuie sa ajung
 
-
-    /*
-     unit ~= markerUnit
-     */
-    toCreate.unit.animations.frame = 4;
     return toCreate;
 };
 
@@ -445,7 +445,7 @@ function moveUnits() {
 }
 
 function moveUnits2() {
-    if (game.input.activePointer.button == 2) {
+    if (game.input.activePointer.button == 2 && Phaser.Keyboard.SHIFT.isDown) {
         if (game.input.activePointer.x >= 700) { //daca pointerul este in GUI, nu-l lasa sa dea move-uri
             return;
         }
@@ -472,32 +472,19 @@ function moveUnits2() {
     }
 }
 
+function attackUnits(){
+
+    if(game.input.activePointer == 1){
+        if(game.input.activePointer.x >=700){
+            return;
+        }
+        else{
+
+        }
+    }
+}
+
 Unit.prototype.updateAlive = function () {
-
-    /*toCreate.hpBar = this.game.add.graphics(0, 0);
-     toCreate.hpBar.lineStyle(2, 0x000000, 1);
-     toCreate.hpBar.beginFill(0xe60000, 0.8);
-     toCreate.hpBar.drawRect(15, 7, 50, 7);
-     toCreate.unit.addChild(toCreate.hpBar);*/
-
-
-    // if (this.hp <= 0 && this.isAlive) {
-    //     this.isAlive = false;
-    //     this.hpBarContainer.destroy(1);
-    //     this.hpBar.destroy(1);
-    //     this.unit.play('die');
-    // }
-    //
-    // if (this.isAlive) {
-    //     this.hpBar.width = this.hp / this.maxHp * 32;
-    // } else {
-    //
-    //     for(var i=this.id+1;i<me.createdUnits.length;i++){
-    //         me.createdUnits[i].id --;
-    //     }
-    //     me.createdUnits.splice(this.id,1);
-    //
-    // }
 
     if (this.isAlive) {
         if (this.hp <= 0) {
@@ -525,6 +512,10 @@ Unit.prototype.updateAlive = function () {
         if (this.unit != null)
             this.unit.animations.frame = 60;
     }
+}
+
+Unit.prototype.updateAttack = function () {
+
 }
 
 window.Unit = Unit;
