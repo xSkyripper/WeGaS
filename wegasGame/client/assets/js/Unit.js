@@ -9,6 +9,7 @@ var Unit = function (game, sprite, owner, hp, minAtk, maxAtk, ms, coins) {
     this.lastDir = 0;
     this.sprite = sprite;
 
+    this.maxHp = hp;
     this.hp = hp;
     this.minAtk = minAtk;
     this.maxAtk = maxAtk;
@@ -45,6 +46,22 @@ Unit.prototype.create = function (id, x, y) {
     toCreate.unit.body.setSize(32, 32, 25, 25);
     toCreate.markerUnit.x = map.layer.getTileX(toCreate.unit.x) * 32;
     toCreate.markerUnit.y = map.layer.getTileY(toCreate.unit.y) * 32;
+
+
+    toCreate.hpBarContainer = this.game.add.graphics(0, 0);
+    toCreate.hpBarContainer.lineStyle(2, 0x000000, 1);
+    toCreate.hpBarContainer.beginFill(0x000000, 0.8);
+    toCreate.hpBarContainer.drawRect(15, 7, 47, 7);
+
+    toCreate.hpBar = this.game.add.graphics(0, 0);
+    toCreate.hpBar.lineStyle(2, 0x000000, 1);
+    toCreate.hpBar.beginFill(0xe60000, 0.8);
+    toCreate.hpBar.drawRect(15, 7, 50, 7);
+
+
+    toCreate.unit.addChild(toCreate.hpBarContainer);
+    toCreate.unit.addChild(toCreate.hpBar);
+
 
     var X = map.layer.getTileX(toCreate.markerUnit.x + 32);
     var Y = map.layer.getTileY(toCreate.markerUnit.y + 32);
@@ -204,6 +221,7 @@ Unit.prototype.update = function () {
 
 //TODO: fix blocaj la mai multe unitati ? 
 Unit.prototype.update2 = function () {
+    this.updateAlive();
     this.game.physics.arcade.collide(this.unit, map.layer);
     var X = map.layer.getTileX(this.markerUnit.x + 32);
     var Y = map.layer.getTileX(this.markerUnit.y + 32);
@@ -242,6 +260,7 @@ Unit.prototype.update2 = function () {
 
                         this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
                         this.unit.animations.stop(true, this);
+
                         // this.isMoving = false;
                         break;
                     }
@@ -263,6 +282,8 @@ Unit.prototype.update2 = function () {
                         this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
                         this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
                         this.isMoving = false;
+                        this.hp -= 5;
+                        console.log('hp:'+this.hp);
 
                     }, this);
                     break;
@@ -444,6 +465,27 @@ function moveUnits2() {
         }
 
     }
+}
+
+Unit.prototype.updateAlive = function()
+{
+
+    /*toCreate.hpBar = this.game.add.graphics(0, 0);
+    toCreate.hpBar.lineStyle(2, 0x000000, 1);
+    toCreate.hpBar.beginFill(0xe60000, 0.8);
+    toCreate.hpBar.drawRect(15, 7, 50, 7);
+    toCreate.unit.addChild(toCreate.hpBar);*/
+
+
+     if(this.isAlive)
+     {
+            this.hpBar.width=this.hp/this.maxHp*50;
+     }
+    else
+     {
+         //TODO:caz in care moare (sprite-> mort, scoatere de bara si din selected si din created units)
+         // dupa 2 secunde (setTimeInterval) sa dispara de tot de pe harta
+     }
 }
 
 window.Unit = Unit;
