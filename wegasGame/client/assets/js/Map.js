@@ -204,6 +204,80 @@ Map.prototype.getAvailableTile = function (tile)
         }
 
     }//sf else -> caut in jurul pozitiei "tile" curente
+}
+
+Map.prototype.isEnemy = function (x,y)//la poztitia asta este inamic pe tile=ul respectiv
+{
+    for(var i=0;i<enemy.createdUnits.length;i++)
+        if(x == this.layer.getTileX(enemy.createdUnits[i].x) && y== this.layer.getTileY(enemy.createdUnits[i].y))
+            return true;
+    return false;
+}
+
+    Map.prototype.getEnemyTile = function (tile)  /// tile este pozitita unitului
+    {
+        var tileY = tile.y;
+        var tileX = tile.x;
+        
+            var l = 2;
+            var limit = 6;
+
+            var tileYcurrent = tileY - 1;
+            var tileXcurrent = tileX - 1;
+
+            while (1) {
+                for (var i = tileYcurrent; i <= tileYcurrent + l; i++)
+                {
+                    if (this.rawGrid[i][tileXcurrent] == 0 && this.isEnemy(tileXcurrent,i)) {
+                        console.log("exista eney -------"+this.isEnemy(tileXcurrent,i));
+                        var resultTile = {x: 0, y: 0};
+                        resultTile.y = i;
+                        resultTile.x = tileXcurrent;
+                        //console.log("Am pus  "+i+" "+tileXcurrent);
+                        return resultTile;
+                    }
+
+                    if (this.rawGrid[i][tileXcurrent + l] == 0 && this.isEnemy(tileXcurrent+l,i)) {
+                        console.log("exista eney -------"+this.isEnemy(tileXcurrent+l,i));
+                        var resultTile = {x: 0, y: 0};
+                        resultTile.y = i;
+                        resultTile.x = tileXcurrent + l;
+                        //console.log("Am pus  "+i+" "+tileXcurrent+"opus");
+                        return resultTile;
+                    }
+                }
+
+                for (var j = tileXcurrent; j <= tileXcurrent + l; j++)
+                {
+                    if (this.rawGrid[tileYcurrent][j] == 0 && this.isEnemy(j,tileYcurrent[j]))
+                    {
+                        console.log("exista eney -------"+this.isEnemy(j,tileYcurrent[j]));
+                        var resultTile = {x: 0, y: 0};
+                        resultTile.y = tileYcurrent;
+                        resultTile.x = j;
+                        //console.log("Am pus  "+j+" "+tileYcurrent);
+                        return resultTile;
+                    }
+
+                    if (this.rawGrid[tileYcurrent+l][j] == 0 && this.isEnemy(j,tileYcurrent+l)) {
+                        console.log("exista eney -------"+this.isEnemy(j,tileYcurrent+l));
+                        var resultTile = {x: 0, y: 0};
+                        resultTile.y = tileYcurrent + l;
+                        resultTile.x = j;
+                        //console.log("Am pus  "+j+" "+tileYcurrent+"opus");
+                        return resultTile;
+                    }
+
+                }
+
+                l = l + 2;
+                
+                tileYcurrent = tileYcurrent - 1; //se cauta din stanga sus
+                tileXcurrent = tileXcurrent - 1;
+
+                if(l>limit) return tile;//daca nu a gasit si a depasit range-ul
+            }
+
 };
 
 window.Map = Map;
