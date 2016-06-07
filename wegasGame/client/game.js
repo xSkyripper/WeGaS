@@ -162,8 +162,6 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-wegas', {
 
 
 function preload() {
-
-
     game.load.image('logo','assets/img/unit1_i.png');
 }
 

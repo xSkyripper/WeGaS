@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="full" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,6 +22,11 @@
             font-family: 'Lato';
         }
 
+        .full {
+            background: url({{asset('img/main-back.jpg')}}) no-repeat center center fixed;
+            background-size: cover;
+        }
+
         .fa-btn {
             margin-right: 6px;
         }
@@ -32,6 +37,20 @@
 
         .progress-bar {
             width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
+        }
+
+        .navbar-default {
+            border-bottom:2px solid #777;
+            font-size:15px;
+            background: transparent;
+        }
+
+        .navbar-default .navbar-nav li a:hover{
+            color:white;
+        }
+
+        #app-layout{
+            background:transparent;
         }
     </style>
 
@@ -63,7 +82,11 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/home') }}">Home</a></li>
+                <li><a href="{{ url('/home') }}">Home & Chat</a></li>
+                @if(!Auth::guest())
+                    <li><a href="{{ url('/shop') }}">Gold: {{Auth::user()->gold}}</a></li>
+                    <li><a href="{{ url('/skills') }}">Skill Points: {{Auth::user()->sp}}</a></li>
+                @endif
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -76,7 +99,7 @@
                     <li><a href="{{ url('/help') }}">About</a></li>
                 @else
 
-                    <li><a target="_blank" href="{{ url('/rooms') }}">Game Rooms</a></li>
+                    <li><a target="_blank" href="{{ url('/rooms') }}">Rooms</a></li>
                     <li><a href="{{ url('/shop') }}">Shop</a></li>
                     <li><a href="{{ url('/skills') }}">Skills</a></li>
                     <li><a href="{{ url('/help') }}">Help</a></li>
@@ -98,7 +121,7 @@
 
         @if(!Auth::guest())
             <div class="progress">
-                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                <div class="progress-bar progress-bar-striped active" role="progressbar"
                      aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
                     Lvl. {{Auth::user()->lvl}}
                     - {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}
