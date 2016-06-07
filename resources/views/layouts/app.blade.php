@@ -36,7 +36,9 @@
         }
 
         .progress-bar {
-            width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
+            @if(!Auth::guest())
+             width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
+            @endif
         }
 
         .navbar-default {

@@ -68,8 +68,11 @@ function onSocketConnect(client) {
     if (playerNo == 1) {
 
         player1.id = client.id;
-        //getUserSkill(player1.name);
         console.log('Player 1 connected ! Name = ' + player1.name);
+        //TEST FUNCTION DB
+        //getUserUnits(player1.name);
+        getUserSkill(player1.name);
+        //
         client.emit('identify', {id: playerNo, name: player1.name, startX: 455, startY: 135});
     }
         
@@ -134,7 +137,8 @@ function onMoveUnit2(data) {
 
 function getUserUnits(user)
 {
-    connection.query('SELECT * FROM unit_user u  join users us  on u.id = us.user_id  ',function(err,rows)
+    //tre sa fii nebun sa pui campurile asa ! tinanad cont ca idu apare unic mereu!
+    connection.query('SELECT * FROM unit_user Uu join users Us  on Uu.user_id = Us.id  join units Un on Un.id=Uu.unit_id  where Us.username=?',user,function(err,rows)
     {
         if(err)
             throw err;
@@ -145,7 +149,7 @@ function getUserUnits(user)
 
 function getUserSkill(user)
 {
-    connection.query('SELECT * FROM unit_user where user_id='+user,function(err,rows)
+ connection.query('SELECT * FROM skill_user Su join users Us  on Su.user_id = Us.id  join skills Sk on Sk.id=Su.skill_id  where Us.username=?',user,function(err,rows)
     {
         if(err)
             throw err;
