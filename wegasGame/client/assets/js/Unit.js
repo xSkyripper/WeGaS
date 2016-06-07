@@ -30,6 +30,9 @@ var Unit = function (game, sprite, owner, hp, minAtk, maxAtk, ms, coins) {
 
 Unit.prototype.create = function (id, x, y) {
 
+    var graphics = game.add.graphics(0, 0);
+    graphics.lineStyle(2, 0x0000FF, 1);
+    graphics.drawRect(50, 250, 100, 100);
     var toCreate = new Unit(this.game, this.sprite, /*this.id,*/ this.owner, this.hp, this.minAtk, this.maxAtk, this.ms, this.coins);
     toCreate.id = id;
     toCreate.x = x;
