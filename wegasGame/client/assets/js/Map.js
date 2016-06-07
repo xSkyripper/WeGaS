@@ -201,15 +201,15 @@ Map.prototype.getAvailableTile = function (tile) {
     }//sf else -> caut in jurul pozitiei "tile" curente
 };
 
-Map.prototype.isEnemy = function (tile)//la poztitia asta este inamic pe tile=ul respectiv
+Map.prototype.isEnemy = function (tile, player)//la poztitia asta este inamic pe tile=ul respectiv
 {
-    if (enemy != null)
-        for (var i = 0; i < enemy.createdUnits.length; i++) {
-            var X = map.layer.getTileX(enemy.createdUnits[i].markerUnit.x + 32);
-            var Y = map.layer.getTileX(enemy.createdUnits[i].markerUnit.y + 32);
+    if (player != null)
+        for (var i = 0; i < player.createdUnits.length; i++) {
+            var X = map.layer.getTileX(player.createdUnits[i].markerUnit.x + 32);
+            var Y = map.layer.getTileX(player.createdUnits[i].markerUnit.y + 32);
 
             if (tile.x == X && tile.y == Y) {
-                return {is: true, unit: enemy.createdUnits[i]};
+                return {is: true, unit: player.createdUnits[i]};
             }
         }
 
@@ -217,7 +217,7 @@ Map.prototype.isEnemy = function (tile)//la poztitia asta este inamic pe tile=ul
 };
 
 
-Map.prototype.getEnemyTile = function (tile, range)  /// tile este pozitita unitului
+Map.prototype.getEnemyTile = function (tile, range, player)  /// tile este pozitita unitului
 {
     var tileY = tile.y - range;
     var tileX = tile.x - range;
@@ -225,7 +225,7 @@ Map.prototype.getEnemyTile = function (tile, range)  /// tile este pozitita unit
 
     for (var i = tileX; i < tileX + n; i++)
         for (var j = tileY; j < tileY + n; j++) {
-            var checkEnemy = this.isEnemy({x: i, y: j});
+            var checkEnemy = this.isEnemy({x: i, y: j}, player);
             if (checkEnemy.is) {
                 var resultTile = {x: 0, y: 0};
                 resultTile.x = i;

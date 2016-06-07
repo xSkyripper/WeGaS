@@ -27,19 +27,19 @@ app.get('/:room/:user/', function (req, res) {
 });
 
 
-var mysql      = require('mysql');
+var mysql = require('mysql');
 var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : '',
-    database : 'test'
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'test'
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
     // connected! (unless `err` is set)
     if (err)
         throw err;
-     console.log('You are now connected...')
+    console.log('You are now connected...')
 });
 ////////////////////////////////////////////////////////////
 
@@ -75,7 +75,7 @@ function onSocketConnect(client) {
         //
         client.emit('identify', {id: playerNo, name: player1.name, startX: 455, startY: 135});
     }
-        
+
     if (playerNo == 2) {
         player2.id = client.id;
         console.log('Player 2 connected ! Name = ' + player2.name);
@@ -88,6 +88,7 @@ function onSocketConnect(client) {
     client.on('create_unit', onCreateUnit);
     client.on('move_unit', onMoveUnit);
     client.on('move_unit2', onMoveUnit2);
+    client.on('attack_unit', onAttackUnit);
 }
 
 function onSocketDisconnect() {
@@ -135,28 +136,33 @@ function onMoveUnit2(data) {
     });
 }
 
-function getUserUnits(user)
-{
+function onAttackUnit(data) {
+    console.log('tre sa transmit ca se ataca o unitate');
+
+    this.broadcast.emit('attack_unit', {
+        id: data.id,
+        damage: data.damage
+    });
+}
+
+function getUserUnits(user) {
     //tre sa fii nebun sa pui campurile asa ! tinanad cont ca idu apare unic mereu!
-    connection.query('SELECT * FROM unit_user Uu join users Us  on Uu.user_id = Us.id  join units Un on Un.id=Uu.unit_id  where Us.username=?',user,function(err,rows)
-    {
-        if(err)
+    connection.query('SELECT * FROM unit_user Uu join users Us  on Uu.user_id = Us.id  join units Un on Un.id=Uu.unit_id  where Us.username=?', user, function (err, rows) {
+        if (err)
             throw err;
         console.log('Data received from Db:\n');
         console.log(rows);
     });
 }
 
-function getUserSkill(user)
-{
- connection.query('SELECT * FROM skill_user Su join users Us  on Su.user_id = Us.id  join skills Sk on Sk.id=Su.skill_id  where Us.username=?',user,function(err,rows)
-    {
-        if(err)
+function getUserSkill(user) {
+    connection.query('SELECT * FROM skill_user Su join users Us  on Su.user_id = Us.id  join skills Sk on Sk.id=Su.skill_id  where Us.username=?', user, function (err, rows) {
+        if (err)
             throw err;
         console.log('Data received from Db:\n');
         console.log(rows);
         //transformare in json
-       // var  json = JSON.stringify(rows);
+        // var  json = JSON.stringify(rows);
     });
 }
 

@@ -52,29 +52,60 @@ Unit.prototype.create = function (id, x, y) {
     toCreate.attLeft.onLoop.add(function () {
         if (toCreate.targetUnit != null) {
             console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
-            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
-
+            if (toCreate.targetUnit.owner == enemy.name) {
+                console.log('a meu ataca un inamic');
+                var damage = Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+                toCreate.targetUnit.hp -= damage;
+                socket.emit('attack_unit', {
+                    id: toCreate.targetUnit.id,
+                    damage: damage
+                });
+            }
         }
         console.log('am facut un loop de left')
     }, this);
     toCreate.attRight.onLoop.add(function () {
         if (toCreate.targetUnit != null) {
             console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
-            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+            if (toCreate.targetUnit.owner == enemy.name) {
+                console.log('a meu ataca un inamic');
+                var damage = Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+                toCreate.targetUnit.hp -= damage;
+                socket.emit('attack_unit', {
+                    id: toCreate.targetUnit.id,
+                    damage: damage
+                });
+            }
         }
         console.log('am facut un loop de right')
     }, this);
     toCreate.attUp.onLoop.add(function () {
         if (toCreate.targetUnit != null) {
             console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
-            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+            if (toCreate.targetUnit.owner == enemy.name) {
+                console.log('a meu ataca un inamic');
+                var damage = Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+                toCreate.targetUnit.hp -= damage;
+                socket.emit('attack_unit', {
+                    id: toCreate.targetUnit.id,
+                    damage: damage
+                });
+            }
         }
         console.log('am facut un loop de up')
     }, this);
     toCreate.attDown.onLoop.add(function () {
         if (toCreate.targetUnit != null) {
             console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
-            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+            if (toCreate.targetUnit.owner == enemy.name) {
+                console.log('a meu ataca un inamic');
+                var damage = Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+                toCreate.targetUnit.hp -= damage;
+                socket.emit('attack_unit', {
+                    id: toCreate.targetUnit.id,
+                    damage: damage
+                });
+            }
         }
         console.log('am facut un loop de down')
     }, this);
@@ -520,6 +551,9 @@ Unit.prototype.updateAlive = function () {
             this.hpBarContainer.destroy(1);
             this.unit.animations.frame = 60;
             me.createdUnits[this.id].isSelected = false;
+            me.createdUnits[this.id].isAttacking = false;
+            me.createdUnits[this.id].targetUnit = false;
+            me.createdUnits[this.id].targetTile = false;
 
             map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
             map.graph = new Graph(map.rawGrid);
@@ -553,17 +587,22 @@ function attackUnits() {
     }
 }
 
-Unit.prototype.updateAttack = function () {
+Unit.prototype.updateAttack = function (player) {
     var currentTile = {
         x: map.layer.getTileX(this.markerUnit.x + 32),
         y: map.layer.getTileY(this.markerUnit.y + 32)
     };
 
+    if (player == me) {
+        // console.log('sunt player me');
+    }
+
 
     this.isAttacking = false;
     if (this.targetTile.x == currentTile.x && this.targetTile.y == currentTile.y) {
-        var target = map.getEnemyTile(currentTile, 2);
+        var target = map.getEnemyTile(currentTile, 2, player);
         var targetAttack = target.tile;
+        // console.log('stau pe loc');
 
 
         //TODO: implement range de scanare & range de attack (2,1)
@@ -603,19 +642,19 @@ Unit.prototype.updateAttack = function () {
 
             switch (this.attackDir) {
                 case 1:
-                    console.log('Tre sa atac in ' + this.attackDir);
+                    // console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackUp');
                     break;
                 case 2:
-                    console.log('Tre sa atac in ' + this.attackDir);
+                    // console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackDown');
                     break;
                 case 3:
-                    console.log('Tre sa atac in ' + this.attackDir);
+                    // console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackLeft');
                     break;
                 case 4:
-                    console.log('Tre sa atac in ' + this.attackDir);
+                    // console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackRight');
                     break;
 
@@ -627,21 +666,21 @@ Unit.prototype.updateAttack = function () {
             //console.log('scanez si stau pe loc');
 
         } else {
-            this.unit.animations.stop(true,this);
-            switch (this.attackDir) {
-                case 1:
-                    this.unit.animations.frame = 0;
-                    break;
-                case 2:
-                    this.unit.animations.frame = 4;
-                    break;
-                case 3:
-                    this.unit.animations.frame = 5;
-                    break;
-                case 4:
-                    this.unit.animations.frame = 2;
-                    break;
-            }
+            this.unit.animations.stop(true, this);
+            // switch (this.attackDir) {
+            //     case 1:
+            //         this.unit.animations.frame = 0;
+            //         break;
+            //     case 2:
+            //         this.unit.animations.frame = 4;
+            //         break;
+            //     case 3:
+            //         this.unit.animations.frame = 5;
+            //         break;
+            //     case 4:
+            //         this.unit.animations.frame = 2;
+            //         break;
+            // }
         }
     }
 //gaseste inamic intr-o zona de "range" de la currentTile

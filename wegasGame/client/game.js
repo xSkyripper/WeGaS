@@ -24,6 +24,7 @@ var setEventHandlers = function () {
         socket.on('create_unit', onCreateUnit);
         socket.on('move_unit', onMoveUnit);
         socket.on('move_unit2', onMoveUnit2);
+        socket.on('attack_unit', onAttackUnit);
     }//end_server-related
 
 };
@@ -92,6 +93,10 @@ function onMoveUnit2(data) {
             tweenUp.onComplete.addOnce(function () {
                 enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
                 enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+
+                enemy.createdUnits[data.id].targetTile.x = map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32);
+                enemy.createdUnits[data.id].targetTile.y = map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32);
+
                 enemy.createdUnits[data.id].isMoving = false;
                 enemy.createdUnits[data.id].unit.animations.stop(true, this);
                 enemy.createdUnits[data.id].unit.animations.frame = 0;
@@ -107,6 +112,10 @@ function onMoveUnit2(data) {
             tweenDown.onComplete.addOnce(function () {
                 enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
                 enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+
+                enemy.createdUnits[data.id].targetTile.x = map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32);
+                enemy.createdUnits[data.id].targetTile.y = map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32);
+
                 enemy.createdUnits[data.id].isMoving = false;
                 enemy.createdUnits[data.id].unit.animations.stop(true, this);
                 enemy.createdUnits[data.id].unit.animations.frame = 4;
@@ -122,6 +131,10 @@ function onMoveUnit2(data) {
             tweenLeft.onComplete.addOnce(function () {
                 enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
                 enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+
+                enemy.createdUnits[data.id].targetTile.x = map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32);
+                enemy.createdUnits[data.id].targetTile.y = map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32);
+
                 enemy.createdUnits[data.id].isMoving = false;
                 enemy.createdUnits[data.id].unit.animations.stop(true, this);
                 enemy.createdUnits[data.id].unit.animations.frame = 5;
@@ -137,6 +150,10 @@ function onMoveUnit2(data) {
             tweenRight.onComplete.addOnce(function () {
                 enemy.createdUnits[data.id].markerUnit.x = map.layer.getTileX(enemy.createdUnits[data.id].unit.x) * 32;
                 enemy.createdUnits[data.id].markerUnit.y = map.layer.getTileY(enemy.createdUnits[data.id].unit.y) * 32;
+
+                enemy.createdUnits[data.id].targetTile.x = map.layer.getTileX(enemy.createdUnits[data.id].markerUnit.x + 32);
+                enemy.createdUnits[data.id].targetTile.y = map.layer.getTileY(enemy.createdUnits[data.id].markerUnit.y + 32);
+
                 enemy.createdUnits[data.id].isMoving = false;
                 enemy.createdUnits[data.id].unit.animations.stop(true, this);
                 enemy.createdUnits[data.id].unit.animations.frame = 2;
@@ -147,6 +164,10 @@ function onMoveUnit2(data) {
 
     }
 
+}
+
+function onAttackUnit(data) {
+    me.createdUnits[data.id].hp -= data.damage;
 }
 
 
@@ -226,7 +247,7 @@ function update() {
     if (me != null) {
         for (var i = 0; i < me.createdUnits.length; i++) {
             me.createdUnits[i].update2();
-            me.createdUnits[i].updateAttack();
+            me.createdUnits[i].updateAttack(enemy);
             gui.updateGuiOverlap(me.createdUnits[i].unit);
         }
     }
@@ -234,6 +255,7 @@ function update() {
     if (enemy != null) {
         for (var i = 0; i < enemy.createdUnits.length; i++) {
             //enemy.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
+            enemy.createdUnits[i].updateAttack(me);
             enemy.createdUnits[i].updateAlive();
             gui.updateGuiOverlap(enemy.createdUnits[i].unit);
         }
