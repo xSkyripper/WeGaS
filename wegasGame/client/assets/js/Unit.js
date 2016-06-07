@@ -30,34 +30,39 @@ var Unit = function (game, sprite, owner, hp, minAtk, maxAtk, ms, coins) {
 
 Unit.prototype.create = function (id, x, y) {
 
-    var graphics = game.add.graphics(0, 0);
-    graphics.lineStyle(2, 0x0000FF, 1);
-    graphics.drawRect(50, 250, 100, 100);
     var toCreate = new Unit(this.game, this.sprite, /*this.id,*/ this.owner, this.hp, this.minAtk, this.maxAtk, this.ms, this.coins);
     toCreate.id = id;
     toCreate.x = x;
     toCreate.y = y;
     toCreate.unit = this.game.add.sprite(x, y, toCreate.sprite, 4);
+
+
+    toCreate.unit.animations.add('attackLeft', [35, 41, 47, 53], 5, true);
+    toCreate.unit.animations.add('attackRight', [32, 38, 44, 50], 5, true);
+    toCreate.unit.animations.add('attackUp', [30, 36, 42, 48], 5, true);
+    toCreate.unit.animations.add('attackDown', [34, 40, 46, 52], 5, true);
     toCreate.unit.animations.add('left', [5, 11, 17, 23], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('right', [2, 8, 14, 20], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('up', [6, 12, 18, 24], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('down', [10, 16, 22, 28], 5 + (this.ms / 100), true);
+
+
     toCreate.game.physics.enable(toCreate.unit, Phaser.Physics.ARCADE);
     toCreate.unit.body.setSize(32, 32, 25, 25);
     toCreate.markerUnit.x = map.layer.getTileX(toCreate.unit.x) * 32;
     toCreate.markerUnit.y = map.layer.getTileY(toCreate.unit.y) * 32;
 
 
+    //hpBar
     toCreate.hpBarContainer = this.game.add.graphics(0, 0);
-    toCreate.hpBarContainer.lineStyle(2, 0x000000, 1);
+    //toCreate.hpBarContainer.lineStyle(2, 0x000000, 1);
     toCreate.hpBarContainer.beginFill(0x000000, 0.8);
-    toCreate.hpBarContainer.drawRect(15, 7, 47, 7);
+    toCreate.hpBarContainer.drawRect(23, 7, 34, 9);
 
     toCreate.hpBar = this.game.add.graphics(0, 0);
-    toCreate.hpBar.lineStyle(2, 0x000000, 1);
+    //toCreate.hpBar.lineStyle(2, 0x000000, 1);
     toCreate.hpBar.beginFill(0xe60000, 0.8);
-    toCreate.hpBar.drawRect(15, 7, 50, 7);
-
+    toCreate.hpBar.drawRect(25, 9, 32, 6);
 
     toCreate.unit.addChild(toCreate.hpBarContainer);
     toCreate.unit.addChild(toCreate.hpBar);
@@ -81,7 +86,7 @@ Unit.prototype.create = function (id, x, y) {
     /*
      unit ~= markerUnit
      */
-
+    toCreate.unit.animations.frame = 4;
     return toCreate;
 };
 
@@ -222,192 +227,192 @@ Unit.prototype.update = function () {
 //TODO: fix blocaj la mai multe unitati ? 
 Unit.prototype.update2 = function () {
     this.updateAlive();
-    this.game.physics.arcade.collide(this.unit, map.layer);
-    var X = map.layer.getTileX(this.markerUnit.x + 32);
-    var Y = map.layer.getTileX(this.markerUnit.y + 32);
 
-    //console.log(this.id + ": sunt la ->" + X + " " + Y);
-    //console.log(this.id + ": merg la ->" + this.targetTile.x + " " + this.targetTile.y);
+    if (this.isAlive) {
+        this.game.physics.arcade.collide(this.unit, map.layer);
+        var X = map.layer.getTileX(this.markerUnit.x + 32);
+        var Y = map.layer.getTileX(this.markerUnit.y + 32);
 
-    // if (!this.isMoving && this.path.length == 0) {
-    //     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
-    //     map.graph = new Graph(map.rawGrid);
-    // }
+        //console.log(this.id + ": sunt la ->" + X + " " + Y);
+        //console.log(this.id + ": merg la ->" + this.targetTile.x + " " + this.targetTile.y);
 
-    if (this.targetTile.x != X || this.targetTile.y != Y) { // am primit alt targetTile != markerUnit
+        // if (!this.isMoving && this.path.length == 0) {
+        //     map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
+        //     map.graph = new Graph(map.rawGrid);
+        // }
 
-        if (!this.isMoving) {
-            //nu ma misc inca ori am termina o animatie
-            //recalculez un path de la tile-ul curent si pun ca "ma misc"
+        if (this.targetTile.x != X || this.targetTile.y != Y) { // am primit alt targetTile != markerUnit
 
-            //this.moveComplete = false;
-            this.targetTile = map.getAvailableTile(this.initialTargetTile);
+            if (!this.isMoving) {
+                //nu ma misc inca ori am termina o animatie
+                //recalculez un path de la tile-ul curent si pun ca "ma misc"
 
-            this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                //this.moveComplete = false;
+                this.targetTile = map.getAvailableTile(this.initialTargetTile);
 
-            if (this.path.length != 0) {
-                this.isMoving = true;
-            }//daca e blocat imprejur cu totul
+                this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
 
-            //console.log("Path: " + this.path);
-        } else {
-            switch (this.path[0]) {
+                if (this.path.length != 0) {
+                    this.isMoving = true;
+                }//daca e blocat imprejur cu totul
+
+                //console.log("Path: " + this.path);
+            } else {
+                switch (this.path[0]) {
+                    case 1:
+                        //plec de la > pun pe 1
+                        //ajung la > pun pe 0
+                        if (map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
+                            this.targetTile = map.getAvailableTile(this.initialTargetTile);
+
+                            this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                            this.unit.animations.stop(true, this);
+
+                            // this.isMoving = false;
+                            break;
+                        }
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
+                        map.graph = new Graph(map.rawGrid);
+                        var tweenUp = game.add.tween(this.unit).to({y: this.unit.y - 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
+                        this.unit.play('up');
+                        this.lastDir = this.path[0];
+                        this.path = [];
+
+                        //trimite la server fiecare tile - unu cate unu - parcurs
+                        socket.emit('move_unit2', {
+                            id: this.id,
+                            goTo: this.lastDir
+                        });
+
+                        tweenUp.onComplete.addOnce(function () {
+                            this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                            this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
+                            this.isMoving = false;
+                        }, this);
+                        break;
+
+                    case 2:
+                        //plec de la > pun pe 1
+                        //ajung la > pun pe 0
+                        if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
+                            this.targetTile = map.getAvailableTile(this.initialTargetTile);
+
+                            this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                            this.unit.animations.stop(true, this);
+                            // this.isMoving = false;
+                            break;
+                        }
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
+                        map.graph = new Graph(map.rawGrid);
+                        var tweenDown = game.add.tween(this.unit).to({y: this.unit.y + 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
+                        this.unit.play('down');
+                        this.lastDir = this.path[0];
+                        this.path = [];
+
+                        //trimite la server fiecare tile - unu cate unu - parcurs
+                        socket.emit('move_unit2', {
+                            id: this.id,
+                            goTo: this.lastDir
+                        });
+
+                        tweenDown.onComplete.addOnce(function () {
+                            this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                            this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
+                            this.isMoving = false;
+
+                        }, this);
+                        break;
+
+                    case 3:
+                        //plec de la > pun pe 1
+                        //ajung la > pun pe 0
+                        if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] == 0) {
+                            this.targetTile = map.getAvailableTile(this.initialTargetTile);
+
+                            this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                            this.unit.animations.stop(true, this);
+                            // this.isMoving = false;
+                            break;
+                        }
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] = 0;
+                        map.graph = new Graph(map.rawGrid);
+                        var tweenLeft = game.add.tween(this.unit).to({x: this.unit.x - 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
+                        this.unit.play('left');
+                        this.lastDir = this.path[0];
+                        this.path = [];
+
+                        //trimite la server fiecare tile - unu cate unu - parcurs
+                        socket.emit('move_unit2', {
+                            id: this.id,
+                            goTo: this.lastDir
+                        });
+
+                        tweenLeft.onComplete.addOnce(function () {
+                            this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                            this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
+                            this.isMoving = false;
+
+                        }, this);
+                        break;
+
+                    case 4:
+                        //plec de la > pun pe 1
+                        //ajung la > pun pe 0
+                        if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] == 0) {
+                            this.targetTile = map.getAvailableTile(this.initialTargetTile);
+
+                            this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+                            this.unit.animations.stop(true, this);
+                            // this.isMoving = false;
+                            break;
+                        }
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+                        map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] = 0;
+                        map.graph = new Graph(map.rawGrid);
+                        var tweenRight = game.add.tween(this.unit).to({x: this.unit.x + 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
+                        this.unit.play('right');
+                        this.lastDir = this.path[0];
+                        this.path = [];
+
+                        //trimite la server fiecare tile - unu cate unu - parcurs
+                        socket.emit('move_unit2', {
+                            id: this.id,
+                            goTo: this.lastDir
+                        });
+
+                        tweenRight.onComplete.addOnce(function () {
+                            this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
+                            this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
+                            this.isMoving = false;
+
+                        }, this);
+                        break;
+
+                    default:
+
+                        break;
+                }
+            }
+        } else { //daca markerUnit == targetTile
+            this.path = [];
+            this.unit.animations.stop(true, this);
+            switch (this.lastDir) {
                 case 1:
-                    //plec de la > pun pe 1
-                    //ajung la > pun pe 0
-                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
-
-                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
-                        this.unit.animations.stop(true, this);
-
-                        // this.isMoving = false;
-                        break;
-                    }
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
-                    map.graph = new Graph(map.rawGrid);
-                    var tweenUp = game.add.tween(this.unit).to({y: this.unit.y - 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
-                    this.unit.play('up');
-                    this.lastDir = this.path[0];
-                    this.path = [];
-
-                    //trimite la server fiecare tile - unu cate unu - parcurs
-                    socket.emit('move_unit2', {
-                        id: this.id,
-                        goTo: this.lastDir
-                    });
-
-                    tweenUp.onComplete.addOnce(function () {
-                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
-                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
-                        this.isMoving = false;
-                        this.hp -= 5;
-                        console.log('hp:'+this.hp);
-
-                    }, this);
+                    this.unit.animations.frame = 0;
                     break;
-
                 case 2:
-                    //plec de la > pun pe 1
-                    //ajung la > pun pe 0
-                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
-
-                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
-                        this.unit.animations.stop(true, this);
-                        // this.isMoving = false;
-                        break;
-                    }
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 64)][map.layer.getTileX(this.markerUnit.x + 32)] = 0;
-                    map.graph = new Graph(map.rawGrid);
-                    var tweenDown = game.add.tween(this.unit).to({y: this.unit.y + 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
-                    this.unit.play('down');
-                    this.lastDir = this.path[0];
-                    this.path = [];
-
-                    //trimite la server fiecare tile - unu cate unu - parcurs
-                    socket.emit('move_unit2', {
-                        id: this.id,
-                        goTo: this.lastDir
-                    });
-
-                    tweenDown.onComplete.addOnce(function () {
-                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
-                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
-                        this.isMoving = false;
-
-                    }, this);
+                    this.unit.animations.frame = 4;
                     break;
-
                 case 3:
-                    //plec de la > pun pe 1
-                    //ajung la > pun pe 0
-                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
-
-                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
-                        this.unit.animations.stop(true, this);
-                        // this.isMoving = false;
-                        break;
-                    }
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x)] = 0;
-                    map.graph = new Graph(map.rawGrid);
-                    var tweenLeft = game.add.tween(this.unit).to({x: this.unit.x - 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
-                    this.unit.play('left');
-                    this.lastDir = this.path[0];
-                    this.path = [];
-
-                    //trimite la server fiecare tile - unu cate unu - parcurs
-                    socket.emit('move_unit2', {
-                        id: this.id,
-                        goTo: this.lastDir
-                    });
-
-                    tweenLeft.onComplete.addOnce(function () {
-                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
-                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
-                        this.isMoving = false;
-
-                    }, this);
+                    this.unit.animations.frame = 5;
                     break;
-
                 case 4:
-                    //plec de la > pun pe 1
-                    //ajung la > pun pe 0
-                    if (map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] == 0) {
-                        this.targetTile = map.getAvailableTile(this.initialTargetTile);
-
-                        this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
-                        this.unit.animations.stop(true, this);
-                        // this.isMoving = false;
-                        break;
-                    }
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
-                    map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 64)] = 0;
-                    map.graph = new Graph(map.rawGrid);
-                    var tweenRight = game.add.tween(this.unit).to({x: this.unit.x + 32}, 500 - this.ms, Phaser.Easing.Linear.None, true);
-                    this.unit.play('right');
-                    this.lastDir = this.path[0];
-                    this.path = [];
-
-                    //trimite la server fiecare tile - unu cate unu - parcurs
-                    socket.emit('move_unit2', {
-                        id: this.id,
-                        goTo: this.lastDir
-                    });
-
-                    tweenRight.onComplete.addOnce(function () {
-                        this.markerUnit.x = map.layer.getTileX(this.unit.x) * 32;
-                        this.markerUnit.y = map.layer.getTileY(this.unit.y) * 32;
-                        this.isMoving = false;
-
-                    }, this);
-                    break;
-
-                default:
-
+                    this.unit.animations.frame = 2;
                     break;
             }
-        }
-    } else { //daca markerUnit == targetTile
-        this.path = [];
-        this.unit.animations.stop(true, this);
-        switch (this.lastDir) {
-            case 1:
-                this.unit.animations.frame = 0;
-                break;
-            case 2:
-                this.unit.animations.frame = 4;
-                break;
-            case 3:
-                this.unit.animations.frame = 5;
-                break;
-            case 4:
-                this.unit.animations.frame = 2;
-                break;
         }
     }
 
@@ -467,25 +472,59 @@ function moveUnits2() {
     }
 }
 
-Unit.prototype.updateAlive = function()
-{
+Unit.prototype.updateAlive = function () {
 
     /*toCreate.hpBar = this.game.add.graphics(0, 0);
-    toCreate.hpBar.lineStyle(2, 0x000000, 1);
-    toCreate.hpBar.beginFill(0xe60000, 0.8);
-    toCreate.hpBar.drawRect(15, 7, 50, 7);
-    toCreate.unit.addChild(toCreate.hpBar);*/
+     toCreate.hpBar.lineStyle(2, 0x000000, 1);
+     toCreate.hpBar.beginFill(0xe60000, 0.8);
+     toCreate.hpBar.drawRect(15, 7, 50, 7);
+     toCreate.unit.addChild(toCreate.hpBar);*/
 
 
-     if(this.isAlive)
-     {
-            this.hpBar.width=this.hp/this.maxHp*50;
-     }
-    else
-     {
-         //TODO:caz in care moare (sprite-> mort, scoatere de bara si din selected si din created units)
-         // dupa 2 secunde (setTimeInterval) sa dispara de tot de pe harta
-     }
+    // if (this.hp <= 0 && this.isAlive) {
+    //     this.isAlive = false;
+    //     this.hpBarContainer.destroy(1);
+    //     this.hpBar.destroy(1);
+    //     this.unit.play('die');
+    // }
+    //
+    // if (this.isAlive) {
+    //     this.hpBar.width = this.hp / this.maxHp * 32;
+    // } else {
+    //
+    //     for(var i=this.id+1;i<me.createdUnits.length;i++){
+    //         me.createdUnits[i].id --;
+    //     }
+    //     me.createdUnits.splice(this.id,1);
+    //
+    // }
+
+    if (this.isAlive) {
+        if (this.hp <= 0) {
+            this.isAlive = false;
+            this.hpBar.destroy(1);
+            this.hpBarContainer.destroy(1);
+            this.unit.animations.frame = 60;
+            me.createdUnits[this.id].isSelected = false;
+
+            map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
+            map.graph = new Graph(map.rawGrid);
+
+            this.unit.animations.frame = 60;
+            var sprite = this.unit;
+            setTimeout(function () {
+                sprite.kill();
+            }, 10000);
+        }
+        else {
+            this.hpBar.width = (this.hp * 32 ) / this.maxHp;
+            this.hpBar.x = 25 * (1 - this.hp / this.maxHp);
+        }
+
+    } else {
+        if (this.unit != null)
+            this.unit.animations.frame = 60;
+    }
 }
 
 window.Unit = Unit;

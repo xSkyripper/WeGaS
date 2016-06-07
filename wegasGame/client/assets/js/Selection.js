@@ -60,7 +60,7 @@ Selection.prototype.update = function () {
             var sumArea = this.triArea(this.startPos, unitPos, R) + this.triArea(R, unitPos, this.lastPos) + this.triArea(this.lastPos, unitPos, Q) + this.triArea(unitPos, Q, this.startPos);
             var rectArea = Math.floor(Math.abs((this.lastPos.x - this.startPos.x) * (this.startPos.y - this.lastPos.y)));
 
-            if (sumArea != 0 && rectArea != 0 && sumArea <= rectArea) {
+            if (sumArea != 0 && rectArea != 0 && sumArea <= rectArea && me.createdUnits[i].isAlive) {
                 console.log('#### Am selectat pe ' + unitPos.id);
                 me.createdUnits[i].isSelected = true;
             }

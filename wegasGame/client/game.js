@@ -33,7 +33,6 @@ function onIdentify(data) {
     me = new Player(data.id, data.startX, data.startY, data.name, 1000, []);
     console.log('I am ' + data.name + " start: " + data.startX + " " + data.startY);
 
-   
 
     me.units.push(new Unit(game, 'unit1_'.concat(data.id), me.name, 100, 5, 10, 100, 100));
 
@@ -162,20 +161,45 @@ var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-wegas', {
 
 
 function preload() {
-    game.load.image('logo','assets/img/unit1_i.png');
+    game.load.tilemap('map', '/client/assets/summerWegassWar.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tiles', '/client/assets/img/summer.png');
+
+    game.load.image('unit1_i', '/client/assets/img/unit1_i.png');
+    game.load.image('unit2_i', '/client/assets/img/unit2_i.png');
+    game.load.image('unit3_i', '/client/assets/img/unit3_i.png');
+    game.load.image('mapWegas', '/client/assets/img/summerWegassWar.png');
+    game.load.image('back', '/client/assets/img/guiBack.png');
+
+    //TODO: Schimba baza de date (units,rooms)
+    //TODO: Incarcare din baza de date, trimitere la player doar ce are nevoie
+
+    game.load.spritesheet('unit1_1', '/client/assets/img/unit1_1.png', 70, 70);
+    game.load.spritesheet('unit1_2', '/client/assets/img/unit1_2.png', 70, 70);
+    game.load.spritesheet('unit2_1', '/client/assets/img/unit2_1.png', 70, 70);
+    game.load.spritesheet('unit3_2', '/client/assets/img/unit2_2.png', 70, 70);
+    game.load.spritesheet('unit3_1', '/client/assets/img/unit3_1.png', 70, 70);
+    game.load.spritesheet('unit3_2', '/client/assets/img/unit3_2.png', 70, 70);
+    game.load.spritesheet('base1', '/client/assets/img/human_buildings_1.png', 132, 130);
+    game.load.spritesheet('base2', '/client/assets/img/human_buildings_2.png', 123, 135);
+
+
 }
 
 
 function create() {
-
     map = new Map();
     selection = new Selection(game);
     socket = io.connect();
     gui = new GUI();
 
-    game.state.start('loadingState');
 
     setEventHandlers();
+
+    key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+    key1.onDown.add(function () {
+        for (var i = 0; i < me.createdUnits.length; i++)
+            me.createdUnits[i].hp -= 5;
+    }, this);
 }
 
 
@@ -216,14 +240,14 @@ function render() {
     if (me != null) {
         //game.debug.body(me.base.building);
     }
-    if (me != null) {
-        for (var i = 0; i < me.createdUnits.length; i++)
-          game.debug.body(me.createdUnits[i].unit);
-    }
+    // if (me != null) {
+    //     for (var i = 0; i < me.createdUnits.length; i++)
+    //       game.debug.body(me.createdUnits[i].unit);
+    // }
 
     if (enemy != null) {
         for (var i = 0; i < enemy.createdUnits.length; i++)
-         game.debug.body(enemy.createdUnits[i].unit);
+            game.debug.body(enemy.createdUnits[i].unit);
     }
 }
 
