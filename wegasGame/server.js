@@ -55,7 +55,7 @@ function onSocketConnect(client) {
         console.log('Player 1 connected ! Name = ' + player1.name);
         client.emit('identify', {id: playerNo, name: player1.name, startX: 135, startY: 423});
     }
-
+        
     if (playerNo == 2) {
         player2.id = client.id;
         console.log('Player 2 connected ! Name = ' + player2.name);
