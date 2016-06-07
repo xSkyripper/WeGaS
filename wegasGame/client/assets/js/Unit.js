@@ -249,6 +249,8 @@ Unit.prototype.update2 = function () {
 
                 //this.moveComplete = false;
                 this.targetTile = map.getAvailableTile(this.initialTargetTile);
+                this.targetTile = map.getEnemyTile(this.initialTargetTile);
+              //  console.log("Targetul este x= " + this.targetTile.x + "   y="+this.targetTile.y);
 
                 this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
 
@@ -417,6 +419,40 @@ Unit.prototype.update2 = function () {
     }
 
 };
+
+/////muie de caprior
+
+function updateAtack() {
+
+    this.updateAlive();
+
+    if (this.isAlive) {
+        this.game.physics.arcade.collide(this.unit, map.layer);
+        var X = map.layer.getTileX(this.markerUnit.x + 32);
+        var Y = map.layer.getTileX(this.markerUnit.y + 32);
+    }
+
+    if (this.targetTile.x != X || this.targetTile.y != Y)
+    {
+        if (!this.isMoving) {
+            //nu ma misc inca ori am termina o animatie
+            //recalculez un path de la tile-ul curent si pun ca "ma misc"
+
+            //this.moveComplete = false;
+            this.targetTile = map.getAvailableTile(this.initialTargetTile);//caut soldatul in jur
+
+            this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
+
+            if (this.path.length != 0) {
+                this.isMoving = true;
+            }//daca e blocat imprejur cu totul
+
+            //console.log("Path: " + this.path);
+        }
+    }
+
+}
+
 
 function moveUnits() {
 
