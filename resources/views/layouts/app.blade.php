@@ -29,6 +29,10 @@
         .glyphicon-user {
             margin-right: 6px;
         }
+
+        .progress-bar {
+            width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
+        }
     </style>
 
     @yield('head')
@@ -36,7 +40,9 @@
 </head>
 <body id="app-layout">
 <nav class="navbar navbar-default navbar-static-top">
+
     <div class="container">
+
         <div class="navbar-header">
 
             <!-- Collapsed Hamburger -->
@@ -70,7 +76,7 @@
                     <li><a href="{{ url('/help') }}">About</a></li>
                 @else
 
-                    <li><a target="_blank" href="http://127.0.0.1:2000/{{Auth::user()->username}}">Game</a></li>
+                    <li><a target="_blank" href="{{ url('/rooms') }}">Game Rooms</a></li>
                     <li><a href="{{ url('/shop') }}">Shop</a></li>
                     <li><a href="{{ url('/skills') }}">Skills</a></li>
                     <li><a href="{{ url('/help') }}">Help</a></li>
@@ -89,8 +95,18 @@
                 @endif
             </ul>
         </div>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
+                Lvl. {{Auth::user()->lvl}} - {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}
+                % ({{Auth::user()->xp}} / {{\DB::table('levels')->find(Auth::user()->lvl)->xp}})
+            </div>
+        </div>
+
+
     </div>
+
 </nav>
+
 
 @yield('header')
 

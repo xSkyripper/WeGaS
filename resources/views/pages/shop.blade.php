@@ -3,9 +3,15 @@
 @section('head')
 
     <style>
-        .unit{
-            margin:10px;
+        .unit {
+            margin: 10px;
         }
+
+        .missingUnit{
+            margin: 10px;
+            background-color: #f5f5f5;
+        }
+
     </style>
 
 @stop
@@ -22,8 +28,30 @@
                             <div class="alert alert-warning">{{ Session::get('status') }}</div>
                         @endif
 
-                        @foreach($units as $unit)
+                        @foreach($units->diff(Auth::user()->units) as $missingUnit)
                             <div class="col-md-3 thumbnail unit">
+                                <img src="{{asset('img/'.$missingUnit->unit_id.'.png')}}" alt="">
+                                <div class="caption">
+                                    <h4 class="pull-right">{{$missingUnit->gold}} G</h4>
+                                    <h4>{{$missingUnit->name}}</h4>
+                                    <p>{{$missingUnit->description}}</p>
+                                    <h4>Stats: </h4>
+                                    <ul>
+                                        <li>HP: {{$missingUnit->hp}}</li>
+                                        <li>Attack: {{$missingUnit->min_atk}} - {{$missingUnit->max_atk}}</li>
+                                        <li>Movement Speed: {{$missingUnit->ms}}</li>
+                                    </ul>
+                                    <form method="POST" action="{{url('/shop/'.$missingUnit->id)}}">
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-default btn-success">Buy Unit</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        @endforeach
+
+                        @foreach(Auth::user()->units as $unit)
+                            <div class="col-md-3 thumbnail missingUnit">
                                 <img src="{{asset('img/'.$unit->unit_id.'.png')}}" alt="">
                                 <div class="caption">
                                     <h4 class="pull-right">{{$unit->gold}} G</h4>
@@ -36,8 +64,9 @@
                                         <li>Movement Speed: {{$unit->ms}}</li>
                                     </ul>
                                     <form method="POST" action="{{url('/shop/'.$unit->id)}}">
+                                        <input name="_method" type="hidden" value="DELETE">
                                         {{ csrf_field() }}
-                                        <button type ="submit" class="btn btn-default btn-success">Buy Unit</button>
+                                        <button type="submit" class="btn btn-default btn-danger">Sell Unit</button>
                                     </form>
 
                                 </div>
