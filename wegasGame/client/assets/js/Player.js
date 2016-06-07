@@ -11,6 +11,7 @@ var Player = function (id, x, y, name, coins, units) {
     this.name = name;
     this.coins = coins;
     this.units = units;
+    this.base = 0;
     this.createdUnits = [];
 };
 

@@ -19,6 +19,11 @@ var Map = function () {
     this.layer.debug = true;
     //creare layer
 
+    //add bases
+    this.base1 = new Building(game, 'base1', 5000, 250, 70,1);
+    this.base2 = new Building(game, 'base2', 5000, 1850, 1800,2);
+
+
     //collisionMatrix
     var data = this.map.layer.data;
     this.rawGrid = [];
@@ -27,12 +32,49 @@ var Map = function () {
         for (var j = 0; j < data[i].length; j++) {
             if (data[i][j].collideUp == false && data[i][j].collideDown == false &&
                 data[i][j].collideRight == false && data[i][j].collideLeft == false) {
-                this.rawGrid[i][j] = 1;   // colision
+                this.rawGrid[i][j] = 1;  // free
             } else {
-                this.rawGrid[i][j] = 0;   // free
+                this.rawGrid[i][j] = 0;  // colision
             }
         }
     }
+
+    //add colide base 1
+    this.rawGrid[2][8] = 0;
+    this.rawGrid[3][8] = 0;
+    this.rawGrid[4][8] = 0;
+    this.rawGrid[5][8] = 0;
+    this.rawGrid[2][9] = 0;
+    this.rawGrid[3][9] = 0;
+    this.rawGrid[4][9] = 0;
+    this.rawGrid[5][9] = 0;
+    this.rawGrid[2][10] = 0;
+    this.rawGrid[3][10] = 0;
+    this.rawGrid[4][10] = 0;
+    this.rawGrid[5][10] = 0;
+    this.rawGrid[2][11] = 0;
+    this.rawGrid[3][11] = 0;
+    this.rawGrid[4][11] = 0;
+    this.rawGrid[5][11] = 0;
+
+    //add colide base 2
+    this.rawGrid[56][58] = 0;
+    this.rawGrid[57][58] = 0;
+    this.rawGrid[58][58] = 0;
+    this.rawGrid[59][58] = 0;
+    this.rawGrid[57][58] = 0;
+    this.rawGrid[56][59] = 0;
+    this.rawGrid[57][59] = 0;
+    this.rawGrid[58][59] = 0;
+    this.rawGrid[59][59] = 0;
+    this.rawGrid[56][60] = 0;
+    this.rawGrid[57][60] = 0;
+    this.rawGrid[58][60] = 0;
+    this.rawGrid[59][60] = 0;
+    this.rawGrid[57][61] = 0;
+    this.rawGrid[58][61] = 0;
+    this.rawGrid[59][61] = 0;
+
     this.graph = new Graph(this.rawGrid);
     //end_collisionMatrix
 

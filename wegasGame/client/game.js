@@ -33,6 +33,8 @@ function onIdentify(data) {
     me = new Player(data.id, data.startX, data.startY, data.name, 1000, []);
     console.log('I am ' + data.name + " start: " + data.startX + " " + data.startY);
 
+   
+
     me.units.push(new Unit(game, 'unit1_'.concat(data.id), me.name, 100, 5, 10, 100, 100));
 
     me.units.push(new Unit(game, 'unit2_'.concat(data.id), me.name, 80, 6, 11, 150, 120));
@@ -62,7 +64,7 @@ function onCreateUnit(data) {
     redSprite[redSprite.length - 1] = '2';
     redSprite[redSprite.length - 2] = '_';
     var toCreate = new Unit(game, redSprite, data.owner, data.hp, data.minAtk, data.maxAtk, data.ms, data.coins);
-    enemy.createdUnits.push(toCreate.create(enemy.createdUnits.length,data.x, data.y));
+    enemy.createdUnits.push(toCreate.create(enemy.createdUnits.length, data.x, data.y));
 }
 
 function onMoveUnit(data) {
@@ -177,6 +179,9 @@ function preload() {
     game.load.spritesheet('unit3_2', '/client/assets/img/unit2_2.png', 70, 70);
     game.load.spritesheet('unit3_1', '/client/assets/img/unit3_1.png', 70, 70);
     game.load.spritesheet('unit3_2', '/client/assets/img/unit3_2.png', 70, 70);
+    //player base
+    game.load.spritesheet('base1', '/client/assets/img/human_buildings_1.png', 132, 130);
+    game.load.spritesheet('base2', '/client/assets/img/human_buildings_2.png', 123, 135);
 }
 
 
@@ -227,15 +232,17 @@ function render() {
     /* Debugging Zone */
     //game.debug.bodyInfo(me.createdUnits[0].unit, 16, 24);
     //game.debug.spriteInfo(me.createdUnits[0].unit, 200, 200);
-
+    if (me != null) {
+        //game.debug.body(me.base.building);
+    }
     if (me != null) {
         for (var i = 0; i < me.createdUnits.length; i++)
-            game.debug.body(me.createdUnits[i].unit);
+          game.debug.body(me.createdUnits[i].unit);
     }
 
     if (enemy != null) {
         for (var i = 0; i < enemy.createdUnits.length; i++)
-            game.debug.body(enemy.createdUnits[i].unit);
+         game.debug.body(enemy.createdUnits[i].unit);
     }
 }
 
