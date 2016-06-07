@@ -176,7 +176,7 @@ function preload() {
     game.load.spritesheet('unit1_1', '/client/assets/img/unit1_1.png', 70, 70);
     game.load.spritesheet('unit1_2', '/client/assets/img/unit1_2.png', 70, 70);
     game.load.spritesheet('unit2_1', '/client/assets/img/unit2_1.png', 70, 70);
-    game.load.spritesheet('unit3_2', '/client/assets/img/unit2_2.png', 70, 70);
+    game.load.spritesheet('unit2_2', '/client/assets/img/unit2_2.png', 70, 70);
     game.load.spritesheet('unit3_1', '/client/assets/img/unit3_1.png', 70, 70);
     game.load.spritesheet('unit3_2', '/client/assets/img/unit3_2.png', 70, 70);
     game.load.spritesheet('base1', '/client/assets/img/human_buildings_1.png', 132, 130);
@@ -195,11 +195,20 @@ function create() {
 
     setEventHandlers();
 
-    key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
-    key1.onDown.add(function () {
-        for (var i = 0; i < me.createdUnits.length; i++)
-            me.createdUnits[i].hp -= 5;
-    }, this);
+
+    // key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+    // key1.onDown.add(function () {
+    //     var anim = me.createdUnits[0].unit.animations.add('attackUp');
+    //     anim.onStart.add(function () {
+    //         me.createdUnits[0].isAttacking = true;
+    //     }, this);
+    //     anim.onComplete.add(function () {
+    //         console.log('am terminat o animatie de att');
+    //         me.createdUnits[0].isAttacking = false;
+    //     }, this);
+    //     console.log('am apasat tasta 1');
+    //     anim.play(10, true);
+    // }, this);
 }
 
 
@@ -216,7 +225,9 @@ function update() {
 
     if (me != null) {
         for (var i = 0; i < me.createdUnits.length; i++) {
-            me.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
+            me.createdUnits[i].update2();
+            //me.createdUnits[i].unit.play('attackUp');
+            me.createdUnits[i].updateAttack();
             gui.updateGuiOverlap(me.createdUnits[i].unit);
         }
     }

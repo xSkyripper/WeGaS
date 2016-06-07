@@ -20,6 +20,7 @@ var Unit = function (game, sprite, owner, hp, minAtk, maxAtk, ms, coins) {
     this.isMoving = false;
     this.isAlive = true;
     this.isAttacking = false;
+    this.attackDir = 0;
 
     this.path = [];
 };
@@ -37,10 +38,24 @@ Unit.prototype.create = function (id, x, y) {
     toCreate.unit = this.game.add.sprite(x, y, toCreate.sprite, 4);
 
 
-    toCreate.unit.animations.add('attackLeft', [35, 41, 47, 53], 5, true);
-    toCreate.unit.animations.add('attackRight', [32, 38, 44, 50], 5, true);
-    toCreate.unit.animations.add('attackUp', [30, 36, 42, 48], 5, true);
-    toCreate.unit.animations.add('attackDown', [34, 40, 46, 52], 5, true);
+    toCreate.attLeft = toCreate.unit.animations.add('attackLeft', [35, 41, 47, 53], 5, true);
+    toCreate.attRight = toCreate.unit.animations.add('attackRight', [32, 38, 44, 50], 5, true);
+    toCreate.attUp = toCreate.unit.animations.add('attackUp', [30, 36, 42, 48], 5, true);
+    toCreate.attDown = toCreate.unit.animations.add('attackDown', [34, 40, 46, 52], 5, true);
+
+    toCreate.attLeft.onLoop.add(function () {
+        console.log('am facut un loop de left')
+    }, this);
+    toCreate.attRight.onLoop.add(function () {
+        console.log('am facut un loop de right')
+    }, this);
+    toCreate.attUp.onLoop.add(function () {
+        console.log('am facut un loop de up')
+    }, this);
+    toCreate.attDown.onLoop.add(function () {
+        console.log('am facut un loop de down')
+    }, this);
+
     toCreate.unit.animations.add('left', [5, 11, 17, 23], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('right', [2, 8, 14, 20], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('up', [6, 12, 18, 24], 5 + (this.ms / 100), true);
@@ -249,8 +264,8 @@ Unit.prototype.update2 = function () {
 
                 //this.moveComplete = false;
                 this.targetTile = map.getAvailableTile(this.initialTargetTile);
-                this.targetTile = map.getEnemyTile(this.initialTargetTile);
-              //  console.log("Targetul este x= " + this.targetTile.x + "   y="+this.targetTile.y);
+                //this.targetTile = map.getEnemyTile(this.initialTargetTile);
+                //  console.log("Targetul este x= " + this.targetTile.x + "   y="+this.targetTile.y);
 
                 this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
 
@@ -399,60 +414,28 @@ Unit.prototype.update2 = function () {
                 }
             }
         } else { //daca markerUnit == targetTile
-            this.path = [];
-            this.unit.animations.stop(true, this);
-            switch (this.lastDir) {
-                case 1:
-                    this.unit.animations.frame = 0;
-                    break;
-                case 2:
-                    this.unit.animations.frame = 4;
-                    break;
-                case 3:
-                    this.unit.animations.frame = 5;
-                    break;
-                case 4:
-                    this.unit.animations.frame = 2;
-                    break;
+            if (!this.isAttacking) {
+                this.path = [];
+                this.unit.animations.stop(true, this);
+                switch (this.lastDir) {
+                    case 1:
+                        this.unit.animations.frame = 0;
+                        break;
+                    case 2:
+                        this.unit.animations.frame = 4;
+                        break;
+                    case 3:
+                        this.unit.animations.frame = 5;
+                        break;
+                    case 4:
+                        this.unit.animations.frame = 2;
+                        break;
+                }
             }
         }
     }
 
 };
-
-/////muie de caprior
-
-function updateAtack() {
-
-    this.updateAlive();
-
-    if (this.isAlive) {
-        this.game.physics.arcade.collide(this.unit, map.layer);
-        var X = map.layer.getTileX(this.markerUnit.x + 32);
-        var Y = map.layer.getTileX(this.markerUnit.y + 32);
-    }
-
-    if (this.targetTile.x != X || this.targetTile.y != Y)
-    {
-        if (!this.isMoving) {
-            //nu ma misc inca ori am termina o animatie
-            //recalculez un path de la tile-ul curent si pun ca "ma misc"
-
-            //this.moveComplete = false;
-            this.targetTile = map.getAvailableTile(this.initialTargetTile);//caut soldatul in jur
-
-            this.path = map.getPath(this.targetTile.x, this.targetTile.y, X, Y);
-
-            if (this.path.length != 0) {
-                this.isMoving = true;
-            }//daca e blocat imprejur cu totul
-
-            //console.log("Path: " + this.path);
-        }
-    }
-
-}
-
 
 function moveUnits() {
 
@@ -481,7 +464,7 @@ function moveUnits() {
 }
 
 function moveUnits2() {
-    if (game.input.activePointer.button == 2 && Phaser.Keyboard.SHIFT.isDown) {
+    if (game.input.activePointer.button == 2) {
         if (game.input.activePointer.x >= 700) { //daca pointerul este in GUI, nu-l lasa sa dea move-uri
             return;
         }
@@ -505,18 +488,6 @@ function moveUnits2() {
             }
         }
 
-    }
-}
-
-function attackUnits(){
-
-    if(game.input.activePointer == 1){
-        if(game.input.activePointer.x >=700){
-            return;
-        }
-        else{
-
-        }
     }
 }
 
@@ -550,9 +521,96 @@ Unit.prototype.updateAlive = function () {
     }
 }
 
-Unit.prototype.updateAttack = function () {
+function attackUnits() {
 
+    if (game.input.activePointer == 1) {
+        if (game.input.activePointer.x >= 700) {
+            return;
+        }
+        else {
+
+        }
+    }
 }
+
+Unit.prototype.updateAttack = function () {
+    var currentTile = {
+        x: map.layer.getTileX(this.markerUnit.x + 32),
+        y: map.layer.getTileY(this.markerUnit.y + 32)
+    };
+
+
+    this.isAttacking = false;
+    if (this.targetTile.x == currentTile.x && this.targetTile.y == currentTile.y) {
+        var targetAttack = map.getEnemyTile(currentTile, 2);
+
+
+        //TODO: implement range de scanare & range de attack (2,1)
+
+
+        if (!this.isAttacking) {
+            if (targetAttack != null) {
+                if (currentTile.x == targetAttack.x && Math.abs(targetAttack.y - currentTile.y) <= 1) {
+                    if (targetAttack.y > currentTile.y) {
+                        //jos
+                        this.attackDir = 2;
+                        this.isAttacking = true;
+                    }
+                    else {
+                        //sus
+                        this.attackDir = 1;
+                        this.isAttacking = true;
+                    }
+                } else if (currentTile.y == targetAttack.y && Math.abs(targetAttack.x - currentTile.x) <= 1) {
+                    if (targetAttack.x > currentTile.x) {
+                        //dreapta
+                        this.attackDir = 4;
+                        this.isAttacking = true;
+                    }
+                    else {
+                        this.attackDir = 3;
+                        this.isAttacking = true;
+                        //stanga
+                    }
+                }
+            }
+        }
+
+        if (this.isAttacking) {//isAttacking == true
+            switch (this.attackDir) {
+                case 1:
+                    console.log('Tre sa atac in ' + this.attackDir);
+                    this.unit.play('attackUp');
+                    // this.attUp.play();
+
+                    break;
+                case 2:
+                    console.log('Tre sa atac in ' + this.attackDir);
+                    this.unit.play('attackDown');
+                    // this.attDown.play();
+                    break;
+                case 3:
+                    console.log('Tre sa atac in ' + this.attackDir);
+                    this.unit.play('attackLeft');
+                    // this.attLeft.play();
+                    break;
+                case 4:
+                    console.log('Tre sa atac in ' + this.attackDir);
+                    this.unit.play('attackRight');
+                    // this.attRight.play();
+                    break;
+
+                default:
+                    break;
+            }
+
+
+            //console.log('scanez si stau pe loc');
+
+        }
+    }
+//gaseste inamic intr-o zona de "range" de la currentTile
+};
 
 window.Unit = Unit;
 window.moveUnits = moveUnits;
