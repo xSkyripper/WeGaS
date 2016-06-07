@@ -83,7 +83,7 @@
                     <li><a href="{{ url('/help') }}">About</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->name }} ( Lvl.{{ Auth::user()->lvl }} )<span class="caret"></span>
+                            {{ Auth::user()->name }}<span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
@@ -95,13 +95,17 @@
                 @endif
             </ul>
         </div>
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
-                Lvl. {{Auth::user()->lvl}} - {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}
-                % ({{Auth::user()->xp}} / {{\DB::table('levels')->find(Auth::user()->lvl)->xp}})
-            </div>
-        </div>
 
+        @if(!Auth::guest())
+            <div class="progress">
+                <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+                     aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">
+                    Lvl. {{Auth::user()->lvl}}
+                    - {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}
+                    % ({{Auth::user()->xp}} / {{\DB::table('levels')->find(Auth::user()->lvl)->xp}})
+                </div>
+            </div>
+        @endif
 
     </div>
 

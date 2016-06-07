@@ -39,7 +39,7 @@ var Map = function () {
         }
     }
 
-    //add colide base 1
+    //add collide base 1
     this.rawGrid[2][8] = 0;
     this.rawGrid[3][8] = 0;
     this.rawGrid[4][8] = 0;
@@ -57,7 +57,7 @@ var Map = function () {
     this.rawGrid[4][11] = 0;
     this.rawGrid[5][11] = 0;
 
-    //add colide base 2
+    //add collide base 2
     this.rawGrid[56][58] = 0;
     this.rawGrid[57][58] = 0;
     this.rawGrid[58][58] = 0;
