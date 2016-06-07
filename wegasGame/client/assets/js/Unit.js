@@ -43,23 +43,41 @@ Unit.prototype.create = function (id, x, y) {
     toCreate.attUp = toCreate.unit.animations.add('attackUp', [30, 36, 42, 48], 5, true);
     toCreate.attDown = toCreate.unit.animations.add('attackDown', [34, 40, 46, 52], 5, true);
 
-    toCreate.attLeft.onLoop.add(function () {
-        console.log('am facut un loop de left')
-    }, this);
-    toCreate.attRight.onLoop.add(function () {
-        console.log('am facut un loop de right')
-    }, this);
-    toCreate.attUp.onLoop.add(function () {
-        console.log('am facut un loop de up')
-    }, this);
-    toCreate.attDown.onLoop.add(function () {
-        console.log('am facut un loop de down')
-    }, this);
 
     toCreate.unit.animations.add('left', [5, 11, 17, 23], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('right', [2, 8, 14, 20], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('up', [6, 12, 18, 24], 5 + (this.ms / 100), true);
     toCreate.unit.animations.add('down', [10, 16, 22, 28], 5 + (this.ms / 100), true);
+
+    toCreate.attLeft.onLoop.add(function () {
+        if (toCreate.targetUnit != null) {
+            console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
+            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+
+        }
+        console.log('am facut un loop de left')
+    }, this);
+    toCreate.attRight.onLoop.add(function () {
+        if (toCreate.targetUnit != null) {
+            console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
+            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+        }
+        console.log('am facut un loop de right')
+    }, this);
+    toCreate.attUp.onLoop.add(function () {
+        if (toCreate.targetUnit != null) {
+            console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
+            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+        }
+        console.log('am facut un loop de up')
+    }, this);
+    toCreate.attDown.onLoop.add(function () {
+        if (toCreate.targetUnit != null) {
+            console.log('smecheru o avut ' + toCreate.targetUnit.hp + "hp");
+            toCreate.targetUnit.hp -= Math.floor(Math.random() * this.maxAtk) + this.minAtk;
+        }
+        console.log('am facut un loop de down')
+    }, this);
 
 
     toCreate.game.physics.enable(toCreate.unit, Phaser.Physics.ARCADE);
@@ -99,6 +117,8 @@ Unit.prototype.create = function (id, x, y) {
         x: 0,
         y: 0
     };
+
+    toCreate.targetUnit = null;
 
     toCreate.initialTargetTile = toCreate.targetTile;//pozitia unde trebuie sa ajung
 
@@ -542,7 +562,8 @@ Unit.prototype.updateAttack = function () {
 
     this.isAttacking = false;
     if (this.targetTile.x == currentTile.x && this.targetTile.y == currentTile.y) {
-        var targetAttack = map.getEnemyTile(currentTile, 2);
+        var target = map.getEnemyTile(currentTile, 2);
+        var targetAttack = target.tile;
 
 
         //TODO: implement range de scanare & range de attack (2,1)
@@ -550,6 +571,7 @@ Unit.prototype.updateAttack = function () {
 
         if (!this.isAttacking) {
             if (targetAttack != null) {
+                this.targetUnit = target.unit;
                 if (currentTile.x == targetAttack.x && Math.abs(targetAttack.y - currentTile.y) <= 1) {
                     if (targetAttack.y > currentTile.y) {
                         //jos
@@ -576,28 +598,25 @@ Unit.prototype.updateAttack = function () {
             }
         }
 
-        if (this.isAttacking) {//isAttacking == true
+
+        if (this.isAttacking && this.targetUnit.isAlive) {//isAttacking == true
+
             switch (this.attackDir) {
                 case 1:
                     console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackUp');
-                    // this.attUp.play();
-
                     break;
                 case 2:
                     console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackDown');
-                    // this.attDown.play();
                     break;
                 case 3:
                     console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackLeft');
-                    // this.attLeft.play();
                     break;
                 case 4:
                     console.log('Tre sa atac in ' + this.attackDir);
                     this.unit.play('attackRight');
-                    // this.attRight.play();
                     break;
 
                 default:
@@ -607,6 +626,22 @@ Unit.prototype.updateAttack = function () {
 
             //console.log('scanez si stau pe loc');
 
+        } else {
+            this.unit.animations.stop(true,this);
+            switch (this.attackDir) {
+                case 1:
+                    this.unit.animations.frame = 0;
+                    break;
+                case 2:
+                    this.unit.animations.frame = 4;
+                    break;
+                case 3:
+                    this.unit.animations.frame = 5;
+                    break;
+                case 4:
+                    this.unit.animations.frame = 2;
+                    break;
+            }
         }
     }
 //gaseste inamic intr-o zona de "range" de la currentTile

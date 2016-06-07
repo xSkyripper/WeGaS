@@ -226,7 +226,6 @@ function update() {
     if (me != null) {
         for (var i = 0; i < me.createdUnits.length; i++) {
             me.createdUnits[i].update2();
-            //me.createdUnits[i].unit.play('attackUp');
             me.createdUnits[i].updateAttack();
             gui.updateGuiOverlap(me.createdUnits[i].unit);
         }
@@ -235,6 +234,7 @@ function update() {
     if (enemy != null) {
         for (var i = 0; i < enemy.createdUnits.length; i++) {
             //enemy.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
+            enemy.createdUnits[i].updateAlive();
             gui.updateGuiOverlap(enemy.createdUnits[i].unit);
         }
     }

@@ -79,9 +79,9 @@ function onSocketConnect(client) {
     if (playerNo == 2) {
         player2.id = client.id;
         console.log('Player 2 connected ! Name = ' + player2.name);
-        client.emit('identify', {id: playerNo, name: player2.name, startX: 1671, startY: 1831});
+        client.emit('identify', {id: playerNo, name: player2.name, startX: 1031, startY: 455});
         client.emit('other_users', {id: playerNo, name: player1.name, startX: 455, startY: 135});
-        client.broadcast.emit('new_player', {id: playerNo, name: player2.name, startX: 1671, startY: 1831});
+        client.broadcast.emit('new_player', {id: playerNo, name: player2.name, startX: 1031, startY: 455});
     }
 
     client.on('disconnect', onSocketDisconnect);
