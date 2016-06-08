@@ -20,15 +20,8 @@
                     <div class="panel-body">
                         <div class="container-fluid">
                             <img class="welcome-banner img-responsive" src="{{asset('img/banner.jpg')}}" alt="banner">
-                            <p>Introduction text (story / lore). </p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad aperiam blanditiis corporis
-                            culpa dolor eum fuga hic, id libero numquam odit quibusdam repellat similique temporibus?
-                            Laudantium minima reiciendis sapiente. Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Ab distinctio ducimus esse excepturi exercitationem fuga nulla numquam odio
-                            perferendis quas, quasi qui quidem quod, repudiandae velit vitae voluptatibus. Excepturi,
-                            perferendis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet libero
-                            perferendis quae quam, quidem vitae voluptatum? Commodi, consectetur earum explicabo,
-                            incidunt ipsam obcaecati officiis omnis perferendis rerum, sed sunt voluptatibus.
+                            <p>Story & Lore</p>
+                            In a time of war and struggle, people gather here to fight online. Humans fight agains humans and they strive to become the best.
                         </div>
 
                     </div>
