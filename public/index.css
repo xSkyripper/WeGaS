@@ -1,0 +1,52 @@
+body {
+    font-family: 'Lato';
+}
+
+.fa-btn {
+    margin-right: 6px;
+}
+
+.glyphicon-user {
+    margin-right: 6px;
+}
+
+.navbar-default {
+    border-bottom: 2px solid #777;
+    font-size: 15px;
+    background: transparent;
+}
+
+.navbar-default .navbar-nav li a:hover {
+    color: white;
+}
+
+#app-layout {
+    background: transparent;
+}
+
+.navbar-brand {
+    margin-top: -10px;
+}
+
+.error{
+    text-align: center;
+    margin-top: 100px;
+}
+
+.unit {
+    margin: 10px;
+}
+
+.missingUnit{
+    margin: 10px;
+    background-color: #f5f5f5;
+}
+
+.missing-skill {
+    background-color: #e1f7d3;
+}
+
+#skillNo {
+    font-weight: 600;
+    color: #0000ee;
+}
