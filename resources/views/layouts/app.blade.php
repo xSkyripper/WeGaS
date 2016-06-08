@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>WeGaS</title>
-
-    <!-- Fonts -->
+     <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"
           integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
@@ -54,6 +53,10 @@
         #app-layout{
             background:transparent;
         }
+
+        .navbar-brand{
+            margin-top:-10px;
+        }
     </style>
 
     @yield('head')
@@ -77,7 +80,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                WeGaS
+                <img alt="Brand" class = "img-responsive " src="favicon.ico">
             </a>
         </div>
 
@@ -98,14 +101,14 @@
                     <li><a href="{{ url('/login') }}">Login</a></li>
                     <li><a href="{{ url('/register') }}">Register</a></li>
                     <li><a href="{{ url('/help') }}">Help</a></li>
-                    <li><a href="{{ url('/help') }}">About</a></li>
+                    <li><a href="{{ url('/about') }}">About</a></li>
                 @else
 
                     <li><a target="_blank" href="{{ url('/rooms') }}">Rooms</a></li>
                     <li><a href="{{ url('/shop') }}">Shop</a></li>
                     <li><a href="{{ url('/skills') }}">Skills</a></li>
                     <li><a href="{{ url('/help') }}">Help</a></li>
-                    <li><a href="{{ url('/help') }}">About</a></li>
+                    <li><a href="{{ url('/about') }}">About</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             {{ Auth::user()->name }}<span class="caret"></span>
