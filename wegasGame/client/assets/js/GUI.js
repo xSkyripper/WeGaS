@@ -25,57 +25,68 @@ var GUI = function () {
 
 GUI.prototype.actionOnClickUnit1 = function () {
 
-    var avTile = map.getAvailableTile(me.startTile);
-    var newUnit = me.units[0].create(me.createdUnits.length, avTile.x * 32 - 24, avTile.y * 32 - 24);
-    me.createdUnits.push(newUnit);
-    console.log(me.name + ": Created a unit1 (footman) la " + newUnit.x + " " + newUnit.y);
-    socket.emit('create_unit', {
-        sprite: newUnit.sprite,
-        owner: newUnit.owner,
-        hp: newUnit.hp,
-        minAtk: newUnit.minAtk,
-        maxAtk: newUnit.maxAtk,
-        ms: newUnit.ms,
-        coins: newUnit.coins,
-        x: newUnit.x,
-        y: newUnit.y
-    });
+    if(me.coins>=me.units[0].coins) {
+        var avTile = map.getAvailableTile(me.startTile);
+        var newUnit = me.units[0].create(me.createdUnits.length, avTile.x * 32 - 24, avTile.y * 32 - 24);
+        me.createdUnits.push(newUnit);
+
+        me.coins -= me.units[0].coins;
+        console.log(me.name + ": Created a unit1 (footman) la " + newUnit.x + " " + newUnit.y);
+        socket.emit('create_unit', {
+            sprite: newUnit.sprite,
+            owner: newUnit.owner,
+            hp: newUnit.hp,
+            minAtk: newUnit.minAtk,
+            maxAtk: newUnit.maxAtk,
+            ms: newUnit.ms,
+            coins: newUnit.coins,
+            x: newUnit.x,
+            y: newUnit.y
+        });
+    }
 };
 
 GUI.prototype.actionOnClickUnit2 = function () {
-    var avTile = map.getAvailableTile(me.startTile);
-    var newUnit = me.units[1].create(me.createdUnits.length, avTile.x * 32 - 24, avTile.y * 32 - 24);
-    me.createdUnits.push(newUnit);
-    console.log(me.name + ": Created a unit2 (archer) la " + newUnit.x + " " + newUnit.y);
-    socket.emit('create_unit', {
-        sprite: newUnit.sprite,
-        owner: newUnit.owner,
-        hp: newUnit.hp,
-        minAtk: newUnit.minAtk,
-        maxAtk: newUnit.maxAtk,
-        ms: newUnit.ms,
-        coins: newUnit.coins,
-        x: newUnit.x,
-        y: newUnit.y
-    });
+
+    if(me.coins>=me.units[1].coins) {
+        var avTile = map.getAvailableTile(me.startTile);
+        var newUnit = me.units[1].create(me.createdUnits.length, avTile.x * 32 - 24, avTile.y * 32 - 24);
+        me.createdUnits.push(newUnit);
+        me.coins -= me.units[1].coins;
+        console.log(me.name + ": Created a unit2 (archer) la " + newUnit.x + " " + newUnit.y);
+        socket.emit('create_unit', {
+            sprite: newUnit.sprite,
+            owner: newUnit.owner,
+            hp: newUnit.hp,
+            minAtk: newUnit.minAtk,
+            maxAtk: newUnit.maxAtk,
+            ms: newUnit.ms,
+            coins: newUnit.coins,
+            x: newUnit.x,
+            y: newUnit.y
+        });
+    }
 };
 
 GUI.prototype.actionOnClickUnit3 = function () {
-    var avTile = map.getAvailableTile(me.startTile);
-    var newUnit = me.units[2].create(me.createdUnits.length, avTile.x * 32 - 24, avTile.y * 32 - 24);
-    me.createdUnits.push(newUnit);
-    console.log(me.name + ": Created a unit3 (knight) la " + newUnit.x + " " + newUnit.y);
-    socket.emit('create_unit', {
-        sprite: newUnit.sprite,
-        owner: newUnit.owner,
-        hp: newUnit.hp,
-        minAtk: newUnit.minAtk,
-        maxAtk: newUnit.maxAtk,
-        ms: newUnit.ms,
-        coins: newUnit.coins,
-        x: newUnit.x,
-        y: newUnit.y
-    });
+    if(me.coins>=me.units[2].coins) {
+        var avTile = map.getAvailableTile(me.startTile);
+        var newUnit = me.units[2].create(me.createdUnits.length, avTile.x * 32 - 24, avTile.y * 32 - 24);
+        me.createdUnits.push(newUnit);
+        me.coins -= me.units[2].coins;
+        console.log(me.name + ": Created a unit3 (knight) la " + newUnit.x + " " + newUnit.y);
+        socket.emit('create_unit', {
+            sprite: newUnit.sprite,
+            owner: newUnit.owner,
+            hp: newUnit.hp,
+            minAtk: newUnit.minAtk,
+            maxAtk: newUnit.maxAtk,
+            ms: newUnit.ms,
+            coins: newUnit.coins,
+            x: newUnit.x,
+            y: newUnit.y
+        });
+    }
 };
 
 GUI.prototype.update = function () {
