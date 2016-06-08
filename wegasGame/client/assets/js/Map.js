@@ -16,7 +16,7 @@ var Map = function () {
 
     this.layer = this.map.createLayer('Layer1');
     this.layer.resizeWorld();
-    this.layer.debug = true;
+    //this.layer.debug = true;
     //creare layer
 
     //add bases

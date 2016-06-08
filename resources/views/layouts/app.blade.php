@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>WeGaS</title>
-     <!-- Fonts -->
+    <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"
           integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700">
@@ -16,46 +16,20 @@
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     {{-- <link href="{{ elixir('css/app.css') }}" rel="stylesheet"> --}}
 
-    <style>
-        body {
-            font-family: 'Lato';
-        }
+    <link rel="stylesheet" href={{asset('index.css')}}>
 
+    <style>
         .full {
             background: url({{asset('img/main-back.jpg')}}) no-repeat center center fixed;
             background-size: cover;
         }
 
-        .fa-btn {
-            margin-right: 6px;
-        }
-
-        .glyphicon-user {
-            margin-right: 6px;
-        }
-
         .progress-bar {
             @if(!Auth::guest())
-             width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
-            @endif
-        }
+               width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
+        @endif
 
-        .navbar-default {
-            border-bottom:2px solid #777;
-            font-size:15px;
-            background: transparent;
-        }
 
-        .navbar-default .navbar-nav li a:hover{
-            color:white;
-        }
-
-        #app-layout{
-            background:transparent;
-        }
-
-        .navbar-brand{
-            margin-top:-10px;
         }
     </style>
 
@@ -80,7 +54,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img alt="Brand" class = "img-responsive " src="favicon.ico">
+                <img alt="Brand" class="img-responsive " src="favicon.ico">
             </a>
         </div>
 
@@ -104,7 +78,7 @@
                     <li><a href="{{ url('/about') }}">About</a></li>
                 @else
 
-                    <li><a target="_blank" href="{{ url('/rooms') }}">Rooms</a></li>
+                    <li><a target="_blank" href="http://localhost:2000/room/{{Auth::user()->username}}">Game</a></li>
                     <li><a href="{{ url('/shop') }}">Shop</a></li>
                     <li><a href="{{ url('/skills') }}">Skills</a></li>
                     <li><a href="{{ url('/help') }}">Help</a></li>

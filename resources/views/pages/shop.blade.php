@@ -2,18 +2,6 @@
 
 @section('head')
 
-    <style>
-        .unit {
-            margin: 10px;
-        }
-
-        .missingUnit{
-            margin: 10px;
-            background-color: #f5f5f5;
-        }
-
-    </style>
-
 @stop
 
 @section('content')

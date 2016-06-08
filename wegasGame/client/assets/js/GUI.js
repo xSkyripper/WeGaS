@@ -4,7 +4,7 @@ var GUI = function () {
 
     this.backgroundBar = game.add.image(700, 0, 'back');
     //this.miniMap = game.add.image(750, 20, 'mapWegas');
-    this.textCoins = game.add.text(750, 230, "Coins: ");
+    this.textCoins = game.add.text(770, 100, "Coins: ");
     this.backgroundBar.fixedToCamera = true;
     //this.miniMap.fixedToCamera = true;
     this.textCoins.fixedToCamera = true;
@@ -12,9 +12,9 @@ var GUI = function () {
     // this.gui.add(this.miniMap);
     this.gui.add(this.textCoins);
 
-    this.buttonUnit1 = game.add.button(715, 500, 'unit1_i', this.actionOnClickUnit1, this);
-    this.buttonUnit2 = game.add.button(815, 500, 'unit2_i', this.actionOnClickUnit2, this);
-    this.buttonUnit3 = game.add.button(915, 500, 'unit3_i', this.actionOnClickUnit3, this);
+    this.buttonUnit1 = game.add.button(815, 200, 'unit1_i', this.actionOnClickUnit1, this);
+    this.buttonUnit2 = game.add.button(815, 300, 'unit2_i', this.actionOnClickUnit2, this);
+    this.buttonUnit3 = game.add.button(815, 400, 'unit3_i', this.actionOnClickUnit3, this);
     this.buttonUnit1.fixedToCamera = true;
     this.buttonUnit2.fixedToCamera = true;
     this.buttonUnit3.fixedToCamera = true;

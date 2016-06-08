@@ -1,10 +1,5 @@
 @extends('layouts\app')
-<style>
-.error{
-    text-align: center;
-    margin-top: 100px;
-}
-</style>
+
 @section('content')
     <div class="container">
         <div class="row">
