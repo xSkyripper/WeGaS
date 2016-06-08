@@ -292,7 +292,8 @@ Unit.prototype.update = function () {
 
 //TODO: fix blocaj la mai multe unitati ? 
 Unit.prototype.update2 = function () {
-    this.updateAlive();
+
+    this.updateAlive(true);
 
     if (this.isAlive) {
         this.game.physics.arcade.collide(this.unit, map.layer);
@@ -542,7 +543,7 @@ function moveUnits2() {
     }
 }
 
-Unit.prototype.updateAlive = function () {
+Unit.prototype.updateAlive = function (isMine) {
 
     if (this.isAlive) {
         if (this.hp <= 0) {
@@ -557,6 +558,13 @@ Unit.prototype.updateAlive = function () {
 
             map.rawGrid[map.layer.getTileY(this.markerUnit.y + 32)][map.layer.getTileX(this.markerUnit.x + 32)] = 1;
             map.graph = new Graph(map.rawGrid);
+
+            if(isMine){
+                socket.emit('die_unit',{
+                    name:enemy.name
+                });
+            }
+
 
             this.unit.animations.frame = 60;
             var sprite = this.unit;
@@ -593,24 +601,24 @@ Unit.prototype.updateAttack = function (player) {
         y: map.layer.getTileY(this.markerUnit.y + 32)
     };
 
-    if (player == me) {
-        // console.log('sunt player me');
-    }
+    
 
 
     this.isAttacking = false;
     if (this.targetTile.x == currentTile.x && this.targetTile.y == currentTile.y) {
         var target = map.getEnemyTile(currentTile, 2, player);
         var targetAttack = target.tile;
-        // console.log('stau pe loc');
+
 
 
         //TODO: implement range de scanare & range de attack (2,1)
 
 
         if (!this.isAttacking) {
+            
             if (targetAttack != null) {
                 this.targetUnit = target.unit;
+
                 if (currentTile.x == targetAttack.x && Math.abs(targetAttack.y - currentTile.y) <= 1) {
                     if (targetAttack.y > currentTile.y) {
                         //jos

@@ -25,6 +25,8 @@ var setEventHandlers = function () {
         socket.on('move_unit', onMoveUnit);
         socket.on('move_unit2', onMoveUnit2);
         socket.on('attack_unit', onAttackUnit);
+        socket.on('victory', onVictory);
+        socket.on('victory_stats', onVictoryStats);
     }//end_server-related
 
 };
@@ -32,6 +34,8 @@ var setEventHandlers = function () {
 function onIdentify(data) {
 
     me = new Player(data.id, data.startX, data.startY, data.name, 1000, []);
+
+
     console.log('I am ' + data.name + " start: " + data.startX + " " + data.startY);
 
 
@@ -171,6 +175,33 @@ function onAttackUnit(data) {
 }
 
 
+function onVictory(data) {
+    if (data.id == me.id) {
+        console.log('ai castigat !');
+    } else {
+        console.log('ai pierdut.');
+    }
+}
+
+function onVictoryStats(data) {
+    console.log('End of game. XP=' + data.xp + " and Gold=" + data.gold);
+
+    game.destroy();
+
+
+    game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-wegas', {
+        create: function () {
+            game.stage.backgroundColor = "#000000";
+
+            var style = {font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle"};
+            var text = game.add.text(0, 0, "End of battle ! Rewards: " + data.xp + "XP   " + data.gold + "Gold .", style);
+            text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+            text.setTextBounds(0, 100, 1000, 100);
+        }
+    });
+
+}
+
 /////////////////////////End_EventHandlers/////////////////////////////
 
 var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'phaser-wegas', {
@@ -240,15 +271,18 @@ function update() {
 
     if (me != null) {
         gui.update();
+
     }
 
     //TODO:Conditii de victorie
 
     if (me != null) {
+
         for (var i = 0; i < me.createdUnits.length; i++) {
             me.createdUnits[i].update2();
             me.createdUnits[i].updateAttack(enemy);
             gui.updateGuiOverlap(me.createdUnits[i].unit);
+
         }
     }
 
@@ -256,10 +290,15 @@ function update() {
         for (var i = 0; i < enemy.createdUnits.length; i++) {
             //enemy.createdUnits[i].update2(); //TODO: fix la ultima miscare per unitate ce se pierde
             enemy.createdUnits[i].updateAttack(me);
-            enemy.createdUnits[i].updateAlive();
+            enemy.createdUnits[i].updateAlive(false);
             gui.updateGuiOverlap(enemy.createdUnits[i].unit);
         }
     }
+
+    if (me != null && enemy != null) {
+        me.base.update();
+    }
+
     // if (game.physics.arcade.overlap(me.createdUnits[0].unit, me.createdUnits[1].unit)) {
     //     console.log('Se ating !');
     // }

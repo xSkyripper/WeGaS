@@ -20,8 +20,8 @@ var Map = function () {
     //creare layer
 
     //add bases
-    this.base1 = new Building(game, 'base1', 5000, 250, 70, 1);
-    this.base2 = new Building(game, 'base2', 5000, 1850, 1800, 2);
+    this.base1 = new Building(game, 'base1', 2000, 250, 70, 1);
+    this.base2 = new Building(game, 'base2', 2000, 1850, 1800, 2);
 
 
     //collisionMatrix
@@ -225,6 +225,7 @@ Map.prototype.getEnemyTile = function (tile, range, player)  /// tile este pozit
 
     for (var i = tileX; i < tileX + n; i++)
         for (var j = tileY; j < tileY + n; j++) {
+
             var checkEnemy = this.isEnemy({x: i, y: j}, player);
             if (checkEnemy.is) {
                 var resultTile = {x: 0, y: 0};
