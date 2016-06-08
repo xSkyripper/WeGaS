@@ -12,7 +12,7 @@
                         <div class="container-fluid">
                             <img class="welcome-banner img-responsive" src="{{asset('img/bannerAbout.png')}}" alt="banner">
                             <p>Ce este WeGaS? </p>
-                            <p>Web Game System (sau pe scurt WeGaS) este o aplicatie Web ce ofera un serviciu online de entertainment
+                            <p><strong>Web Game System</strong> (sau pe scurt WeGaS) este o aplicatie Web ce ofera un serviciu online de entertainment
                                 sub forma unui joc video de strategie in stilul clasic de RTS (Real-Time Strategy). Sistemul ofera
                                 posibilitatea user-ului de a se inregistra, autentifica si de a se integra in comunitatea jocului.
                                 Odata intrat, acesta poate discuta cu alti jucatori, ii poate provoca sau poate intra in lobby pentru

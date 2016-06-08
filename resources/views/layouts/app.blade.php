@@ -26,9 +26,8 @@
 
         .progress-bar {
             @if(!Auth::guest())
-                width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
+                  width: {{ Auth::user()->xp / \DB::table('levels')->find(Auth::user()->lvl)->xp * 100 }}%;
         @endif
-
 
 
         }
@@ -55,7 +54,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img alt="Brand" class="img-responsive " src="favicon.ico">
+                <img alt="Brand" class="img-responsive " src="{{asset('favicon.ico')}}">
             </a>
         </div>
 
@@ -78,7 +77,6 @@
                     <li><a href="{{ url('/help') }}">Help</a></li>
                     <li><a href="{{ url('/about') }}">About</a></li>
                 @else
-
                     <li><a target="_blank" href="http://localhost:2000/room/{{Auth::user()->username}}">Game</a></li>
                     <li><a href="{{ url('/shop') }}">Shop</a></li>
                     <li><a href="{{ url('/skills') }}">Skills</a></li>

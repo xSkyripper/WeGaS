@@ -4,8 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <h3 class="alert alert-danger error">Page doesn't exist !</h3>
-                
+                <h2 class="alert alert-danger error">Error 404 ! <br> Page doesn't exist !</h2>
             </div>
         </div>
     </div>

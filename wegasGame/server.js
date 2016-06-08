@@ -53,8 +53,8 @@ var Player = function (id, name, coins) {
     this.sock = null;
     this.name = name;
     this.coins = coins;
-    this.units = null;
-    this.skills = null;
+    this.units = [];
+    this.skills = [];
     this.killed = 0;
     this.reward_xp = 0;
     this.reward_gold = 0;
@@ -77,13 +77,12 @@ function onSocketConnect(client) {
         player1.sock = client;
         console.log('Player 1 connected ! Name = ' + player1.name);
         //TEST FUNCTION DB
-        player1.units = getUserUnits(player1);
-        player1.skills = getUserSkill(player1);
+        //player1.units = getUserUnits(player1);
+        getUserSkill(player1);
 
-        for (var skill in player1.skills) {
-            console.log("skill " + skill);
-        }
-        //
+        console.log(player1.skills);
+
+
         client.emit('identify', {id: playerNo, name: player1.name, startX: 455, startY: 135});
     }
 
@@ -178,19 +177,17 @@ function onVictory(data) {
 
     if (data.id == 2) {
         console.log('a castigat player2');
-        player2.reward_xp = 10;
-        player2.reward_gold = 10;
-        player1.reward_xp = 5;
-        player1.reward_gold = 5;
-
-
+        player2.reward_xp = 10 + player2.killed * 10;
+        player2.reward_gold = 10 + player2.killed * 10;
+        player1.reward_xp = 5 + player1.killed * 5;
+        player1.reward_gold = 5 + player1.killed * 5;
     }
     if (data.id == 1) {
         console.log('a castigat player1');
-        player2.reward_xp = 5;
-        player2.reward_gold = 5;
-        player1.reward_xp = 10;
-        player1.reward_gold = 10;
+        player2.reward_xp = 5 + player2.killed * 5;
+        player2.reward_gold = 5 + player2.killed * 5;
+        player1.reward_xp = 10 + player1.killed * 10;
+        player1.reward_gold = 10 + player1.killed * 10;
     }
 
     for (var skill in player1.skills) {
@@ -226,19 +223,19 @@ function getUserUnits(user) {
         console.log('Data received from Db:\n');
         console.log(rows);
 
-        return rows;
+
     });
 }
 
 function getUserSkill(user) {
-    connection.query('SELECT Sk.gold,Sk.xp,Sk.hp,Sk.atk,Sk.ms FROM skill_user Su join users Us  on Su.user_id = Us.id  join skills Sk on Sk.id=Su.skill_id  where Us.username=?', user.name, function (err, rows) {
+    connection.query('SELECT * FROM skill_user Su join users Us  on Su.user_id = Us.id  join skills Sk on Sk.id=Su.skill_id  where Us.username=?', user.name, function (err, rows) {
         if (err)
             throw err;
         console.log('Data received from Db:\n');
         //transformare in json
 
+        user.skills = rows;
 
-        return rows;
     });
 }
 
