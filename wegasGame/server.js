@@ -94,9 +94,9 @@ function onSocketConnect(client) {
 
         player2.units = getUserUnits(player2);
         player2.skills = getUserSkill(player2);
-        client.emit('identify', {id: playerNo, name: player2.name, startX: 1031, startY: 455});
+        client.emit('identify', {id: playerNo, name: player2.name, startX: 1703, startY: 1863});
         client.emit('other_users', {id: playerNo - 1, name: player1.name, startX: 455, startY: 135});
-        client.broadcast.emit('new_player', {id: playerNo, name: player2.name, startX: 1031, startY: 455});
+        client.broadcast.emit('new_player', {id: playerNo, name: player2.name, startX: 1703, startY: 1863});
     }
 
     client.on('disconnect', onSocketDisconnect);

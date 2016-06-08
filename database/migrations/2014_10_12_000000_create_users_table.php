@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
             
             $table->integer('lvl')->default(1);
             $table->integer('gold')->default(100);
-            $table->integer('xp')->default(0);
-            $table->integer('sp')->default(0);
+            $table->integer('xp')->default(30);
+            $table->integer('sp')->default(1);
             $table->integer('victories')->default(0);
             $table->integer('defeats')->default(0);
             $table->integer('killed')->default(0);

@@ -317,10 +317,10 @@ function render() {
     //       game.debug.body(me.createdUnits[i].unit);
     // }
 
-    if (enemy != null) {
-        for (var i = 0; i < enemy.createdUnits.length; i++)
-            game.debug.body(enemy.createdUnits[i].unit);
-    }
+    // if (enemy != null) {
+    //     for (var i = 0; i < enemy.createdUnits.length; i++)
+    //         game.debug.body(enemy.createdUnits[i].unit);
+    // }
 }
 
 

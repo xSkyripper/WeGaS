@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">WeGaS - Home</div>
                     <div class="panel-body">
-                        <h3>Chat goes here !</h3>
+                        <h3>Chat on the road, coming soon !</h3>
                     </div>
                 </div>
             </div>
